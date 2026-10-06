@@ -1,5 +1,5 @@
-# MY DOTNET FULL STACK LEARNING JOURNEY
+# My .NET Full Stack Learning Journey
 
-## Hello i am abdul junior flutter developer , currently i am learning dotnet full stack for my carrer.
+** Hello I am Abdul junior flutter developer , currently i am learning dotnet full stack for my career.**
 
-- The project folder having my project now i created 00-greeting-cli this is my firat .net project which print my name and age
+- The project folder having my project now i created [00-greeting-cli](projects/00-greeting-cli) this is my first .net project which print my name and age
