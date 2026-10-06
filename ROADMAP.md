@@ -1,7 +1,7 @@
 # .NET Full Stack: From Zero to Pro 🚀
 **C# · ASP.NET Core Web API · SQL Server · EF Core · Angular**
 
-Owner: Abdul Basith · Start: Sunday 4 Oct 2026 · Length: ~38 weeks + your solo main project
+Owner: Abdul Basith · Start: Sunday 4 Oct 2026 · Length: ~28 weeks (26 study + 2 buffer) at ~16 hrs/week + your solo main project
 Based on the original plan `NET From Zero to Job-Ready.docx` (kept as the source). Updated for full stack with Angular.
 
 ---
@@ -16,15 +16,14 @@ Learning .NET is like building a house. The roof (Web API, Angular) cannot go on
 4. **Post on LinkedIn after every phase.** Learning in public builds your profile and keeps you consistent.
 5. **Update your resume after every project.** See `career/RESUME.md`.
 
-### Weekly rhythm (Kuwait week, evenings, ~10–11 hrs)
+### Weekly rhythm (~16 hrs/week)
 | Day | Time | What you do |
 |---|---|---|
-| Sun – Wed | 1.5 hrs | Learn the new topic and type the examples |
-| Thu | 1 hr | Revise the week, fix what confused you, take the quiz |
-| Fri | 3 hrs | Build the week's project |
-| Sat | 1–2 hrs | Light practice (Exercism / LeetCode Easy), write the LinkedIn post, or rest |
+| Sun – Thu | 2 hrs | New lesson: learn, type the examples, do the exercise |
+| Fri | 1.5 hrs | Light day: revise the week, quiz, write the LinkedIn post |
+| Sat | 4–5 hrs | **Project day:** build the phase project, push to GitHub |
 
-If a week gets busy, slide the plan forward. Do not skip.
+If a week gets busy, slide the plan forward. Do not skip. The 2 buffer weeks are for busy weeks, illness and Ramadan (expected around Feb–Mar 2027, depending on moon sighting).
 
 **Your superpower:** you know **Dart/Flutter**. C# looks a lot like Dart: classes, async/await, generics and null safety will feel familiar. TypeScript (for Angular) will feel like Dart too.
 **Honest note:** you are new to **JavaScript**, so Phase 9 teaches JS from zero. No shortcuts there.
@@ -60,7 +59,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ---
 
-## Phase 0: Meet .NET + Git (Week 1) ✅ done Tue 6 Oct 2026
+## Phase 0: Meet .NET + Git (Week 1 · 4–10 Oct) ✅ done Tue 6 Oct 2026
 🧸 **LKG story:** .NET is a big toy box from Microsoft. C# is the language you speak to the toys. The toys can become websites, APIs, desktop apps, games and mobile apps. Git is a time machine for your code: it saves photos of your work so you can always go back.
 
 **Learn**
@@ -78,33 +77,33 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ---
 
-## Phase 1: C# Bricks (Weeks 2–4)
+## Phase 1: C# Bricks (Weeks 2–3 · 11–24 Oct 2026)
 🧸 **LKG story:** Variables are boxes with labels. `int age = 28;` means "a box named age that holds only whole numbers, and I put 28 in it". An `if` is a traffic light. A loop is a merry-go-round that keeps spinning until you say stop.
 
-**Week 2: Boxes and choices**
+**Part 1: Boxes and choices**
 - [ ] Data types: `int`, `double`, `decimal` (use this for money!), `bool`, `char`, `string`
 - [ ] `var`, `const`, type conversion, `Parse` / `TryParse`
 - [ ] Operators, string interpolation `$"Hi {name}"`
 - [ ] `if` / `else`, `switch`, switch expressions
 
-**Week 3: Merry-go-rounds and helpers**
+**Part 2: Merry-go-rounds and helpers**
 - [ ] Loops: `for`, `while`, `do-while`, `foreach`, `break`, `continue`
 - [ ] Arrays and `List<T>`
 - [ ] Methods: parameters, return values, `ref`, `out`, optional and named parameters, overloading
 
-**Week 4: Safety nets**
+**Part 3: Safety nets**
 - [ ] Nullable types `int?` and null operators `?.` `??` `??=` (just like Dart!)
 - [ ] Exceptions: `try` / `catch` / `finally`, throwing your own
 - [ ] Debugging: breakpoints, step over/into, watch window. Learn this properly; it saves hundreds of hours
 
-**Projects:** 01 Number Guessing Game (W2) → 02 Console Calculator (W3) → 03 Shipment Tracker: add, list, mark delivered, search by tracking number (W4)
+**Projects:** 01 Number Guessing Game (Part 1) → 02 Console Calculator (Part 2) → 03 Shipment Tracker: add, list, mark delivered, search by tracking number (Part 3)
 ✅ **Done when:** you can write a 100-line console app with loops, methods and error handling from scratch.
 📣 **LinkedIn:** "3 things in C# that surprised me as a Dart developer"
 📄 **Resume:** project bullet for the Shipment Tracker.
 
 ---
 
-## Phase 2: Object-Oriented Programming (Weeks 5–6)
+## Phase 2: Object-Oriented Programming (Week 4 · 25–31 Oct 2026)
 🧸 **LKG story:** A class is a cookie cutter; an object is the cookie. Inheritance: a baby elephant gets its trunk from mama. An interface is a promise card: "anyone who signs this card MUST know how to `Borrow()`".
 
 - [ ] Classes, objects, constructors, properties (`get; set;`, `init`, `required`)
@@ -122,21 +121,21 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ---
 
-## Phase 3: C# Superpowers (Weeks 7–9)
+## Phase 3: C# Superpowers (Weeks 5–6 · 1–14 Nov 2026)
 🧸 **LKG story:** Generics are a lunchbox that can hold any food, but once you decide it's for rice, only rice goes in. LINQ is asking your toy box a question: "give me all the red cars, sorted by size". async/await is putting rice on the stove and cutting vegetables while you wait, instead of staring at the pot.
 
-**Week 7: Collections and generics**
+**Part 1: Collections and generics**
 - [ ] `List`, `Dictionary`, `HashSet`, `Queue`, `Stack`: when to use which
 - [ ] Generic classes and methods, constraints (`where T : class`)
 - [ ] `IEnumerable<T>` vs `ICollection<T>` vs `IList<T>`
 
-**Week 8: LINQ and delegates**
+**Part 2: LINQ and delegates**
 - [ ] Delegates, `Func`, `Action`, lambdas `x => x * 2`
 - [ ] LINQ: `Where`, `Select`, `OrderBy`, `GroupBy`, `Join`, `First`, `Any`, `Sum`, `Count`
 - [ ] Deferred execution (LINQ waits until you actually ask for results)
 - [ ] Events (basic idea)
 
-**Week 9: Async and files**
+**Part 3: Async and files**
 - [ ] `async` / `await`, `Task`, `Task<T>` (compare with Dart's `Future`)
 - [ ] `HttpClient`: call a public API
 - [ ] Read/write files; JSON with `System.Text.Json`
@@ -149,7 +148,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ---
 
-## Phase 3.5: Advanced C# (Week 10) 🆕
+## Phase 3.5: Advanced C# (Week 7 · 15–21 Nov 2026) 🆕
 🧸 **LKG story:** Your computer's memory is a room with two areas: a small, tidy **desk** (the stack) and a big **storeroom** (the heap). The garbage collector is the cleaner who throws away toys nobody is holding anymore.
 
 - [ ] Value vs reference types in depth; stack vs heap; boxing and unboxing
@@ -166,21 +165,21 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ---
 
-## Phase 4: SQL Server, Basic to Advanced (Weeks 11–13)
+## Phase 4: SQL Server, Basic to Advanced (Weeks 8–9 · 22 Nov–5 Dec 2026)
 🧸 **LKG story:** A database is a giant cupboard with shelves (tables). Each shelf has rows of jars (records), and every jar has a sticker (primary key) so you never mix them up. SQL is how you talk to the cupboard: "give me all jars with mango".
 
-**Week 11: Basics**
+**Part 1: Basics**
 - [ ] Install SQL Server Developer Edition + SSMS (or Azure Data Studio)
 - [ ] Tables, columns, data types, primary key, foreign key, constraints
 - [ ] `SELECT`, `WHERE`, `ORDER BY`, `INSERT`, `UPDATE`, `DELETE`
 - [ ] JOINs (inner, left, right, full), `GROUP BY`, `HAVING`, aggregates
 
-**Week 12: Design and power tools**
+**Part 2: Design and power tools**
 - [ ] Normalization (1NF, 2NF, 3NF), ER diagrams
 - [ ] Subqueries, **CTEs**, **window functions** (`ROW_NUMBER`, `RANK`, `SUM() OVER`)
 - [ ] Views, stored procedures, functions
 
-**Week 13: Pro level**
+**Part 3: Pro level**
 - [ ] Indexes (clustered vs non-clustered), **execution plans**, finding slow queries
 - [ ] Transactions, ACID, **isolation levels**, locking and deadlocks
 - [ ] Talk to SQL from C# with ADO.NET and **Dapper** (so you understand what EF Core hides)
@@ -193,17 +192,17 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ---
 
-## Phase 5: Entity Framework Core (Weeks 14–15)
+## Phase 5: Entity Framework Core (Week 10 · 6–12 Dec 2026)
 🧸 **LKG story:** EF Core is a translator robot. You speak C# ("add this student"), and the robot speaks SQL to the database for you.
 
-**Week 14: Core**
+**Part 1: Core**
 - [ ] `DbContext` and `DbSet`
 - [ ] Code-First, migrations (`dotnet ef migrations add`, `database update`)
 - [ ] CRUD with EF Core
 - [ ] Relationships: one-to-one, one-to-many, many-to-many
 - [ ] Fluent API vs Data Annotations; seeding data
 
-**Week 15: Pro**
+**Part 2: Pro**
 - [ ] Loading: eager (`Include`), lazy, explicit; the **N+1 problem**
 - [ ] `AsNoTracking`, projections with `Select`, logging the generated SQL
 - [ ] **Concurrency tokens** (`rowversion`), **soft delete** (global query filters)
@@ -217,30 +216,30 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ---
 
-## Phase 6: ASP.NET Core Web API ⭐ (Weeks 16–19), the most important phase
+## Phase 6: ASP.NET Core Web API ⭐ (Weeks 11–13 · 13 Dec 2026–2 Jan 2027), the most important phase
 🧸 **LKG story:** A Web API is a restaurant waiter. Your app (the customer) asks: "one list of tasks please". The waiter (API) goes to the kitchen (database) and brings back the food (JSON). Controllers are the waiters, routes are the table numbers, and middleware is the security guard at the door checking everyone.
 
-**Week 16: Basics**
+**Part 1: Basics**
 - [ ] How HTTP works: GET, POST, PUT, PATCH, DELETE; status codes 200, 201, 204, 400, 401, 403, 404, 500
 - [ ] Create a Web API project; `Program.cs`; controllers **and** Minimal APIs (learn both)
 - [ ] Routing, attribute routing, model binding (`[FromBody]`, `[FromQuery]`, `[FromRoute]`)
 - [ ] OpenAPI + Scalar / Swagger for testing; `.http` files; Postman
 
-**Week 17: Doing it properly**
+**Part 2: Doing it properly**
 - [ ] **Dependency Injection** (Transient, Scoped, Singleton), an interview favourite
 - [ ] DTOs (never send database entities directly), manual mapping / Mapster
 - [ ] Validation: Data Annotations and FluentValidation
 - [ ] `appsettings.json`, environments, Options pattern
 - [ ] `Results` / `TypedResults`, async all the way, `CancellationToken` in endpoints
 
-**Week 18: Grown-up features**
+**Part 3: Grown-up features**
 - [ ] Middleware pipeline, custom middleware, middleware order
 - [ ] Global exception handling, `ProblemDetails`
 - [ ] Logging with `ILogger` and **Serilog** (structured logs)
 - [ ] Pagination, filtering, sorting, searching
 - [ ] Filters (action, exception) vs middleware
 
-**Week 19: Speed and extras**
+**Part 4: Speed and extras**
 - [ ] Caching (in-memory, output caching, Redis basics)
 - [ ] CORS (needed so Angular can talk to your API)
 - [ ] File upload/download
@@ -255,7 +254,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ---
 
-## Phase 7: Security & Authentication (Weeks 20–21)
+## Phase 7: Security & Authentication (Week 14 · 3–9 Jan 2027)
 🧸 **LKG story:** Authentication is the guard asking "who are you?" and checking your ID card. Authorization is "OK, you're Abdul, but are you allowed in the manager's room?" A JWT is a wristband at a water park: show it at every ride, no need to show your ID again.
 
 - [ ] ASP.NET Core Identity (users, roles, password hashing)
@@ -272,21 +271,21 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ---
 
-## Phase 8: Architecture, Patterns & Testing (Weeks 22–24)
+## Phase 8: Architecture, Patterns & Testing (Weeks 15–16 · 10–23 Jan 2027)
 🧸 **LKG story:** Clean Architecture is a well-organized school bag: books in one pocket, lunch in another, pencils in a small pouch. If the lunch leaks, the books stay dry.
 
-**Week 22: Architecture**
+**Part 1: Architecture**
 - [ ] Layered / N-tier architecture
 - [ ] Clean Architecture (Domain, Application, Infrastructure, API)
 - [ ] Repository pattern + Unit of Work (and when NOT to use them)
 - [ ] SOLID properly this time, with real code
 
-**Week 23: Patterns**
+**Part 2: Patterns**
 - [ ] CQRS with MediatR (very common in Gulf enterprise jobs)
 - [ ] Result pattern, Specification pattern
 - [ ] Design patterns: Singleton, Factory, Strategy, Decorator, Observer
 
-**Week 24: Testing**
+**Part 3: Testing**
 - [ ] Unit tests with xUnit; Arrange-Act-Assert; test naming
 - [ ] Mocking with Moq or NSubstitute
 - [ ] Integration tests with `WebApplicationFactory`
@@ -299,62 +298,64 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ---
 
-## Phase 9: Web Frontend Foundations, from zero (Weeks 25–28) 🆕
+## Phase 9: Web Frontend Foundations, from zero (Weeks 17–19 · 24 Jan–13 Feb 2027) 🆕
 🧸 **LKG story:** So far you built the kitchen. Now you build the dining room people see. **HTML** is the walls and furniture, **CSS** is the paint and decoration, and **JavaScript** is the electricity that makes things move and work.
 
-**Week 25: HTML + CSS**
+**Part 1: HTML + CSS**
 - [ ] HTML5: structure, semantic tags, links, images, lists, tables, **forms**
 - [ ] CSS: selectors, box model, colors, fonts, units
 - [ ] **Flexbox** and **Grid**; responsive design with media queries
 - [ ] Browser DevTools (inspect, console, network tab)
 
-**Week 26: JavaScript from zero (part 1)**
+**Part 2: JavaScript from zero (part 1)**
 - [ ] Variables (`let`, `const`), types, operators, `if`, loops
 - [ ] Functions, arrow functions, scope
 - [ ] Arrays and objects, array methods (`map`, `filter`, `reduce`, which are LINQ's cousins!)
 - [ ] The DOM: select elements, change them, events (`click`, `submit`)
 
-**Week 27: JavaScript (part 2)**
+**Part 3: JavaScript (part 2)**
 - [ ] ES6+: destructuring, spread, template literals, modules (`import` / `export`)
 - [ ] Promises, `async` / `await` (same idea as Dart's `Future`)
 - [ ] `fetch`: call your own Task Manager API from the browser (CORS in practice!)
 - [ ] `localStorage`, JSON, error handling
 - [ ] npm basics: what `package.json` and `node_modules` are
 
-**Week 28: TypeScript**
+**Part 4: TypeScript**
 - [ ] Why TypeScript: JS with types (feels like Dart and C#)
 - [ ] Types, interfaces, type aliases, unions, generics, enums
 - [ ] Classes, access modifiers
 - [ ] `tsconfig.json`, compiling TS
 
-**Projects:** 12 Personal Portfolio Website (W25–26): responsive, deployed free on GitHub Pages. 13 Todo App (W27–28): vanilla JS with `localStorage`, then rewritten in TypeScript and connected to your API.
+**Projects:** 12 Personal Portfolio Website (Parts 1–2): responsive, deployed free on GitHub Pages. 13 Todo App (Parts 3–4): vanilla JS with `localStorage`, then rewritten in TypeScript and connected to your API.
 ✅ **Done when:** you can build a responsive page and a small interactive app without a framework.
 📣 **LinkedIn:** "I'm a backend dev learning JavaScript from zero. Week 1 lessons"
 📄 **Resume:** add HTML5, CSS3, JavaScript, TypeScript. Link the portfolio site.
 
 ---
 
-## Phase 10: Angular (Weeks 29–32) 🆕 ⭐
+## Phase 10: Angular (Weeks 20–22 · 14 Feb–6 Mar 2027, likely Ramadan, so take it steady) 🆕 ⭐
+
+> 🛟 **Buffer week 23 (7–13 Mar 2027):** catch up, or rest for Eid.
 🧸 **LKG story:** Angular is a LEGO set for websites. Each LEGO brick is a **component** (header, post card, login form). **Services** are the delivery boys who bring data from the API. The **router** is the map that decides which room you see.
 
-**Week 29: Basics**
+**Part 1: Basics**
 - [ ] Angular CLI, project structure, standalone components
 - [ ] Components, templates, data binding (interpolation, property, event, two-way)
 - [ ] Control flow: `@if`, `@for`, `@switch`; pipes
 - [ ] Component communication: `input()`, `output()`
 
-**Week 30: Data and state**
+**Part 2: Data and state**
 - [ ] **Signals** (`signal`, `computed`, `effect`)
 - [ ] Services and Dependency Injection (same idea as ASP.NET Core DI!)
 - [ ] `HttpClient`, calling your Blog API; RxJS basics (`Observable`, `pipe`, `map`, `switchMap`)
 - [ ] Routing: routes, params, lazy loading
 
-**Week 31: Forms and security**
+**Part 3: Forms and security**
 - [ ] Reactive Forms + validation (built-in and custom validators)
 - [ ] Login with JWT: **HTTP interceptors** (attach token, refresh token), **route guards**
 - [ ] Error handling and loading states
 
-**Week 32: Polish**
+**Part 4: Polish**
 - [ ] UI: Angular Material or Tailwind CSS
 - [ ] Environments, build for production
 - [ ] Testing basics (component and service tests)
@@ -367,7 +368,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ---
 
-## Phase 11: Real-time + MVC/Razor awareness (Week 33)
+## Phase 11: Real-time + MVC/Razor awareness (Week 24 · 14–20 Mar 2027)
 🧸 **LKG story:** Normal APIs are like sending letters: you ask, then wait for a reply. **SignalR** is a phone call: the server can talk to you any time.
 
 - [ ] SignalR: hubs, groups, sending to users; Angular SignalR client
@@ -381,7 +382,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ---
 
-## Phase 12: Deploy & DevOps (Weeks 34–35)
+## Phase 12: Deploy & DevOps (Week 25 · 21–27 Mar 2027)
 🧸 **LKG story:** Your app works on your laptop; that's your house. Deployment is moving it to a shop in the market (the cloud) so everyone can visit. Docker is a lunchbox that packs your app with everything it needs, so it tastes the same anywhere.
 
 - [ ] Git properly: branches, pull requests, merge conflicts, rebasing basics
@@ -399,7 +400,9 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ---
 
-## Phase 13: Guided Full-Stack Project + Interview Prep (Weeks 36–38)
+## Phase 13: Guided Full-Stack Project + Interview Prep (Weeks 26–27 · 28 Mar–10 Apr 2027)
+
+> 🛟 **Buffer week 28 (11–17 Apr 2027):** finish anything left over.
 🧸 **LKG story:** You've learned your letters, words and sentences. Now you write a real story book, with the teacher sitting next to you one last time.
 
 **Project 17: Courier / Delivery Platform (guided).** This brings everything together:
@@ -418,7 +421,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] Mock interviews with me ("interview me")
 - [ ] Final CV, LinkedIn and portfolio polish → apply to .NET full-stack roles in Kuwait and the Gulf
 
-📣 **LinkedIn:** "38 weeks ago I couldn't write C#. Here's what I built"
+📣 **LinkedIn:** "6 months ago I couldn't write C#. Here's what I built"
 
 ---
 
@@ -467,23 +470,25 @@ You will bring your own project idea. This phase proves you are a real developer
 ## Progress tracker
 Legend: ⬜ not started · 🟨 in progress · ✅ done
 
-| Phase | Weeks | Project(s) | Status | LinkedIn posted | Finished on |
+| Phase | Planned | Project(s) | Status | LinkedIn posted | Finished on |
 |---|---|---|---|---|---|
-| 0: Meet .NET + Git | 1 | 00 | ✅ | ✅ | 6 Oct 2026 |
-| 1: C# Bricks | 2–4 | 01, 02, 03 | ⬜ | ⬜ |  |
-| 2: OOP | 5–6 | 04 | ⬜ | ⬜ |  |
-| 3: C# Superpowers | 7–9 | 05 | ⬜ | ⬜ |  |
-| 3.5: Advanced C# | 10 | 06 | ⬜ | ⬜ |  |
-| 4: SQL Server | 11–13 | 07 | ⬜ | ⬜ |  |
-| 5: EF Core | 14–15 | 08 | ⬜ | ⬜ |  |
-| 6: Web API ⭐ | 16–19 | 09 | ⬜ | ⬜ |  |
-| 7: Security | 20–21 | 10 | ⬜ | ⬜ |  |
-| 8: Architecture & Testing | 22–24 | 11 | ⬜ | ⬜ |  |
-| 9: HTML / CSS / JS / TS | 25–28 | 12, 13 | ⬜ | ⬜ |  |
-| 10: Angular ⭐ | 29–32 | 14 | ⬜ | ⬜ |  |
-| 11: SignalR + MVC | 33 | 15 | ⬜ | ⬜ |  |
-| 12: Deploy & DevOps | 34–35 | 16 | ⬜ | ⬜ |  |
-| 13: Guided Project + Interviews | 36–38 | 17 | ⬜ | ⬜ |  |
+| 0: Meet .NET + Git | W1 · Oct 4–10 | 00 | ✅ | ✅ | 6 Oct 2026 |
+| 1: C# Bricks | W2–3 · Oct 11–24 | 01, 02, 03 | ⬜ | ⬜ |  |
+| 2: OOP | W4 · Oct 25–31 | 04 | ⬜ | ⬜ |  |
+| 3: C# Superpowers | W5–6 · Nov 1–14 | 05 | ⬜ | ⬜ |  |
+| 3.5: Advanced C# | W7 · Nov 15–21 | 06 | ⬜ | ⬜ |  |
+| 4: SQL Server | W8–9 · Nov 22–Dec 5 | 07 | ⬜ | ⬜ |  |
+| 5: EF Core | W10 · Dec 6–12 | 08 | ⬜ | ⬜ |  |
+| 6: Web API ⭐ | W11–13 · Dec 13–Jan 2 | 09 | ⬜ | ⬜ |  |
+| 7: Security | W14 · Jan 3–9 | 10 | ⬜ | ⬜ |  |
+| 8: Architecture & Testing | W15–16 · Jan 10–23 | 11 | ⬜ | ⬜ |  |
+| 9: HTML / CSS / JS / TS | W17–19 · Jan 24–Feb 13 | 12, 13 | ⬜ | ⬜ |  |
+| 10: Angular ⭐ | W20–22 · Feb 14–Mar 6 | 14 | ⬜ | ⬜ |  |
+| 11: SignalR + MVC | W24 · Mar 14–20 | 15 | ⬜ | ⬜ |  |
+| 12: Deploy & DevOps | W25 · Mar 21–27 | 16 | ⬜ | ⬜ |  |
+| 13: Guided Project + Interviews | W26–27 · Mar 28–Apr 10 | 17 | ⬜ | ⬜ |  |
 | 14: YOUR Main Project 🏆 | solo | 18 | ⬜ | ⬜ | |
 
-Start: Sunday 4 Oct 2026 → guided path ends around late June 2027 → then your solo main project.
+Start: Sunday 4 Oct 2026 → guided path ends around mid-April 2027 → then your solo main project.
+
+**Job plan:** keep your current job. Start applying for **junior .NET backend** roles after Phase 8 (late Jan 2027) and **junior full-stack** roles after Phase 10 (Mar 2027). Resign only with a signed offer.

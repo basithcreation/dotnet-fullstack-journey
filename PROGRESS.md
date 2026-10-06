@@ -5,10 +5,10 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 ---
 
 ## ▶️ Next session starts here
-- **Phase 1: C# Bricks, Week 2: Boxes and choices**
+- **Phase 1: C# Bricks, Part 1: Boxes and choices** (Phase 1 planned 11–24 Oct 2026)
 - First lesson: data types `int`, `double`, `decimal` (why money must be `decimal`), `bool`, `char`, `string`
 - Then: `var`, `const`, `TryParse` (fixes the CS8604 yellow warning properly), `if`/`else`, `switch`
-- Project after Week 2: **01 Number Guessing Game**
+- Project after Part 1: **01 Number Guessing Game** (Saturday = project day)
 - Pending from Day 1: rename the screenshot to `00-hello-dotnet.png`, then commit + push ("Complete Phase 0 and add LinkedIn post")
 
 ---

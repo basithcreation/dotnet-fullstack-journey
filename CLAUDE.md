@@ -14,7 +14,9 @@ I do NOT know JavaScript or Node.js. Teach JS from zero when we reach it.
 ## Current status (update at the end of each day)
 
 - Started: Tue 6 Oct 2026 · Last session: Tue 6 Oct 2026 (Day 1)
-- ✅ Phase 0 done · ▶️ Next: **Phase 1, Week 2: data types**
+- ✅ Phase 0 done · ▶️ Next: **Phase 1, Part 1: data types** (Phase 1 = 11–24 Oct 2026)
+- Schedule: Sun–Thu 2 hrs (lesson + exercise), Fri 1.5 hrs (revise + quiz + LinkedIn), Sat 4–5 hrs (project day). ~16 hrs/week, guided path ends mid-Apr 2027.
+- Job plan: keep current job; apply for backend roles after Phase 8, full-stack after Phase 10; resign only with a signed offer (Kuwait residency is tied to the employer).
 - At the start of every new chat, read `PROGRESS.md` ("Next session starts here" + the last day's "Mistakes to remember") and continue from there.
 - When I say "the day is over": add a new day entry at the top of `PROGRESS.md` (date, learned, built, quiz scores, mistakes, career), update "Next session starts here", update this status block, and tick `ROADMAP.md`.
 
