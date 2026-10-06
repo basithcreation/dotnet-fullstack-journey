@@ -11,6 +11,17 @@ I do NOT know JavaScript or Node.js. Teach JS from zero when we reach it.
 - After each topic, give me one small exercise and a 5-question quiz.
 - Follow my roadmap: `ROADMAP.md` (updated version of `NET From Zero to Job-Ready.docx`, which stays as the original).
 
+## Current status (update at the end of each day)
+
+- Started: Tue 6 Oct 2026 · Last session: Tue 6 Oct 2026 (Day 1)
+- ✅ Phase 0 done · ▶️ Next: **Phase 1, Week 2: data types**
+- At the start of every new chat, read `PROGRESS.md` ("Next session starts here" + the last day's "Mistakes to remember") and continue from there.
+- When I say "the day is over": add a new day entry at the top of `PROGRESS.md` (date, learned, built, quiz scores, mistakes, career), update "Next session starts here", update this status block, and tick `ROADMAP.md`.
+
+## Teaching rules I learned
+
+- Teach EVERY concept an exercise needs (with small examples that are different from the exercise) BEFORE giving the exercise.
+
 ## Teaching loop (every topic)
 
 1. Explain: LKG story, then the real explanation, then the Dart comparison.

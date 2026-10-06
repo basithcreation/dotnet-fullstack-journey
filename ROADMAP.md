@@ -60,7 +60,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ---
 
-## Phase 0: Meet .NET + Git (Week 1)
+## Phase 0: Meet .NET + Git (Week 1) ✅ done Tue 6 Oct 2026
 🧸 **LKG story:** .NET is a big toy box from Microsoft. C# is the language you speak to the toys. The toys can become websites, APIs, desktop apps, games and mobile apps. Git is a time machine for your code: it saves photos of your work so you can always go back.
 
 **Learn**
@@ -467,23 +467,23 @@ You will bring your own project idea. This phase proves you are a real developer
 ## Progress tracker
 Legend: ⬜ not started · 🟨 in progress · ✅ done
 
-| Phase | Weeks | Project(s) | Status | LinkedIn posted |
-|---|---|---|---|---|
-| 0: Meet .NET + Git | 1 | 00 | ✅ | ✅ |
-| 1: C# Bricks | 2–4 | 01, 02, 03 | ⬜ | ⬜ |
-| 2: OOP | 5–6 | 04 | ⬜ | ⬜ |
-| 3: C# Superpowers | 7–9 | 05 | ⬜ | ⬜ |
-| 3.5: Advanced C# | 10 | 06 | ⬜ | ⬜ |
-| 4: SQL Server | 11–13 | 07 | ⬜ | ⬜ |
-| 5: EF Core | 14–15 | 08 | ⬜ | ⬜ |
-| 6: Web API ⭐ | 16–19 | 09 | ⬜ | ⬜ |
-| 7: Security | 20–21 | 10 | ⬜ | ⬜ |
-| 8: Architecture & Testing | 22–24 | 11 | ⬜ | ⬜ |
-| 9: HTML / CSS / JS / TS | 25–28 | 12, 13 | ⬜ | ⬜ |
-| 10: Angular ⭐ | 29–32 | 14 | ⬜ | ⬜ |
-| 11: SignalR + MVC | 33 | 15 | ⬜ | ⬜ |
-| 12: Deploy & DevOps | 34–35 | 16 | ⬜ | ⬜ |
-| 13: Guided Project + Interviews | 36–38 | 17 | ⬜ | ⬜ |
-| 14: YOUR Main Project 🏆 | solo | 18 | ⬜ | ⬜ |
+| Phase | Weeks | Project(s) | Status | LinkedIn posted | Finished on |
+|---|---|---|---|---|---|
+| 0: Meet .NET + Git | 1 | 00 | ✅ | ✅ | 6 Oct 2026 |
+| 1: C# Bricks | 2–4 | 01, 02, 03 | ⬜ | ⬜ |  |
+| 2: OOP | 5–6 | 04 | ⬜ | ⬜ |  |
+| 3: C# Superpowers | 7–9 | 05 | ⬜ | ⬜ |  |
+| 3.5: Advanced C# | 10 | 06 | ⬜ | ⬜ |  |
+| 4: SQL Server | 11–13 | 07 | ⬜ | ⬜ |  |
+| 5: EF Core | 14–15 | 08 | ⬜ | ⬜ |  |
+| 6: Web API ⭐ | 16–19 | 09 | ⬜ | ⬜ |  |
+| 7: Security | 20–21 | 10 | ⬜ | ⬜ |  |
+| 8: Architecture & Testing | 22–24 | 11 | ⬜ | ⬜ |  |
+| 9: HTML / CSS / JS / TS | 25–28 | 12, 13 | ⬜ | ⬜ |  |
+| 10: Angular ⭐ | 29–32 | 14 | ⬜ | ⬜ |  |
+| 11: SignalR + MVC | 33 | 15 | ⬜ | ⬜ |  |
+| 12: Deploy & DevOps | 34–35 | 16 | ⬜ | ⬜ |  |
+| 13: Guided Project + Interviews | 36–38 | 17 | ⬜ | ⬜ |  |
+| 14: YOUR Main Project 🏆 | solo | 18 | ⬜ | ⬜ | |
 
 Start: Sunday 4 Oct 2026 → guided path ends around late June 2027 → then your solo main project.
