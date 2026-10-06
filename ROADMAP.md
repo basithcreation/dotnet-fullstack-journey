@@ -69,7 +69,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [x] Install: .NET SDK, Visual Studio 2022/2026 Community or VS Code + C# Dev Kit, Git
 - [x] Commands: `dotnet new console`, `dotnet run`, `dotnet build`
 - [x] Project structure: `.csproj`, `Program.cs`, `bin/`, `obj/`
-- [ ] **Git basics:** `init`, `add`, `commit`, `push`, `.gitignore`, a GitHub account, a README
+- [x] **Git basics:** `init`, `add`, `commit`, `push`, `.gitignore`, a GitHub account, a README
 
 **Project 00: Greeting CLI.** Ask for name and birth year, print a greeting and the age. Push to GitHub.
 ✅ **Done when:** you can create, run and push a console project without notes.
@@ -469,7 +469,7 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done
 
 | Phase | Weeks | Project(s) | Status | LinkedIn posted |
 |---|---|---|---|---|
-| 0: Meet .NET + Git | 1 | 00 | 🟨 | ⬜ |
+| 0: Meet .NET + Git | 1 | 00 | ✅ | ✅ |
 | 1: C# Bricks | 2–4 | 01, 02, 03 | ⬜ | ⬜ |
 | 2: OOP | 5–6 | 04 | ⬜ | ⬜ |
 | 3: C# Superpowers | 7–9 | 05 | ⬜ | ⬜ |
