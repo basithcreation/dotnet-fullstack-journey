@@ -81,8 +81,8 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 🧸 **LKG story:** Variables are boxes with labels. `int age = 28;` means "a box named age that holds only whole numbers, and I put 28 in it". An `if` is a traffic light. A loop is a merry-go-round that keeps spinning until you say stop.
 
 **Part 1: Boxes and choices**
-- [ ] Data types: `int`, `double`, `decimal` (use this for money!), `bool`, `char`, `string`
-- [ ] `var`, `const`, type conversion, `Parse` / `TryParse`
+- [x] Data types: `int`, `double`, `decimal` (use this for money!), `bool`, `char`, `string`
+- [x] `var`, `const`, type conversion, `Parse` / `TryParse`
 - [ ] Operators, string interpolation `$"Hi {name}"`
 - [ ] `if` / `else`, `switch`, switch expressions
 
