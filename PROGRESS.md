@@ -6,12 +6,61 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **First 5 minutes:** finish `04-parking-meter`: store `(int)averageStayHours` in a named variable and print `Average stay (whole hours): 2`; fix the "hole" → "whole" typo in the comment
-- **Commit + push** today's work (`lessons/phase-01/`, `PROGRESS.md`, `ROADMAP.md`), e.g. "Day 2: data types, var/const, TryParse"
-- **Next lesson: `if` / `else`.** Hook: it fixes the two bugs the student saw on Day 2 ("2026 years old" for `hello`, and "free parking" for `abc`, because TryParse failed and the program kept going with 0)
-- Then: `switch` and switch expressions; quick check on operators + interpolation (already used a lot), then tick that roadmap item
-- Project after Part 1: **01 Number Guessing Game** (Saturday 10 Oct = project day). It needs a simple loop, so teach a basic `while` first
-- Quick warm-up question to start: "What's the difference between TryParse failing and a `(int)` cast?" (this was confusing on Day 2)
+- **First 5 minutes:** commit + push today's `PROGRESS.md` / `CLAUDE.md` updates (e.g. "Day 3: progress log"). Optional: delete the scope test lines (`string name = ""; if (true) {...}`) at the bottom of `05-if-else/Program.cs`
+- **Fri 9 Oct = revise day (1.5 hrs):** short revision quiz on Day 3's weak spots: `>` vs `>=` at the edge number, `=` (save) vs `==` (check), `else if` order (first match wins), scope (born inside `{ }` dies at `}`). Then the TryParse-refuses vs cast-cuts check again
+- **Fri Git skill (new, Phase 1 🌿):** good commit messages, `git log --oneline`, `git diff`, undo with `git restore` / `git revert` (ROADMAP now has a Git skill in every phase)
+- **Friday LinkedIn:** draft a short "Week 1" post (Phase 0 done + data types, TryParse, if/else, parking meter v2) in `career/linkedin/`
+- **Next lesson: `switch` + switch expressions** (then tick "`if` / `else`, `switch`, switch expressions" in `ROADMAP.md`). Quick check on operators + interpolation (already used a lot), then tick that line too
+- **Sat 10 Oct = project day:** teach a basic `while` loop first, then **Project 01: Number Guessing Game**
+- **How to teach this student:** ONE step per message, with a fill-in template. Long multi-item checklists caused "I don't understand" twice on Day 3. Give each `____` blank + test, then wait for "done"
+
+---
+
+## Day 3: Thu 8 Oct 2026 · Phase 1: `if` / `else`
+
+**Learned**
+
+- `if` / `else if` / `else`: checked top to bottom, **first match wins**, the rest is skipped
+- Comparison `== != > < >= <=`; `=` **saves**, `==` **checks** (same as Dart)
+- Edge numbers / boundary testing: `>=` includes the edge, `>` keeps it out (`0 <= 0` is true, `18 > 18` is false)
+- `&&` (and), `||` (or), `!` (not); `"Y" == "y"` is false (capitals count)
+- `return;` stops the program → **guard pattern**: check bad input first, stop, then the happy path
+- `if (!int.TryParse(...))`: TryParse returns a bool, so it can go straight into the `if`
+- A variable can change: `fee = fee * 0.5m` (no type the second time)
+- **Scope**: a variable born inside `{ }` dies at `}`. Need it later → create it before the `{`, only change it inside
+- Factory line: one box, each `if` changes it, print once at the end → no repeated code, no `else` needed
+- "Cap" = maximum limit (`if (fee > Max) fee = Max;`); the order of discount vs cap is a business rule
+- 50% off = × 0.5 (= ÷ 2); multiplying by less than 1 makes it smaller
+- Save (Ctrl+S) before `dotnet run`: it only sees the saved file. Shift+Alt+F formats the file
+
+**Built**
+
+- `lessons/phase-01/04-parking-meter`: finished (`wholeHours` variable, typo fixed)
+- `lessons/phase-01/05-if-else` (example: water temperature)
+- `lessons/phase-01/06-parking-meter-v2` (exercise: guards, resident discount, daily cap 1.500 KWD). Went from 2/7 tests → 4/7 → all pass, with test comments
+
+**Quiz scores**
+
+- Warm-up (TryParse vs cast): results right, but gave the same "why" for both → TryParse **refuses** (false, 0), cast **cuts** (2)
+- Scope check: 1.5/3 (did the experiment and saw CS0103 itself)
+- if/else quiz: 1/5 → retry 2/4 → mini-check 2/2 (missed `>` at the edge, `=` vs `==`, first-match-wins, scope)
+
+**Mistakes to remember (review these)**
+
+- Forgot `return;` in a guard block → the program kept going (two messages, or asked the resident question after "Max 24 hours")
+- `(int)PerHourRate` cut 0.250 → 0 so every fee was 0. Money stays `decimal`, never cast to `int`
+- Used `TryParse` to check `y`/`n`. TryParse is only for numbers; compare text with `==`
+- Variable born inside `if`/`else` → had to write the calculation + print twice. Born outside, change inside
+- Did the fee math twice (`fee * PerHourRate` again in the print). Once the box has a value, just print the box
+- Discount 0.125 vs 0.5: a discount is a multiplier (50% off = × 0.5), not a new rate
+- `is...` names are only for bools (`isKuwaiti` held text → `residentAnswer`)
+- Ran before saving → saw an old result (2.500). Ctrl+S first
+- Spelling: hole → **whole**, becaus → because, fasle → false, ture → true, Confortable → Comfortable
+- "Done" means every checklist item: the test comment was forgotten until reminded
+
+**Career**
+
+- Nothing today (LinkedIn is on Fridays)
 
 ---
 

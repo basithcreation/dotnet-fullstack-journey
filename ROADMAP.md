@@ -12,7 +12,7 @@ Learning .NET is like building a house. The roof (Web API, Angular) cannot go on
 ### Golden rules
 1. **Type every line yourself.** Watching videos is like watching someone swim. You learn only by getting wet.
 2. **Every phase ends with a project.** No project means the phase is not finished.
-3. **Push everything to GitHub.** By the end, your GitHub is your portfolio.
+3. **Push everything to GitHub.** By the end, your GitHub is your portfolio. Each phase also has a small **🌿 Git skill** (branches in P2, PRs in P3, CI in P6, job-ready Git in P8), so you work like a team developer before you apply for jobs.
 4. **Post on LinkedIn after every phase.** Learning in public builds your profile and keeps you consistent.
 5. **Update your resume after every project.** See `career/RESUME.md`.
 
@@ -96,6 +96,11 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] Exceptions: `try` / `catch` / `finally`, throwing your own
 - [ ] Debugging: breakpoints, step over/into, watch window. Learn this properly; it saves hundreds of hours
 
+**🌿 Git skill (Phase 1): clean history + undo**
+- [ ] Good commit messages (short, present tense: "Add parking meter v2"); commit small and often
+- [ ] `git log --oneline`, `git diff`, `git status`: read what changed before you commit
+- [ ] Undo mistakes: `git restore` (throw away edits), `git restore --staged` (un-add), `git revert` (undo a commit safely)
+
 **Projects:** 01 Number Guessing Game (Part 1) → 02 Console Calculator (Part 2) → 03 Shipment Tracker: add, list, mark delivered, search by tracking number (Part 3)
 ✅ **Done when:** you can write a 100-line console app with loops, methods and error handling from scratch.
 📣 **LinkedIn:** "3 things in C# that surprised me as a Dart developer"
@@ -113,6 +118,11 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] `static`, `sealed`, `virtual` / `override`
 - [ ] `struct` vs `class`, `record` types, `enum`
 - [ ] SOLID principles: the simple idea of each one
+
+**🌿 Git skill (Phase 2): branches**
+- [ ] What a branch is; `git switch -c feature/...`, `git branch`, `git switch main`
+- [ ] Merge a branch into `main`; delete it after; branch naming (`feature/`, `fix/`)
+- [ ] From now on: every project is built on its own branch, never directly on `main`
 
 **Project 04: Library Management.** `Book`, `Member`, `Loan`; `Member` base with `Student` / `Staff` children (different loan limits); interface `ILoanable`; late-fee calculation.
 ✅ **Done when:** you can explain the 4 pillars with your own example, out loud, in 2 minutes.
@@ -140,6 +150,11 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] `HttpClient`: call a public API
 - [ ] Read/write files; JSON with `System.Text.Json`
 - [ ] Extension methods, pattern matching
+
+**🌿 Git skill (Phase 3): pull requests + conflicts**
+- [ ] Open your first **pull request (PR)** on GitHub: title, description, review, merge
+- [ ] Create a **merge conflict** on purpose and resolve it (in VS Code and on the command line)
+- [ ] `git pull` vs `git fetch`; `git stash` for "save my work for a moment"
 
 **Project 05: Weather / Prayer-Time CLI.** Calls a free public API, parses JSON, filters with LINQ, saves history to a JSON file.
 ✅ **Done when:** you can write any LINQ query you need without searching for the syntax.
@@ -184,6 +199,11 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] Transactions, ACID, **isolation levels**, locking and deadlocks
 - [ ] Talk to SQL from C# with ADO.NET and **Dapper** (so you understand what EF Core hides)
 - [ ] SQL injection and parameterized queries
+
+**🌿 Git skill (Phases 4–5): work like a team**
+- [ ] **GitHub Issues** as your to-do list; link a PR to an issue ("Closes #3")
+- [ ] One PR per feature; write the PR description (what, why, how to test)
+- [ ] Good README: setup steps, screenshots, tech list (recruiters read these)
 
 **Project 07: E-commerce Database.** Customers, Products, Categories, Orders, OrderItems, Payments. Write 25 queries (e.g. "top 5 customers by spend this month", "running total of sales per day"). Read one execution plan and add an index that improves it.
 ✅ **Done when:** you can design a 6-table database and write JOIN + GROUP BY + window-function queries comfortably.
@@ -247,6 +267,11 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] Background jobs (`BackgroundService`, Hangfire basics)
 - [ ] Health checks; OpenTelemetry basics (traces and metrics)
 
+**🌿 Git skill (Phase 6): first CI pipeline**
+- [ ] **GitHub Actions** basics: a workflow that runs `dotnet build` on every push and PR
+- [ ] Read a failed pipeline log and fix it; status badge in the README
+- [ ] Never commit secrets (`appsettings.Development.json`, connection strings); check `.gitignore`
+
 **Project 09: Task Manager API.** Projects, Tasks, Tags, Comments. Full CRUD with EF Core + SQL Server, DTOs, validation, logging, pagination, global error handling, file attachments. Then **connect your Flutter app** to it. Flutter + .NET is a rare and very sellable combo.
 ✅ **Done when:** your Flutter app can list, create and update tasks through your own API.
 📣 **LinkedIn:** "I built my first REST API in ASP.NET Core and connected it to Flutter 📱"
@@ -291,6 +316,12 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] Integration tests with `WebApplicationFactory`
 - [ ] **Testcontainers** (a real SQL Server in Docker for tests)
 
+**🌿 Git skill (Phase 8): job-ready Git** (you start applying after this phase)
+- [ ] Add `dotnet test` to the GitHub Actions workflow; **branch protection** (PR must pass CI before merge)
+- [ ] `git rebase` basics (keep your branch up to date with `main`); rebase vs merge
+- [ ] Tags + GitHub **Releases** (`v1.0.0`); GitHub **profile README** + pinned repos
+- [ ] Interview answer ready: "How do you use Git in a team?" (GitHub Flow: branch → commit → PR → review → CI → merge)
+
 **Project 11: Blog API.** Users, Posts, Comments, Tags, Likes. Clean Architecture + CQRS, JWT, at least 20 unit tests and 5 integration tests.
 ✅ **Done when:** someone can open your repo and understand where everything lives in 2 minutes.
 📣 **LinkedIn:** "My Blog API in Clean Architecture: folder structure explained"
@@ -318,7 +349,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] Promises, `async` / `await` (same idea as Dart's `Future`)
 - [ ] `fetch`: call your own Task Manager API from the browser (CORS in practice!)
 - [ ] `localStorage`, JSON, error handling
-- [ ] npm basics: what `package.json` and `node_modules` are
+- [ ] npm basics: what `package.json` and `node_modules` are (never commit `node_modules`: `.gitignore` it)
 
 **Part 4: TypeScript**
 - [ ] Why TypeScript: JS with types (feels like Dart and C#)
@@ -385,7 +416,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 ## Phase 12: Deploy & DevOps (Week 25 · 21–27 Mar 2027)
 🧸 **LKG story:** Your app works on your laptop; that's your house. Deployment is moving it to a shop in the market (the cloud) so everyone can visit. Docker is a lunchbox that packs your app with everything it needs, so it tastes the same anywhere.
 
-- [ ] Git properly: branches, pull requests, merge conflicts, rebasing basics
+- [ ] Git advanced (branches, PRs, conflicts, rebase were learned in Phases 2–8): interactive rebase / squash, `cherry-pick`, `reset` vs `revert`, GitHub Flow vs Git Flow
 - [ ] Docker: Dockerfile, images, containers, docker-compose (API + SQL Server + Angular together)
 - [ ] Deploy to Azure App Service + Azure SQL (free tier / credits); Angular to Azure Static Web Apps or similar
 - [ ] IIS hosting on Windows Server (common in Kuwait on-premise companies)
