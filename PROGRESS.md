@@ -11,7 +11,7 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 - **Fri Git skill (new, Phase 1 🌿):** good commit messages, `git log --oneline`, `git diff`, undo with `git restore` / `git revert` (ROADMAP now has a Git skill in every phase)
 - **Friday LinkedIn:** draft a short "Week 1" post (Phase 0 done + data types, TryParse, if/else, parking meter v2) in `career/linkedin/`
 - **Next lesson: `switch` + switch expressions** (then tick "`if` / `else`, `switch`, switch expressions" in `ROADMAP.md`). Quick check on operators + interpolation (already used a lot), then tick that line too
-- **Sat 10 Oct = project day:** teach a basic `while` loop first, then **Project 01: Number Guessing Game**
+- **Sat 10 Oct = project day:** teach a basic `while` loop and `Random` (new "built-in helpers" item in ROADMAP) first, then **Project 01: Number Guessing Game**
 - **How to teach this student:** ONE step per message, with a fill-in template. Long multi-item checklists caused "I don't understand" twice on Day 3. Give each `____` blank + test, then wait for "done"
 
 ---

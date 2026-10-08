@@ -90,6 +90,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] Loops: `for`, `while`, `do-while`, `foreach`, `break`, `continue`
 - [ ] Arrays and `List<T>`
 - [ ] Methods: parameters, return values, `ref`, `out`, optional and named parameters, overloading
+- [ ] Built-in helpers: string methods (`Trim`, `ToUpper`, `Contains`, `Split`, `Replace`, `Substring`, `IsNullOrWhiteSpace`), `StringBuilder`, `Math`, `Random`, `DateTime` / `DateOnly` / `TimeSpan`
 
 **Part 3: Safety nets**
 - [ ] Nullable types `int?` and null operators `?.` `??` `??=` (just like Dart!)
@@ -150,6 +151,9 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] `HttpClient`: call a public API
 - [ ] Read/write files; JSON with `System.Text.Json`
 - [ ] Extension methods, pattern matching
+- [ ] Your first unit tests with xUnit on simple methods (e.g. the parking fee). Phase 8 goes deeper; this builds the habit early
+
+**🧠 Problem solving (from Phase 3 to the end):** 2 LeetCode **Easy** problems a week in C#, on Fridays. Arrays, strings, hash maps (`Dictionary`), two pointers. Keep a list of solved problems in `lessons/leetcode.md`. By Phase 8 you'll have ~40 solved.
 
 **🌿 Git skill (Phase 3): pull requests + conflicts**
 - [ ] Open your first **pull request (PR)** on GitHub: title, description, review, merge
@@ -199,9 +203,12 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] Transactions, ACID, **isolation levels**, locking and deadlocks
 - [ ] Talk to SQL from C# with ADO.NET and **Dapper** (so you understand what EF Core hides)
 - [ ] SQL injection and parameterized queries
+- [ ] Backup and restore a database (on-premise companies in Kuwait do this a lot)
+- [ ] (Bonus) Build one simple report with **SSRS** or **RDLC** (Gulf companies love these)
 
 **🌿 Git skill (Phases 4–5): work like a team**
 - [ ] **GitHub Issues** as your to-do list; link a PR to an issue ("Closes #3")
+- [ ] **GitHub Projects** board (To do → In progress → Done), like Jira in a real team
 - [ ] One PR per feature; write the PR description (what, why, how to test)
 - [ ] Good README: setup steps, screenshots, tech list (recruiters read these)
 
@@ -266,6 +273,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] API versioning, rate limiting
 - [ ] Background jobs (`BackgroundService`, Hangfire basics)
 - [ ] Health checks; OpenTelemetry basics (traces and metrics)
+- [ ] (Bonus) Business-app extras: export to **Excel** (ClosedXML) and **PDF** (QuestPDF), send email (MailKit)
 
 **🌿 Git skill (Phase 6): first CI pipeline**
 - [ ] **GitHub Actions** basics: a workflow that runs `dotnet build` on every push and PR
@@ -288,6 +296,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] Secrets: User Secrets, environment variables; never commit passwords
 - [ ] HTTPS, OWASP Top 10 basics, SQL injection, XSS, CSRF
 - [ ] (Bonus) OAuth 2.0 / OpenID Connect concepts, Google login
+- [ ] (Awareness) Windows Authentication / Active Directory: how on-premise company apps log users in without a password screen
 
 **Project 10: Secure the Task Manager API.** Register/login, refresh tokens, roles (Admin, Member). Members see only their own projects.
 ✅ **Done when:** you can explain the JWT flow on a whiteboard. Your ISO 27001 background is a strong talking point here.
@@ -315,6 +324,10 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] Mocking with Moq or NSubstitute
 - [ ] Integration tests with `WebApplicationFactory`
 - [ ] **Testcontainers** (a real SQL Server in Docker for tests)
+
+**Part 4: Working in a team**
+- [ ] Agile / Scrum basics: sprint, backlog, user story, daily stand-up, sprint review, retrospective, story points
+- [ ] Run Project 11 as 2 small sprints on your GitHub Projects board (user stories as Issues)
 
 **🌿 Git skill (Phase 8): job-ready Git** (you start applying after this phase)
 - [ ] Add `dotnet test` to the GitHub Actions workflow; **branch protection** (PR must pass CI before merge)
@@ -391,6 +404,8 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] Environments, build for production
 - [ ] Testing basics (component and service tests)
 - [ ] Performance: `OnPush`, `@defer`, track in `@for`
+- [ ] **Arabic + RTL**: i18n (translations), right-to-left layout, Arabic number/date formats (almost every Kuwait app needs Arabic)
+- [ ] (Awareness) State management: **NgRx Signal Store**, what it is and when a team uses it instead of plain services + signals
 
 **Project 14: Blog Frontend in Angular.** Uses your Blog API: register/login, list posts with pagination, post details + comments, create/edit post (reactive forms), likes, admin-only pages (guards), responsive UI.
 ✅ **Done when:** a friend can register, log in, write a post and comment, entirely through your Angular app talking to your .NET API.
@@ -405,6 +420,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] SignalR: hubs, groups, sending to users; Angular SignalR client
 - [ ] ASP.NET Core MVC + Razor Pages tour: layouts, partials, tag helpers, forms. Many Kuwait banks, government and ERP systems still use this
 - [ ] Blazor overview: what it is, when companies choose it
+- [ ] **Legacy .NET awareness (1–2 days):** .NET Framework 4.x, Web Forms, MVC 5, `web.config`. Goal: read and fix old code, not build new apps. Know the differences vs modern .NET (interviewers in Kuwait ask this)
 
 **Project 15:** Real-time Chat (SignalR + Angular: rooms, online users, typing indicator) + a small MVC "Contact Book" app.
 ✅ **Done when:** two browser windows chat live through your server.
@@ -419,6 +435,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] Git advanced (branches, PRs, conflicts, rebase were learned in Phases 2–8): interactive rebase / squash, `cherry-pick`, `reset` vs `revert`, GitHub Flow vs Git Flow
 - [ ] Docker: Dockerfile, images, containers, docker-compose (API + SQL Server + Angular together)
 - [ ] Deploy to Azure App Service + Azure SQL (free tier / credits); Angular to Azure Static Web Apps or similar
+- [ ] **Azure Key Vault** (secrets out of config files) and **Azure Blob Storage** (store the uploaded files from Phase 6)
 - [ ] IIS hosting on Windows Server (common in Kuwait on-premise companies)
 - [ ] CI/CD with GitHub Actions: build → test → deploy on every push
 - [ ] Health checks, logs and monitoring in production
@@ -448,7 +465,8 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] ASP.NET Core: middleware order, DI lifetimes, filters vs middleware, JWT, REST best practices
 - [ ] SQL: joins, indexes, execution plans, isolation levels, transactions
 - [ ] Angular: change detection, signals vs observables, lifecycle hooks, interceptors, guards, lazy loading
-- [ ] 2 LeetCode Easy/Medium problems a day in C#
+- [ ] **System design basics:** how to scale an API: caching, load balancer, horizontal scaling, message queues, database indexes/read replicas. Practise one simple design question ("design a URL shortener / delivery tracker")
+- [ ] 2 LeetCode Easy/Medium problems a day in C# (you've been doing 2 a week since Phase 3, so now speed up)
 - [ ] Mock interviews with me ("interview me")
 - [ ] Final CV, LinkedIn and portfolio polish → apply to .NET full-stack roles in Kuwait and the Gulf
 
@@ -492,7 +510,8 @@ You will bring your own project idea. This phase proves you are a real developer
 | HTML / CSS / JS | MDN Web Docs; javascript.info; freeCodeCamp Responsive Web Design |
 | TypeScript | TypeScript Handbook (typescriptlang.org) |
 | Angular | angular.dev (official tutorial); Deborah Kurata; Decoded Frontend |
-| Practice | Exercism C# track, LeetCode, HackerRank |
+| Practice | Exercism C# track, LeetCode, HackerRank; NeetCode (problem lists by topic) |
+| System design | "System Design Primer" (GitHub, free); ByteByteGo (YouTube) |
 | Docs | learn.microsoft.com/dotnet |
 | Books (later) | *C# in Depth* (Jon Skeet), *Clean Architecture* (Robert C. Martin) |
 
