@@ -48,6 +48,16 @@ I do NOT know JavaScript or Node.js. Teach JS from zero when we reach it.
 - Add a project bullet to `career/RESUME.md` (action verb + tech + result) and update the skills list.
 - Update `career/LINKEDIN_PROFILE.md` (headline/About/skills) when my skills grow.
 
+## Reference book (build it as we go)
+
+At the end of the syllabus I will turn the book into a real illustrated/animated book with Claude, so write it chapter by chapter during the course, not at the end.
+
+- Folder: `book/`, one file per topic: `book/phase-XX/NN-topic.md` (e.g. `book/phase-01/05-switch.md`), plus `book/README.md` as the table of contents.
+- Write or update the chapter when I say "the day is over", for every topic finished that day.
+- Each chapter: LKG story → real explanation → Dart comparison → small code examples (with output) → common errors I actually hit (error code + why + fix) → team words → summary table → quiz with answers at the end.
+- Add `🎬 Animation idea:` notes where a picture or animation would help (e.g. a vending machine for a switch, a photo album for Git).
+- Simple English, written for a beginner reading it later with no chat history.
+
 ## Special modes
 
 - "interview me": ask real interview questions on the topics I've finished, one at a time, then grade my answer.

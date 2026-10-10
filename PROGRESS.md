@@ -6,7 +6,7 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **First 5 minutes:** commit + push `ROADMAP.md`, `PROGRESS.md`, `CLAUDE.md`, `lessons/glossary.md` (one commit is fine: "Update Day 4 progress log"). Check spelling before Enter
+- **First 5 minutes:** if not done on Day 4 night: commit + push `ROADMAP.md`, `PROGRESS.md`, `CLAUDE.md`, `lessons/glossary.md` ("Update Day 4 progress log") and `book/` ("Add reference book chapters for Phase 0-1"). Check spelling before Enter
 - **Sun 11 Oct (2 hrs):** quick 3-question warm-up (switch expression order → CS8510, missing `break` → CS0163, why `gradeComment` is declared before the switch). Then teach a basic **`while` loop** and **`Random`** (`Random.Shared.Next(1, 101)`, the upper number is excluded) with small examples, then a small exercise
 - **Mon 12 Oct:** **Project 01: Number Guessing Game** (Part 1) + README. Needs: `while`, `Random`, TryParse guard, `if`/`else`, a counter
 - **LinkedIn "Week 1" post** was skipped on Friday. Draft it this week in `career/linkedin/` (Phase 0 done + data types, TryParse, if/else, switch, Git undo)
