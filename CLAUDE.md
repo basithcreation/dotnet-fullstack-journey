@@ -13,8 +13,8 @@ I do NOT know JavaScript or Node.js. Teach JS from zero when we reach it.
 
 ## Current status (update at the end of each day)
 
-- Started: Tue 6 Oct 2026 · Last session: Thu 8 Oct 2026 (Day 3)
-- ✅ Phase 0 done · Phase 1 in progress (started early; planned 11–24 Oct 2026): ✅ data types, ✅ var/const/TryParse, ✅ `if` / `else` · ▶️ Next: Fri revise + quiz, then **`switch`**; Sat: `while` + Project 01 Number Guessing Game
+- Started: Tue 6 Oct 2026 · Last session: Sat 10 Oct 2026 (Day 4)
+- ✅ Phase 0 done · Phase 1 in progress (started early; planned 11–24 Oct 2026): ✅ data types, ✅ var/const/TryParse, ✅ `if` / `else`, ✅ `switch` + switch expressions, ✅ Phase 1 Git skill · ▶️ Next: Sun `while` + `Random`; Mon Project 01 Number Guessing Game; LinkedIn "Week 1" post (Friday was skipped)
 - Schedule: Sun–Thu 2 hrs (lesson + exercise), Fri 1.5 hrs (revise + quiz + LinkedIn), Sat 4–5 hrs (project day). ~16 hrs/week, guided path ends mid-Apr 2027.
 - Job plan: keep current job; apply for backend roles after Phase 8, full-stack after Phase 10; resign only with a signed offer (Kuwait residency is tied to the employer).
 - At the start of every new chat, read `PROGRESS.md` ("Next session starts here" + the last day's "Mistakes to remember") and continue from there.

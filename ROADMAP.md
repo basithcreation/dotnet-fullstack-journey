@@ -98,9 +98,9 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] Debugging: breakpoints, step over/into, watch window. Learn this properly; it saves hundreds of hours
 
 **🌿 Git skill (Phase 1): clean history + undo**
-- [ ] Good commit messages (short, present tense: "Add parking meter v2"); commit small and often
-- [ ] `git log --oneline`, `git diff`, `git status`: read what changed before you commit
-- [ ] Undo mistakes: `git restore` (throw away edits), `git restore --staged` (un-add), `git revert` (undo a commit safely)
+- [x] Good commit messages (short, present tense: "Add parking meter v2"); commit small and often
+- [x] `git log --oneline`, `git diff`, `git status`: read what changed before you commit
+- [x] Undo mistakes: `git restore` (throw away edits), `git restore --staged` (un-add), `git revert` (undo a commit safely)
 
 **Projects:** 01 Number Guessing Game (Part 1) → 02 Console Calculator (Part 2) → 03 Shipment Tracker: add, list, mark delivered, search by tracking number (Part 3)
 ✅ **Done when:** you can write a 100-line console app with loops, methods and error handling from scratch.

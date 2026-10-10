@@ -6,13 +6,56 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **First 5 minutes:** commit + push today's `PROGRESS.md` / `CLAUDE.md` updates (e.g. "Day 3: progress log"). Optional: delete the scope test lines (`string name = ""; if (true) {...}`) at the bottom of `05-if-else/Program.cs`
-- **Fri 9 Oct = revise day (1.5 hrs):** short revision quiz on Day 3's weak spots: `>` vs `>=` at the edge number, `=` (save) vs `==` (check), `else if` order (first match wins), scope (born inside `{ }` dies at `}`). Then the TryParse-refuses vs cast-cuts check again
-- **Fri Git skill (new, Phase 1 🌿):** good commit messages, `git log --oneline`, `git diff`, undo with `git restore` / `git revert` (ROADMAP now has a Git skill in every phase)
-- **Friday LinkedIn:** draft a short "Week 1" post (Phase 0 done + data types, TryParse, if/else, parking meter v2) in `career/linkedin/`
-- **Next lesson: `switch` + switch expressions** (then tick "`if` / `else`, `switch`, switch expressions" in `ROADMAP.md`). Quick check on operators + interpolation (already used a lot), then tick that line too
-- **Sat 10 Oct = project day:** teach a basic `while` loop and `Random` (new "built-in helpers" item in ROADMAP) first, then **Project 01: Number Guessing Game**
-- **How to teach this student:** ONE step per message, with a fill-in template. Long multi-item checklists caused "I don't understand" twice on Day 3. Give each `____` blank + test, then wait for "done"
+- **First 5 minutes:** commit + push `ROADMAP.md`, `PROGRESS.md`, `CLAUDE.md`, `lessons/glossary.md` (one commit is fine: "Update Day 4 progress log"). Check spelling before Enter
+- **Sun 11 Oct (2 hrs):** quick 3-question warm-up (switch expression order → CS8510, missing `break` → CS0163, why `gradeComment` is declared before the switch). Then teach a basic **`while` loop** and **`Random`** (`Random.Shared.Next(1, 101)`, the upper number is excluded) with small examples, then a small exercise
+- **Mon 12 Oct:** **Project 01: Number Guessing Game** (Part 1) + README. Needs: `while`, `Random`, TryParse guard, `if`/`else`, a counter
+- **LinkedIn "Week 1" post** was skipped on Friday. Draft it this week in `career/linkedin/` (Phase 0 done + data types, TryParse, if/else, switch, Git undo)
+- Still to tick in ROADMAP: "Operators, string interpolation" (quick check, already used a lot)
+- **How to teach this student:** ONE step per message with a fill-in template. Check the clock before suggesting breaks (sessions are often in the evening). Open the file before accepting "done": test comments and experiments were skipped 3 times today until reminded
+
+---
+
+## Day 4: Sat 10 Oct 2026 · Phase 1: `switch` + Git skill
+
+(Fri 9 Oct skipped: busy with other work. Today was an evening session, about 3 hrs.)
+
+**Learned**
+
+- **switch statement**: `case` / `break` / `default`; **stacked cases** (`case "Fri": case "Sat":`); every case needs `break` or you get **CS0163** (no fall-through, unlike Dart 3)
+- **switch expression**: `var x = value switch { pattern => result, _ => ... };`, which returns a value. **Relational patterns** (`>= 90`), **`or` patterns** (`6 or 7`), the **discard** `_`
+- Wrong order in a switch expression = **CS8510 unreachable** (a build error). In an if-else chain the same mistake gives a wrong answer silently
+- **Exhaustive**: a switch expression without `_` → warning **CS8509**, and a **runtime crash** (`SwitchExpressionException`) when nothing matches. A switch statement without `default` just skips (no warning)
+- Warning (yellow, still runs) vs error (red, no build); exception = runtime error; reading a **stack trace** ("Unmatched value was C", line 22)
+- Error location `Program.cs(5,5)` = line 5, column 5
+- `char` values need single quotes (`'A'`); without them C# looks for a variable called `A` → CS0103
+- **Git:** `git status`, `git diff`, `git show --stat HEAD`, good commit messages (verb first, present tense, ~50 chars, "If applied, this commit will..."), **atomic commits**, `git commit --amend` (only before push, it makes a new ID), `--no-edit`, `git restore`, `git restore --staged`, `git revert <id>` (safe after push), the pager (`q`), escaping Vim (`Esc` → `:cq`), the LF/CRLF warning is harmless
+
+**Built**
+
+- `lessons/phase-01/07-switch` (traffic light switch statement + temperature switch expression)
+- `lessons/phase-01/08-grade-calculator` (exercise: TryParse + range guard, switch expression for the grade, switch statement for the comment, all 9 tests pass)
+- Git practice: 2 atomic commits, amend, restore, unstage, revert
+
+**Quiz scores**
+
+- Revision quiz (Day 3 weak spots): 4/5 (Q4 + Q5 missing the "why")
+- Switch quiz: 3.5/5 (missed the CS8510 trap in Q1, the missing `break` in Q2, and team words in Q5)
+
+**Mistakes to remember (review these)**
+
+- Typo `'B' or 'D'` instead of `'C' or 'D'` → crash on 65. **Test every branch**, not only one value
+- Added `_ => "Invalid"` to silence the warning, which hid the real missing case. `_` is a safety net, not a fix
+- Range guard again without `return;`, and edges `<= 0` / `>= 100` refused valid marks 0 and 100
+- `<= 50` as the last arm overlapped `>= 50`. Use `_` for "everything else"
+- Ran before saving (old output for 0). Ctrl+S first
+- Skipped the experiment steps and the test comments until reminded. **"Done" = every step** (Definition of Done)
+- Git: forgot to `git add` one folder, so check `git status` (green) before commit. Commit message without quotes → Vim opened
+- Commit messages: `Updated` → `Update` (present tense); keep it short
+- Spelling: swich → **switch**, pratice → **practice**, Grate → **Great**, becaus → **because**, then → **than**, deceler → **declare**
+
+**Career**
+
+- Nothing today (Friday LinkedIn skipped, moved to next week)
 
 ---
 
