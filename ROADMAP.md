@@ -84,7 +84,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [x] Data types: `int`, `double`, `decimal` (use this for money!), `bool`, `char`, `string`
 - [x] `var`, `const`, type conversion, `Parse` / `TryParse`
 - [ ] Operators, string interpolation `$"Hi {name}"`
-- [ ] `if` / `else`, `switch`, switch expressions
+- [x] `if` / `else`, `switch`, switch expressions
 
 **Part 2: Merry-go-rounds and helpers**
 - [ ] Loops: `for`, `while`, `do-while`, `foreach`, `break`, `continue`
