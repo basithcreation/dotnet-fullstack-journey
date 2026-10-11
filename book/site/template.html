@@ -1,0 +1,998 @@
+<title>Flutter to .NET Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a study notebook. Chapter list on the left (a drawer on phones), one reading column on the right.
+   Graph-paper cover, highlighter for the LKG stories, a terminal look for program output. */
+:root {
+  --paper: #f6f7fb;
+  --sheet: #ffffff;
+  --ink: #1b1f3a;
+  --muted: #5b6183;
+  --line: #dde1ee;
+  --accent: #5b3fd9;
+  --accent-ink: #ffffff;
+  --accent-soft: #ece8fd;
+  --highlight: #fff3c2;
+  --ok: #1d7f50;
+  --ok-soft: #e1f4ea;
+  --bad: #b8342d;
+  --bad-soft: #fbe6e4;
+  --warn: #9a6512;
+  --warn-soft: #fbf0d9;
+  --type: #1f6fb2;
+  --code-bg: #eef0f8;
+  --term-bg: #1b1f3a;
+  --term-fg: #e6e8f2;
+  --term-dim: #9aa0bc;
+  --term-bad: #ff8a80;
+  --term-ok: #7be0a8;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Literata", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #11131d; --sheet: #171a27; --ink: #e6e8f2; --muted: #9aa0bc; --line: #2a2e44;
+    --accent: #a594ff; --accent-ink: #11131d; --accent-soft: #252046; --highlight: #3a3418;
+    --ok: #5fd39a; --ok-soft: #173326; --bad: #ff8a80; --bad-soft: #3a1d1c; --warn: #e8b85a; --warn-soft: #3a2e14;
+    --type: #7fb8f0; --code-bg: #1d2031; --term-bg: #0b0d16; --term-fg: #e6e8f2; --term-dim: #8a90ac;
+    --term-bad: #ff8a80; --term-ok: #7be0a8;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #11131d; --sheet: #171a27; --ink: #e6e8f2; --muted: #9aa0bc; --line: #2a2e44;
+  --accent: #a594ff; --accent-ink: #11131d; --accent-soft: #252046; --highlight: #3a3418;
+  --ok: #5fd39a; --ok-soft: #173326; --bad: #ff8a80; --bad-soft: #3a1d1c; --warn: #e8b85a; --warn-soft: #3a2e14;
+  --type: #7fb8f0; --code-bg: #1d2031; --term-bg: #0b0d16; --term-fg: #e6e8f2; --term-dim: #8a90ac;
+  --term-bad: #ff8a80; --term-ok: #7be0a8;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { background: var(--paper); color: var(--ink); }
+body { font-family: var(--font-body); font-size: 17px; line-height: 1.65; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code, pre, kbd { font-family: var(--font-mono); font-size: 0.86em; }
+
+/* ---------- top bar + drawer ---------- */
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px; background: var(--sheet); border-bottom: 1px solid var(--line);
+}
+.brand { font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -0.01em; text-decoration: none; color: var(--ink); }
+.brand span { color: var(--accent); }
+.menu-btn { display: none; }
+.topbar .day-chip { margin-left: auto; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+
+.layout { display: grid; grid-template-columns: 290px minmax(0, 1fr); min-height: calc(100vh - 52px); }
+.toc {
+  border-right: 1px solid var(--line); background: var(--sheet);
+  padding: 20px 16px 40px; position: sticky; top: 52px; align-self: start;
+  max-height: calc(100vh - 52px); overflow-y: auto;
+}
+.toc h3 {
+  font-family: var(--font-display); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted); margin: 20px 0 6px; font-weight: 700;
+}
+.toc a {
+  display: grid; grid-template-columns: 34px 1fr; gap: 6px; align-items: baseline;
+  padding: 6px 8px; border-radius: 8px; color: var(--ink); text-decoration: none;
+  font-family: var(--font-display); font-size: 15px; line-height: 1.3;
+}
+.toc a .num { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.toc a:hover { background: var(--accent-soft); }
+.toc a[aria-current="page"] { background: var(--accent); color: var(--accent-ink); }
+.toc a[aria-current="page"] .num { color: var(--accent-ink); }
+.toc .home-link { grid-template-columns: 1fr; font-weight: 700; }
+
+main { min-width: 0; padding-inline: 16px; padding-block: 32px 80px; }
+.column { max-width: 760px; margin: 0 auto; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .menu-btn { display: inline-flex; }
+  .toc {
+    position: fixed; inset: 52px 0 0 0; max-height: none; z-index: 15;
+    border-right: 0; transform: translateX(-100%); transition: transform .2s ease;
+  }
+  .toc.open { transform: none; }
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  font-family: var(--font-display); font-weight: 700; font-size: 14px;
+  border: 1px solid var(--line); background: var(--sheet); color: var(--ink);
+  padding: 7px 12px; border-radius: 8px; cursor: pointer; line-height: 1.2;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ---------- home ---------- */
+.cover {
+  border: 1px solid var(--line); border-radius: 14px; padding: 28px 24px;
+  background-color: var(--sheet);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--accent) 9%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 9%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.cover h1 {
+  font-family: var(--font-display); font-weight: 800; font-size: clamp(32px, 6vw, 52px);
+  line-height: 1.02; letter-spacing: -0.03em; margin: 10px 0 12px; text-wrap: balance;
+}
+.cover h1 .from { color: var(--muted); font-weight: 500; }
+.cover p { margin: 0; max-width: 56ch; color: var(--muted); }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 24px; }
+.stat { background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }
+.stat b { display: block; font-family: var(--font-display); font-size: 28px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 13px; color: var(--muted); font-family: var(--font-display); }
+@media (max-width: 600px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.home-section { margin-top: 44px; }
+.home-section > h2 { font-family: var(--font-display); font-size: 24px; letter-spacing: -0.01em; margin: 0 0 4px; }
+.home-section > p.lead { margin: 0 0 16px; color: var(--muted); font-size: 15px; }
+
+.chart-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--sheet); padding: 12px; }
+.chart-wrap svg { display: block; min-width: 520px; width: 100%; height: auto; }
+
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.timeline li {
+  display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 14px;
+  background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px;
+}
+.timeline .when { font-family: var(--font-display); }
+.timeline .when b { display: block; font-size: 20px; }
+.timeline .when span { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+.timeline h4 { margin: 0 0 6px; font-family: var(--font-display); font-size: 17px; }
+.timeline h4 small { color: var(--muted); font-weight: 500; font-size: 13px; margin-left: 6px; }
+.timeline ul { margin: 0 0 8px; padding-left: 18px; font-size: 15px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-family: var(--font-mono); font-size: 12px; padding: 3px 8px; border-radius: 99px; background: var(--code-bg); color: var(--ink); }
+.chip.score-high { background: var(--ok-soft); color: var(--ok); }
+.chip.score-mid { background: var(--warn-soft); color: var(--warn); }
+.chip.score-low { background: var(--bad-soft); color: var(--bad); }
+
+.chapter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.chapter-card {
+  display: block; text-decoration: none; color: var(--ink); background: var(--sheet);
+  border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px;
+}
+.chapter-card:hover { border-color: var(--accent); }
+.chapter-card .num { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
+.chapter-card b { display: block; font-family: var(--font-display); font-size: 16px; line-height: 1.3; margin-top: 2px; }
+.chapter-card span { font-size: 13px; color: var(--muted); }
+.phase-label { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--muted); margin: 18px 0 8px; }
+
+/* ---------- chapter ---------- */
+.chapter-head .eyebrow { display: block; margin-bottom: 6px; }
+.chapter-head h1 {
+  font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 5vw, 44px);
+  line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 14px; text-wrap: balance;
+}
+.chapter blockquote.meta {
+  margin: 0 0 8px; padding: 0; border: 0; font-family: var(--font-mono); font-size: 13px; color: var(--muted);
+}
+.chapter blockquote.meta p { margin: 0; }
+.chapter hr { display: none; }
+.chapter section { margin-top: 36px; }
+.chapter h2 {
+  font-family: var(--font-display); font-size: 26px; letter-spacing: -0.015em; line-height: 1.2;
+  margin: 0 0 12px; text-wrap: balance;
+}
+.chapter h3 { font-family: var(--font-display); font-size: 19px; margin: 28px 0 8px; }
+.chapter p, .chapter li { max-width: 68ch; }
+.chapter section.lkg {
+  background: var(--highlight); border-radius: 14px; padding: 20px 22px 8px;
+}
+.chapter section.errors h2 { color: var(--bad); }
+.chapter section.quiz { border-top: 2px dashed var(--line); padding-top: 24px; }
+.chapter :not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 5px; }
+.chapter pre {
+  background: var(--code-bg); border-radius: var(--radius); padding: 14px 16px; overflow-x: auto;
+  line-height: 1.5; border: 1px solid var(--line);
+}
+.chapter pre code { font-size: 14px; }
+.table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--sheet); }
+.chapter table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.45; }
+.chapter th, .chapter td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.chapter th { font-family: var(--font-display); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); background: var(--paper); }
+.chapter tr:last-child td { border-bottom: 0; }
+.chapter details {
+  background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 16px; margin-top: 16px;
+}
+.chapter summary { cursor: pointer; font-family: var(--font-display); font-weight: 700; color: var(--accent); }
+.chapter blockquote:not(.meta) { margin: 14px 0; padding: 10px 16px; border-left: 3px solid var(--warn); background: var(--warn-soft); border-radius: 0 8px 8px 0; }
+.chapter blockquote:not(.meta) p { margin: 4px 0; }
+
+.pager { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 56px; }
+.pager a { display: block; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius); text-decoration: none; color: var(--ink); background: var(--sheet); }
+.pager a:hover { border-color: var(--accent); }
+.pager small { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.pager b { font-family: var(--font-display); }
+.pager .next { text-align: right; grid-column: 2; }
+
+/* highlight.js tokens */
+.hljs-keyword, .hljs-built_in, .hljs-literal { color: var(--accent); font-weight: 600; }
+.hljs-string, .hljs-char { color: var(--ok); }
+.hljs-number { color: var(--warn); }
+.hljs-comment { color: var(--muted); font-style: italic; }
+.hljs-title, .hljs-type, .hljs-class { color: var(--type); }
+.hljs-subst { color: var(--ink); }
+
+/* ---------- animations ---------- */
+.anim { margin: 20px 0; border: 1px solid var(--line); border-radius: 14px; background: var(--sheet); overflow: hidden; }
+.anim-tag {
+  display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent);
+  background: var(--accent-soft);
+}
+.anim-stage { padding: 16px; display: grid; gap: 14px; }
+.anim figcaption { padding: 0 16px 14px; font-size: 14px; color: var(--muted); }
+.term {
+  background: var(--term-bg); color: var(--term-fg); font-family: var(--font-mono); font-size: 13px;
+  border-radius: 8px; padding: 12px 14px; white-space: pre-wrap; overflow-x: auto; line-height: 1.55; min-height: 3.2em;
+}
+.term .dim { color: var(--term-dim); }
+.term .bad { color: var(--term-bad); }
+.term .good { color: var(--term-ok); }
+.zones { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.zones.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 640px) { .zones, .zones.three { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.zone { border: 1px dashed var(--line); border-radius: 10px; padding: 10px; min-height: 110px; min-width: 0; transition: border-color .2s, background .2s; }
+.zone h5 { margin: 0 0 6px; font-family: var(--font-display); font-size: 13px; }
+.zone h5 small { display: block; color: var(--muted); font-weight: 500; font-size: 11px; font-family: var(--font-mono); }
+.zone.active { border-style: solid; border-color: var(--accent); background: var(--accent-soft); }
+.item {
+  font-family: var(--font-mono); font-size: 12px; padding: 4px 7px; border-radius: 6px; margin: 4px 0;
+  background: var(--code-bg); overflow-wrap: anywhere; animation: pop .35s ease;
+}
+.item.mod { background: var(--bad-soft); color: var(--bad); }
+.item.staged { background: var(--ok-soft); color: var(--ok); }
+@keyframes pop { from { transform: scale(.85); opacity: .3; } to { transform: none; opacity: 1; } }
+@keyframes shake { 0%,100% { transform: none; } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+.shake { animation: shake .4s ease; }
+.pick { display: flex; flex-wrap: wrap; gap: 6px; }
+.pick .btn { font-family: var(--font-mono); font-weight: 600; }
+.verdict { padding: 10px 12px; border-radius: 8px; font-size: 15px; background: var(--code-bg); }
+.verdict.good { background: var(--ok-soft); color: var(--ok); }
+.verdict.bad { background: var(--bad-soft); color: var(--bad); }
+.verdict.warn { background: var(--warn-soft); color: var(--warn); }
+.control { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 14px; }
+.control input[type="range"] { flex: 1 1 180px; accent-color: var(--accent); }
+.control input[type="text"] {
+  font-family: var(--font-mono); font-size: 14px; padding: 6px 10px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--paper); color: var(--ink); width: 9em;
+}
+.control output { font-family: var(--font-mono); font-weight: 600; min-width: 2.5em; }
+.chain { display: grid; gap: 6px; }
+.door {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center;
+  font-family: var(--font-mono); font-size: 13px; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line);
+  transition: background .25s, opacity .25s;
+}
+.door .tag { font-family: var(--font-display); font-size: 12px; font-weight: 700; }
+.door.false { opacity: .75; }
+.door.false .tag { color: var(--muted); }
+.door.open { background: var(--ok-soft); border-color: var(--ok); }
+.door.open .tag { color: var(--ok); }
+.door.skip { opacity: .4; text-decoration: line-through; }
+.belt { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 640px) { .belt { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.station { border: 1px solid var(--line); border-radius: 10px; padding: 10px; text-align: center; min-width: 0; }
+.station small { display: block; font-family: var(--font-display); font-size: 12px; color: var(--muted); }
+.station b { display: block; font-family: var(--font-mono); font-size: 16px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.station.changed { border-color: var(--accent); background: var(--accent-soft); }
+.station.off { opacity: .4; }
+.cookies { display: grid; gap: 4px; font-size: 20px; line-height: 1.3; }
+.cookies div { display: grid; grid-template-columns: 70px 1fr; align-items: center; }
+.cookies small { font-family: var(--font-display); font-size: 13px; color: var(--muted); }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 640px) { .two { grid-template-columns: minmax(0, 1fr); } }
+.panel { border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.panel h5 { margin: 0; font-family: var(--font-display); font-size: 15px; }
+.codebox { font-family: var(--font-mono); font-size: 13px; background: var(--code-bg); border-radius: 8px; padding: 10px 12px; white-space: pre; overflow-x: auto; line-height: 1.6; }
+.codebox .hit { background: var(--ok-soft); color: var(--ok); border-radius: 4px; }
+.codebox .miss { opacity: .5; }
+.check { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-size: 13px; cursor: pointer; }
+.check input { accent-color: var(--accent); }
+.commits { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.commits li {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-family: var(--font-mono); font-size: 13px;
+  padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; animation: pop .35s ease;
+}
+.commits .id { color: var(--warn); font-weight: 600; }
+.commits .ref { font-size: 11px; padding: 1px 6px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
+.commits .ref.remote { background: var(--ok-soft); color: var(--ok); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<header class="topbar">
+  <button class="btn menu-btn" id="menuBtn" aria-controls="toc" aria-expanded="false">Chapters</button>
+  <a class="brand" href="#home">Flutter <span>→</span> .NET</a>
+  <span class="day-chip" id="dayChip"></span>
+</header>
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Chapters"></nav>
+  <main id="main"><div class="column" id="view"></div></main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+const CHAPTERS = /*__CHAPTERS__*/[];
+const JOURNEY = /*__JOURNEY__*/{};
+
+const $ = (sel, root = document) => root.querySelector(sel);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const hashFor = (id) => "ch-" + id.replace(".", "-");
+const hex7 = () => Array.from({ length: 7 }, () => "0123456789abcdef"[Math.floor(Math.random() * 16)]).join("");
+
+/* ---------------- navigation ---------------- */
+function renderToc(activeId) {
+  const byPhase = groupByPhase();
+  let html = '<a class="home-link" href="#home"' + (activeId ? "" : ' aria-current="page"') + ">Home: my progress</a>";
+  for (const [phase, list] of byPhase) {
+    html += "<h3>Phase " + phase + ": " + esc(list[0].phaseName) + "</h3>";
+    for (const ch of list) {
+      html += '<a href="#' + hashFor(ch.id) + '"' + (ch.id === activeId ? ' aria-current="page"' : "") +
+        '><span class="num">' + ch.id + "</span><span>" + esc(ch.title) + "</span></a>";
+    }
+  }
+  $("#toc").innerHTML = html;
+}
+
+function groupByPhase() {
+  const map = new Map();
+  for (const ch of CHAPTERS) {
+    if (!map.has(ch.phase)) map.set(ch.phase, []);
+    map.get(ch.phase).push(ch);
+  }
+  return map;
+}
+
+function route() {
+  const h = location.hash.slice(1);
+  const ch = h.startsWith("ch-") ? CHAPTERS.find((c) => hashFor(c.id) === h) : null;
+  if (ch) renderChapter(ch); else renderHome();
+  closeMenu();
+  window.scrollTo(0, 0);
+  try { localStorage.setItem("lastView", h); } catch (e) {}
+}
+
+const menuBtn = $("#menuBtn");
+function closeMenu() { $("#toc").classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); }
+menuBtn.addEventListener("click", () => {
+  const open = $("#toc").classList.toggle("open");
+  menuBtn.setAttribute("aria-expanded", String(open));
+});
+
+/* ---------------- home ---------------- */
+function scoreClass(score, max) {
+  const r = score / max;
+  return r >= 0.7 ? "score-high" : r >= 0.5 ? "score-mid" : "score-low";
+}
+
+function renderHome() {
+  renderToc(null);
+  const days = JOURNEY.days || [];
+  const last = days[days.length - 1];
+  const quizzes = days.flatMap((d) => d.quizzes.map((q) => ({ ...q, day: d.day })));
+  const phaseNow = Math.max(...CHAPTERS.map((c) => c.phase));
+  const fmt = (iso) => new Date(iso + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+
+  let html = '<section class="cover">' +
+    '<span class="eyebrow">My reference book · Day ' + last.day + " · " + esc(last.phase) + "</span>" +
+    '<h1><span class="from">From Flutter</span><br>to .NET Full Stack</h1>' +
+    "<p>Everything I have learned so far, one chapter per topic, written right after I finished it. " +
+    "Every 🎬 box is a small animation you can play with.</p>" +
+    '<div class="stats">' +
+    '<div class="stat"><b>' + days.length + "</b><span>days studied</span></div>" +
+    '<div class="stat"><b>' + CHAPTERS.length + "</b><span>chapters</span></div>" +
+    '<div class="stat"><b>' + quizzes.length + "</b><span>quizzes taken</span></div>" +
+    '<div class="stat"><b>' + phaseNow + '<small style="font-size:15px;color:var(--muted)"> / ' + JOURNEY.phasesTotal + "</small></b><span>current phase</span></div>" +
+    "</div></section>";
+
+  html += '<section class="home-section"><h2>Quiz scores</h2>' +
+    '<p class="lead">First-try score for every quiz, out of 5.</p>' +
+    '<div class="chart-wrap">' + quizChart(quizzes) + "</div></section>";
+
+  html += '<section class="home-section"><h2>Day by day</h2><p class="lead">What I learned and built each day. Newest first.</p><ol class="timeline">';
+  for (const d of [...days].reverse()) {
+    html += '<li><div class="when"><b>Day ' + d.day + "</b><span>" + d.weekday + " " + fmt(d.date) + "</span></div><div>" +
+      "<h4>" + esc(d.title) + "<small>" + esc(d.phase) + "</small></h4><ul>" +
+      d.learned.map((x) => "<li>" + esc(x) + "</li>").join("") + "</ul>" +
+      '<div class="chips">' +
+      d.built.map((b) => '<span class="chip">🛠 ' + esc(b) + "</span>").join("") +
+      d.quizzes.map((q) => '<span class="chip ' + scoreClass(q.score, q.max) + '">' + esc(q.name) + ": " + q.score + "/" + q.max + "</span>").join("") +
+      "</div></div></li>";
+  }
+  html += "</ol></section>";
+
+  html += '<section class="home-section"><h2>Chapters</h2>';
+  for (const [phase, list] of groupByPhase()) {
+    html += '<div class="phase-label">Phase ' + phase + ": " + esc(list[0].phaseName) + '</div><div class="chapter-grid">';
+    for (const ch of list) {
+      const learned = (ch.md.match(/^> Learned: ([^·\n]+)/m) || [])[1] || "";
+      html += '<a class="chapter-card" href="#' + hashFor(ch.id) + '"><span class="num">Chapter ' + ch.id + "</span><b>" +
+        esc(ch.title) + "</b><span>" + esc(learned.trim()) + "</span></a>";
+    }
+    html += "</div>";
+  }
+  html += "</section>";
+
+  $("#view").innerHTML = html;
+  $("#dayChip").textContent = "Day " + last.day + " · " + fmt(last.date);
+}
+
+function quizChart(quizzes) {
+  const W = 640, H = 240, left = 34, right = 10, top = 14, bottom = 58;
+  const plotW = W - left - right, plotH = H - top - bottom;
+  const slot = plotW / quizzes.length, barW = Math.min(36, slot * 0.6);
+  const y = (v) => top + plotH - (v / 5) * plotH;
+  let svg = '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Quiz scores by day">';
+  for (let t = 0; t <= 5; t++) {
+    svg += '<line x1="' + left + '" x2="' + (W - right) + '" y1="' + y(t) + '" y2="' + y(t) + '" stroke="var(--line)" stroke-width="1"/>' +
+      '<text x="' + (left - 8) + '" y="' + (y(t) + 4) + '" text-anchor="end" font-size="11" fill="var(--muted)" font-family="JetBrains Mono, monospace">' + t + "</text>";
+  }
+  let prevDay = null;
+  quizzes.forEach((q, i) => {
+    const cx = left + slot * i + slot / 2;
+    const color = q.score / q.max >= 0.7 ? "var(--ok)" : q.score / q.max >= 0.5 ? "var(--warn)" : "var(--bad)";
+    svg += '<rect x="' + (cx - barW / 2) + '" y="' + y(q.score) + '" width="' + barW + '" height="' + (y(0) - y(q.score)) + '" rx="4" fill="' + color + '"><title>' + esc(q.name) + ": " + q.score + "/5</title></rect>" +
+      '<text x="' + cx + '" y="' + (y(q.score) - 5) + '" text-anchor="middle" font-size="11" font-weight="600" fill="var(--ink)" font-family="JetBrains Mono, monospace">' + q.score + "</text>";
+    if (q.day !== prevDay) {
+      svg += '<text x="' + cx + '" y="' + (H - bottom + 18) + '" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" font-family="Bricolage Grotesque, sans-serif">Day ' + q.day + "</text>";
+      prevDay = q.day;
+    }
+    const short = q.name.replace(/ quiz$/i, "");
+    svg += '<text x="' + cx + '" y="' + (H - bottom + 34) + '" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="Bricolage Grotesque, sans-serif">' + esc(short.length > 14 ? short.slice(0, 13) + "…" : short) + "</text>";
+  });
+  return svg + "</svg>";
+}
+
+/* ---------------- chapter ---------------- */
+const SECTION_KIND = { "🧸": "lkg", "💻": "real", "🎯": "dart", "🧪": "examples", "🐞": "errors", "🏢": "team", "📋": "summary", "📝": "quiz" };
+
+function renderChapter(ch) {
+  renderToc(ch.id);
+  const view = $("#view");
+  const body = window.marked ? marked.parse(ch.md.replace(/^# .+\n/, "")) : "<pre>" + esc(ch.md) + "</pre>";
+  view.innerHTML = '<article class="chapter"><header class="chapter-head"><span class="eyebrow">Chapter ' + ch.id +
+    " · Phase " + ch.phase + ": " + esc(ch.phaseName) + "</span><h1>" + esc(ch.title) + "</h1></header><div class=\"chapter-body\"></div></article>";
+  const holder = $(".chapter-body", view);
+  holder.innerHTML = body;
+
+  // the "> Learned: ..." line right under the title
+  const first = holder.firstElementChild;
+  if (first && first.tagName === "BLOCKQUOTE") first.classList.add("meta");
+
+  // wrap each h2 and what follows it in a <section>
+  let current = null;
+  for (const node of [...holder.childNodes]) {
+    if (node.nodeType === 1 && node.tagName === "H2") {
+      current = document.createElement("section");
+      const kind = SECTION_KIND[[...node.textContent.trim()][0]];
+      if (kind) current.className = kind;
+      holder.insertBefore(current, node);
+    }
+    if (current) current.appendChild(node);
+  }
+
+  holder.querySelectorAll("table").forEach((t) => {
+    const wrap = document.createElement("div");
+    wrap.className = "table-wrap";
+    t.replaceWith(wrap);
+    wrap.appendChild(t);
+  });
+
+  holder.querySelectorAll("pre code").forEach((el) => {
+    const lang = ((el.className.match(/language-(\w+)/) || [])[1] || "").toLowerCase();
+    if (window.hljs && lang && hljs.getLanguage(lang)) hljs.highlightElement(el);
+  });
+
+  holder.querySelectorAll("a[href]").forEach((a) => {
+    const href = a.getAttribute("href");
+    if (/\.md(#.*)?$/.test(href)) {
+      const name = href.split("/").pop().replace(/#.*$/, "");
+      const target = CHAPTERS.find((c) => c.file.endsWith(name));
+      if (target) a.setAttribute("href", "#" + hashFor(target.id));
+    } else if (/^https?:/.test(href)) {
+      a.target = "_blank";
+      a.rel = "noopener";
+    }
+  });
+
+  // 🎬 notes become playable animations
+  let n = 0;
+  holder.querySelectorAll("p").forEach((p) => {
+    if (!p.textContent.trim().startsWith("🎬")) return;
+    const make = (WIDGETS[ch.id] || [])[n++];
+    const fig = document.createElement("figure");
+    fig.className = "anim";
+    fig.innerHTML = '<div class="anim-tag">🎬 ' + (make ? "Try it" : "Animation idea") + '</div><div class="anim-stage"></div>' +
+      "<figcaption>" + p.innerHTML.replace(/^🎬\s*<strong>Animation idea:<\/strong>\s*/, "") + "</figcaption>";
+    p.replaceWith(fig);
+    const stage = $(".anim-stage", fig);
+    if (make) make(stage); else stage.remove();
+  });
+
+  const i = CHAPTERS.indexOf(ch);
+  const prev = CHAPTERS[i - 1], next = CHAPTERS[i + 1];
+  const pager = document.createElement("nav");
+  pager.className = "pager";
+  pager.innerHTML =
+    (prev ? '<a href="#' + hashFor(prev.id) + '"><small>← Chapter ' + prev.id + "</small><b>" + esc(prev.title) + "</b></a>" : "<span></span>") +
+    (next ? '<a class="next" href="#' + hashFor(next.id) + '"><small>Chapter ' + next.id + " →</small><b>" + esc(next.title) + "</b></a>" : "");
+  $(".chapter", view).appendChild(pager);
+}
+
+/* ---------------- animations ---------------- */
+const WIDGETS = {
+  "0.1": [sdkPipeline, cookieDivision],
+  "0.2": [gitAlbum],
+  "1.1": [shapeSorter, cashiers],
+  "1.2": [twoTeachers],
+  "1.3": [rowOfDoors, factoryLine],
+  "1.4": [twoMachines],
+  "1.5": [gitUndo],
+};
+
+function sdkPipeline(stage) {
+  const steps = [
+    { zone: 0, text: "You write C# in Program.cs. Right now it's only text." },
+    { zone: 1, text: "dotnet build: the SDK's compiler turns your code into an app file (.dll). Only developers need the SDK." },
+    { zone: 2, text: "The user runs the app. The CLR (runtime) is the engine that makes it run. Users only need the runtime." },
+  ];
+  let i = 0;
+  stage.innerHTML =
+    '<div class="zones three">' +
+    '<div class="zone"><h5>You<small>developer</small></h5><div class="item">Program.cs</div></div>' +
+    '<div class="zone"><h5>SDK<small>toolbox</small></h5><div class="item">dotnet build</div><div class="item">→ app.dll</div></div>' +
+    '<div class="zone"><h5>CLR<small>engine</small></h5><div class="item">runs app.dll</div><div class="item">for the user</div></div>' +
+    '</div><div class="verdict"></div><div class="btn-row"><button class="btn primary">Next step</button></div>';
+  const zones = stage.querySelectorAll(".zone"), verdict = $(".verdict", stage), btn = $(".btn", stage);
+  const show = () => {
+    zones.forEach((z, k) => z.classList.toggle("active", k === steps[i].zone));
+    verdict.textContent = "Step " + (i + 1) + " of 3: " + steps[i].text;
+    btn.textContent = i === steps.length - 1 ? "Start again" : "Next step";
+  };
+  btn.addEventListener("click", () => { i = (i + 1) % steps.length; show(); });
+  show();
+}
+
+function cookieDivision(stage) {
+  stage.innerHTML =
+    '<div class="control"><label for="ck-c">Cookies</label><input id="ck-c" type="range" min="0" max="20" value="10"><output></output></div>' +
+    '<div class="control"><label for="ck-k">Kids</label><input id="ck-k" type="range" min="1" max="6" value="3"><output></output></div>' +
+    '<div class="cookies"></div><div class="term"></div>';
+  const c = $("#ck-c", stage), k = $("#ck-k", stage), box = $(".cookies", stage), term = $(".term", stage);
+  const draw = () => {
+    const cookies = +c.value, kids = +k.value, each = Math.floor(cookies / kids), left = cookies % kids;
+    c.nextElementSibling.textContent = cookies;
+    k.nextElementSibling.textContent = kids;
+    let html = "";
+    for (let i = 1; i <= kids; i++) html += "<div><small>Kid " + i + "</small><span>" + ("🍪".repeat(each) || "<small>none</small>") + "</span></div>";
+    html += "<div><small>Plate</small><span>" + ("🍪".repeat(left) || "<small>empty</small>") + "</span></div>";
+    box.innerHTML = html;
+    const dart = cookies / kids;
+    term.innerHTML =
+      "int each = " + cookies + " / " + kids + ";   <span class=\"dim\">// " + each + "  (C# throws away the decimal part)</span>\n" +
+      "int left = " + cookies + " % " + kids + ";   <span class=\"dim\">// " + left + "  (the remainder)</span>\n" +
+      "<span class=\"dim\">// Dart: " + cookies + " / " + kids + " = " + (Number.isInteger(dart) ? dart + ".0" : dart) + "</span>";
+  };
+  c.addEventListener("input", draw);
+  k.addEventListener("input", draw);
+  draw();
+}
+
+function gitAlbum(stage) {
+  const st = { mod: new Set(), staged: new Set(), commits: [], pushed: 0 };
+  stage.innerHTML =
+    '<div class="zones">' +
+    '<div class="zone" data-z="desk"><h5>Desk<small>working directory</small></h5><div class="list"></div></div>' +
+    '<div class="zone" data-z="box"><h5>Box<small>staging area</small></h5><div class="list"></div></div>' +
+    '<div class="zone" data-z="album"><h5>Album<small>local repo</small></h5><div class="list"></div></div>' +
+    '<div class="zone" data-z="cloud"><h5>Cloud<small>GitHub</small></h5><div class="list"></div></div>' +
+    "</div>" +
+    '<div class="btn-row"><button class="btn" data-a="edit1">Edit Program.cs</button><button class="btn" data-a="edit2">Edit README.md</button>' +
+    '<button class="btn primary" data-a="add">git add .</button><button class="btn primary" data-a="commit">git commit</button><button class="btn primary" data-a="push">git push</button></div>' +
+    '<div class="term"><span class="dim">$ git status</span>\nnothing to commit, working tree clean</div>';
+  const term = $(".term", stage), zone = (z) => $('[data-z="' + z + '"]', stage);
+  const flash = (z) => { stage.querySelectorAll(".zone").forEach((el) => el.classList.toggle("active", el.dataset.z === z)); };
+  const draw = () => {
+    $(".list", zone("desk")).innerHTML = ["Program.cs", "README.md"].map((f) =>
+      '<div class="item' + (st.mod.has(f) ? " mod" : "") + '">' + f + (st.mod.has(f) ? " (modified)" : "") + "</div>").join("");
+    $(".list", zone("box")).innerHTML = [...st.staged].map((f) => '<div class="item staged">' + f + "</div>").join("");
+    const row = (c) => '<div class="item"><b>' + c.id + "</b> " + esc(c.msg) + "</div>";
+    $(".list", zone("album")).innerHTML = [...st.commits].reverse().map(row).join("");
+    $(".list", zone("cloud")).innerHTML = st.commits.slice(0, st.pushed).reverse().map(row).join("");
+  };
+  stage.querySelector(".btn-row").addEventListener("click", (e) => {
+    const a = e.target.dataset.a;
+    if (!a) return;
+    if (a === "edit1" || a === "edit2") {
+      const f = a === "edit1" ? "Program.cs" : "README.md";
+      st.mod.add(f);
+      flash("desk");
+      term.innerHTML = '<span class="dim">$ git status</span>\nChanges not staged for commit:\n<span class="bad">        modified:   ' + [...st.mod].join("\n        modified:   ") + "</span>";
+    } else if (a === "add") {
+      if (!st.mod.size) { term.innerHTML = '<span class="dim">$ git add .</span>\n<span class="dim">(nothing changed on the desk, so nothing to add)</span>'; }
+      else {
+        st.mod.forEach((f) => st.staged.add(f));
+        st.mod.clear();
+        flash("box");
+        term.innerHTML = '<span class="dim">$ git status</span>\nChanges to be committed:\n<span class="good">        modified:   ' + [...st.staged].join("\n        modified:   ") + "</span>";
+      }
+    } else if (a === "commit") {
+      if (!st.staged.size) {
+        term.innerHTML = '<span class="dim">$ git commit -m "..."</span>\n' + (st.mod.size ? 'no changes added to commit (use "git add")' : "nothing to commit, working tree clean");
+      } else {
+        const files = [...st.staged];
+        const msg = files.length > 1 ? "Update Program.cs and README" : files[0] === "README.md" ? "Update README with run steps" : "Update greeting in Program.cs";
+        const c = { id: hex7(), msg };
+        st.commits.push(c);
+        st.staged.clear();
+        flash("album");
+        term.innerHTML = '<span class="dim">$ git commit -m "' + esc(msg) + '"</span>\n[main ' + c.id + "] " + esc(msg) + "\n " + files.length + " file" + (files.length > 1 ? "s" : "") + " changed";
+      }
+    } else if (a === "push") {
+      if (st.pushed === st.commits.length) { term.innerHTML = '<span class="dim">$ git push</span>\nEverything up-to-date'; }
+      else {
+        const from = st.pushed ? st.commits[st.pushed - 1].id : "0000000";
+        st.pushed = st.commits.length;
+        flash("cloud");
+        term.innerHTML = '<span class="dim">$ git push</span>\nTo https://github.com/basithcreation/dotnet-fullstack-journey.git\n   ' + from + ".." + st.commits[st.pushed - 1].id + "  main -> main";
+      }
+    }
+    draw();
+  });
+  draw();
+}
+
+function shapeSorter(stage) {
+  const values = [
+    { code: "3", type: "int" }, { code: "2.5", type: "double" }, { code: "1.350m", type: "decimal" },
+    { code: "'B'", type: "char" }, { code: '"Hi"', type: "string" }, { code: "true", type: "bool" },
+  ];
+  const boxes = ["int", "double", "decimal", "bool", "char", "string"];
+  const cast = (from, to) => "error CS0266: Cannot implicitly convert type '" + from + "' to '" + to + "'. An explicit conversion exists (are you missing a cast?)";
+  const nope = (from, to) => "error CS0029: Cannot implicitly convert type '" + from + "' to '" + to + "'";
+  function judge(v, box) {
+    if (v.type === box) return ["good", "Fits! A " + box + " box holds exactly this."];
+    const t = v.type;
+    if (t === "int" && (box === "double" || box === "decimal")) return ["good", "Fits automatically: int → " + box + " is a safe pour (implicit conversion), nothing is lost."];
+    if (t === "int" && box === "char") return ["bad", cast("int", "char")];
+    if (t === "double" && box === "decimal") return ["bad", "error CS0664: Literal of type double cannot be implicitly converted to type 'decimal'; use an 'M' suffix. Write 2.5m."];
+    if (t === "double" && (box === "int" || box === "char")) return ["bad", cast("double", box) + " The decimal part would be lost, so C# wants you to decide."];
+    if (t === "decimal" && (box === "int" || box === "double" || box === "char")) return ["bad", cast("decimal", box)];
+    if (t === "char" && (box === "int" || box === "double" || box === "decimal")) return ["warn", "Surprise: it compiles, but the box gets 66, the character's number code. Real code almost never wants this."];
+    return ["bad", nope(t, box)];
+  }
+  let picked = values[0];
+  stage.innerHTML =
+    '<div class="control">1. Pick a value:</div><div class="pick" data-p="v">' +
+    values.map((v, i) => '<button class="btn" data-i="' + i + '" aria-pressed="' + (i === 0) + '">' + esc(v.code) + "</button>").join("") + "</div>" +
+    '<div class="control">2. Drop it into a box:</div><div class="pick" data-p="b">' +
+    boxes.map((b) => '<button class="btn" data-b="' + b + '">' + b + "</button>").join("") + "</div>" +
+    '<div class="codebox"></div><div class="verdict">Pick a value, then a box.</div>';
+  const verdict = $(".verdict", stage), code = $(".codebox", stage);
+  const vRow = $('[data-p="v"]', stage), bRow = $('[data-p="b"]', stage);
+  const showCode = (box) => { code.textContent = (box || "____") + " x = " + picked.code + ";"; };
+  vRow.addEventListener("click", (e) => {
+    const i = e.target.dataset.i;
+    if (i === undefined) return;
+    picked = values[+i];
+    vRow.querySelectorAll(".btn").forEach((b) => b.setAttribute("aria-pressed", String(b === e.target)));
+    showCode();
+    verdict.className = "verdict";
+    verdict.textContent = "Now pick a box for " + picked.code + ".";
+  });
+  bRow.addEventListener("click", (e) => {
+    const box = e.target.dataset.b;
+    if (!box) return;
+    const [kind, msg] = judge(picked, box);
+    showCode(box);
+    verdict.className = "verdict " + kind;
+    verdict.textContent = (kind === "good" ? "✅ " : kind === "warn" ? "⚠️ " : "❌ ") + msg;
+    if (kind === "bad") { verdict.classList.remove("shake"); void verdict.offsetWidth; verdict.classList.add("shake"); }
+  });
+  showCode();
+}
+
+function cashiers(stage) {
+  let n = 0, dbl = 0;
+  stage.innerHTML =
+    '<div class="two"><div class="panel"><h5>double cashier</h5><div class="codebox"></div></div>' +
+    '<div class="panel"><h5>decimal cashier</h5><div class="codebox"></div></div></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="add">Add 0.1 KWD</button><button class="btn" data-a="reset">Reset</button></div>' +
+    '<div class="verdict">Press "Add 0.1 KWD" three times and compare.</div>';
+  const [dBox, mBox] = stage.querySelectorAll(".codebox"), verdict = $(".verdict", stage);
+  const draw = () => {
+    dBox.textContent = "total = " + (n === 0 ? "0" : String(dbl));
+    mBox.textContent = "total = " + (n === 0 ? "0" : (n / 10).toFixed(1));
+    if (n === 0) { verdict.className = "verdict"; verdict.textContent = 'Press "Add 0.1 KWD" three times and compare.'; }
+    else if (String(dbl) !== (n / 10).toFixed(1) && String(dbl) !== String(n / 10)) {
+      verdict.className = "verdict bad";
+      verdict.textContent = "After " + n + " coins the double total is " + dbl + ". A customer would not accept that bill. The decimal total is exact.";
+    } else { verdict.className = "verdict good"; verdict.textContent = "After " + n + (n === 1 ? " coin" : " coins") + " both agree. Keep going."; }
+  };
+  stage.querySelector(".btn-row").addEventListener("click", (e) => {
+    if (e.target.dataset.a === "add") { n++; dbl += 0.1; }
+    if (e.target.dataset.a === "reset") { n = 0; dbl = 0; }
+    draw();
+  });
+  draw();
+}
+
+function twoTeachers(stage) {
+  stage.innerHTML =
+    '<div class="control"><label for="tt-in">Type an input:</label><input id="tt-in" type="text" value="abc" autocomplete="off">' +
+    '<span class="btn-row"><button class="btn" data-v="2000">2000</button><button class="btn" data-v="abc">abc</button><button class="btn" data-v="2.75">2.75</button><button class="btn" data-v="99999999999">99999999999</button></span></div>' +
+    '<div class="two"><div class="panel"><h5>Strict teacher: int.Parse</h5><div class="term" data-t="p"></div></div>' +
+    '<div class="panel"><h5>Polite teacher: int.TryParse</h5><div class="term" data-t="t"></div></div></div>' +
+    '<div class="control"><label for="tt-cut">Scissors: (int)</label><input id="tt-cut" type="text" value="2.75" autocomplete="off"><output></output></div>';
+  const input = $("#tt-in", stage), cut = $("#tt-cut", stage);
+  const pBox = $('[data-t="p"]', stage), tBox = $('[data-t="t"]', stage);
+  function parse(s) {
+    if (!/^\s*[+-]?\d+\s*$/.test(s)) return { error: "System.FormatException: The input string '" + s + "' was not in a correct format." };
+    const n = BigInt(s.trim());
+    if (n > 2147483647n || n < -2147483648n) return { error: "System.OverflowException: Value was either too large or too small for an Int32." };
+    return { value: Number(n) };
+  }
+  const draw = () => {
+    const s = input.value, r = parse(s);
+    if (r.error) {
+      pBox.innerHTML = '<span class="dim">int n = int.Parse("' + esc(s) + '");</span>\n<span class="bad">💥 Unhandled exception. ' + esc(r.error) + "</span>\n<span class=\"dim\">(the program stops here)</span>";
+      tBox.innerHTML = '<span class="dim">bool ok = int.TryParse("' + esc(s) + '", out int n);</span>\nok = <span class="bad">False</span>\nn  = 0\n<span class="dim">(no crash: show a message and return)</span>';
+      pBox.parentElement.classList.remove("shake"); void pBox.offsetWidth; pBox.parentElement.classList.add("shake");
+    } else {
+      pBox.innerHTML = '<span class="dim">int n = int.Parse("' + esc(s) + '");</span>\nn = <span class="good">' + r.value + "</span>";
+      tBox.innerHTML = '<span class="dim">bool ok = int.TryParse("' + esc(s) + '", out int n);</span>\nok = <span class="good">True</span>\nn  = ' + r.value;
+    }
+    const x = parseFloat(cut.value);
+    cut.nextElementSibling.textContent = isNaN(x) ? "?" : "→ " + Math.trunc(x) + "  (cut, not rounded)";
+  };
+  input.addEventListener("input", draw);
+  cut.addEventListener("input", draw);
+  stage.querySelector(".control .btn-row").addEventListener("click", (e) => {
+    if (e.target.dataset.v === undefined) return;
+    input.value = e.target.dataset.v;
+    draw();
+  });
+  draw();
+}
+
+function rowOfDoors(stage) {
+  const pass = { cond: "marks >= 50", test: (m) => m >= 50, out: "Pass" };
+  const exc = { cond: "marks >= 90", test: (m) => m >= 90, out: "Excellent" };
+  const fail = { cond: "else", test: () => true, out: "Fail" };
+  let fixed = false;
+  stage.innerHTML =
+    '<div class="control"><label for="rd-m">marks</label><input id="rd-m" type="range" min="0" max="100" value="95"><output></output></div>' +
+    '<div class="btn-row"><button class="btn" data-o="bug" aria-pressed="true">Buggy order</button><button class="btn" data-o="fix" aria-pressed="false">Fixed order</button></div>' +
+    '<div class="chain"></div><div class="verdict"></div>';
+  const m = $("#rd-m", stage), chain = $(".chain", stage), verdict = $(".verdict", stage);
+  const draw = () => {
+    const marks = +m.value;
+    m.nextElementSibling.textContent = marks;
+    const doors = fixed ? [exc, pass, fail] : [pass, exc, fail];
+    let opened = -1;
+    chain.innerHTML = doors.map((d, i) => {
+      let cls = "skip", tag = "skipped";
+      if (opened === -1) {
+        if (d.test(marks)) { opened = i; cls = "open"; tag = "opens ✅"; }
+        else { cls = "false"; tag = "checked: false"; }
+      }
+      const kw = i === 0 ? "if" : d.cond === "else" ? "else" : "else if";
+      return '<div class="door ' + cls + '"><span>' + kw + (d.cond === "else" ? "" : " (" + d.cond + ")") + " → \"" + d.out + "\"</span><span class=\"tag\">" + tag + "</span></div>";
+    }).join("");
+    const out = doors[opened].out;
+    const wrong = marks >= 90 && out !== "Excellent";
+    verdict.className = "verdict " + (wrong ? "bad" : "good");
+    verdict.textContent = 'Prints "' + out + '". ' + (wrong ? "Wrong! " + marks + " is excellent, but the >= 50 door opened first. First match wins." : "Correct.");
+  };
+  m.addEventListener("input", draw);
+  stage.querySelector(".btn-row").addEventListener("click", (e) => {
+    if (!e.target.dataset.o) return;
+    fixed = e.target.dataset.o === "fix";
+    stage.querySelectorAll("[data-o]").forEach((b) => b.setAttribute("aria-pressed", String(b === e.target)));
+    draw();
+  });
+  draw();
+}
+
+function factoryLine(stage) {
+  stage.innerHTML =
+    '<div class="control"><label for="fl-h">Hours parked</label><input id="fl-h" type="text" value="10" autocomplete="off">' +
+    '<label class="check"><input id="fl-r" type="checkbox"> Kuwait resident</label></div>' +
+    '<div class="belt"></div><div class="term"></div>';
+  const h = $("#fl-h", stage), r = $("#fl-r", stage), belt = $(".belt", stage), term = $(".term", stage);
+  const kwd = (fils) => (fils / 1000).toFixed(3);
+  const station = (label, value, cls) => '<div class="station ' + (cls || "") + '"><small>' + label + "</small><b>" + value + "</b></div>";
+  const draw = () => {
+    const s = h.value;
+    let stop = null;
+    if (!/^\s*[+-]?\d+\s*$/.test(s)) stop = "Please enter whole hours.";
+    else if (+s < 0) stop = "Hours can't be negative.";
+    else if (+s > 24) stop = "Max parking is 24 hours.";
+    else if (+s === 0) stop = "Free (under 1 hour)";
+    if (stop) {
+      belt.innerHTML = station("1. Guards", "stopped", "changed") + station("2. Base fee", "–", "off") + station("3. Discount", "–", "off") + station("4. Cap", "–", "off");
+      term.innerHTML = '<span class="bad">' + esc(stop) + '</span>\n<span class="dim">(return; the rest of the line never runs)</span>';
+      return;
+    }
+    const hours = +s, base = hours * 250, disc = r.checked ? base / 2 : base, capped = Math.min(disc, 1500);
+    belt.innerHTML =
+      station("1. Guards", "passed") +
+      station("2. Base fee", kwd(base), "changed") +
+      station("3. Discount ×0.5", kwd(disc), r.checked ? "changed" : "off") +
+      station("4. Cap 1.500", kwd(capped), capped !== disc ? "changed" : "off");
+    term.innerHTML = '<span class="dim">decimal fee = ' + hours + " * 0.250m;   // " + kwd(base) + "</span>\n" +
+      (r.checked ? '<span class="dim">fee = fee * 0.5m;            // ' + kwd(disc) + "</span>\n" : "") +
+      (capped !== disc ? '<span class="dim">fee = MaxDailyFee;           // 1.500</span>\n' : "") +
+      '<span class="good">Fee: ' + kwd(capped) + " KWD</span>";
+  };
+  h.addEventListener("input", draw);
+  r.addEventListener("change", draw);
+  draw();
+}
+
+function twoMachines(stage) {
+  let hasDefault = true, typo = false, hasDiscard = true;
+  stage.innerHTML =
+    '<div class="two">' +
+    '<div class="panel"><h5>switch statement (does jobs)</h5>' +
+    '<div class="pick" data-s="light">' + ["red", "yellow", "green", "flashing", "off", "Red", "blue"].map((v) => '<button class="btn">' + v + "</button>").join("") + "</div>" +
+    '<label class="check"><input type="checkbox" data-t="default" checked> has default:</label>' +
+    '<div class="codebox" data-c="s"></div><div class="term" data-o="s"><span class="dim">Press a button.</span></div></div>' +
+    '<div class="panel"><h5>switch expression (gives a value)</h5>' +
+    '<div class="pick" data-s="grade">' + ["A", "B", "C", "D", "F", "X"].map((v) => '<button class="btn">\'' + v + "'</button>").join("") + "</div>" +
+    '<label class="check"><input type="checkbox" data-t="discard" checked> has _ arm</label>' +
+    '<label class="check"><input type="checkbox" data-t="typo"> my typo: \'B\' or \'D\'</label>' +
+    '<div class="codebox" data-c="e"></div><div class="term" data-o="e"><span class="dim">Press a button.</span></div></div></div>';
+  const sCode = $('[data-c="s"]', stage), eCode = $('[data-c="e"]', stage), sOut = $('[data-o="s"]', stage), eOut = $('[data-o="e"]', stage);
+  const lightCases = [["red"], ["yellow"], ["green"], ["flashing", "off"]];
+  const lightOut = ["Stop", "Slow down", "Go", "Drive carefully"];
+  function drawStatement(hit) {
+    let lines = ["switch (light)", "{"];
+    lightCases.forEach((vals, i) => {
+      const cls = hit === i ? "hit" : hit !== undefined ? "miss" : "";
+      vals.forEach((v) => lines.push('<span class="' + cls + '">    case "' + v + '":</span>'));
+      lines.push('<span class="' + cls + '">        Console.WriteLine("' + lightOut[i] + '"); break;</span>');
+    });
+    if (hasDefault) {
+      const cls = hit === -1 ? "hit" : hit !== undefined ? "miss" : "";
+      lines.push('<span class="' + cls + '">    default:</span>', '<span class="' + cls + '">        Console.WriteLine("Unknown light"); break;</span>');
+    }
+    lines.push("}");
+    sCode.innerHTML = lines.join("\n");
+  }
+  function arms() {
+    return [
+      { pats: ["A", "B"], out: "Great job!" },
+      { pats: typo ? ["B", "D"] : ["C", "D"], out: "You passed." },
+      { pats: ["F"], out: "Try again." },
+    ];
+  }
+  function drawExpression(hit) {
+    const list = arms();
+    let lines = ["string comment = grade switch", "{"];
+    list.forEach((a, i) => {
+      const cls = hit === i ? "hit" : hit !== undefined ? "miss" : "";
+      lines.push('<span class="' + cls + '">    ' + a.pats.map((p) => "'" + p + "'").join(" or ") + ' => "' + a.out + '",</span>');
+    });
+    if (hasDiscard) {
+      const cls = hit === -1 ? "hit" : hit !== undefined ? "miss" : "";
+      lines.push('<span class="' + cls + '">    _ => "Invalid"</span>');
+    }
+    lines.push("};");
+    eCode.innerHTML = lines.join("\n");
+  }
+  $('[data-s="light"]', stage).addEventListener("click", (e) => {
+    if (e.target.tagName !== "BUTTON") return;
+    const v = e.target.textContent;
+    const i = lightCases.findIndex((vals) => vals.includes(v));
+    if (i >= 0) { drawStatement(i); sOut.innerHTML = lightOut[i]; }
+    else if (hasDefault) { drawStatement(-1); sOut.innerHTML = "Unknown light" + (v === "Red" ? '\n<span class="dim">("Red" is not "red": capitals count)</span>' : ""); }
+    else { drawStatement(null); sOut.innerHTML = '<span class="dim">(no case matched, nothing printed.\n The program just continues. No crash, no warning.)</span>'; }
+  });
+  $('[data-s="grade"]', stage).addEventListener("click", (e) => {
+    if (e.target.tagName !== "BUTTON") return;
+    const g = e.target.textContent.replace(/'/g, "");
+    const list = arms(), i = list.findIndex((a) => a.pats.includes(g));
+    if (i >= 0) { drawExpression(i); eOut.innerHTML = "comment = \"" + list[i].out + "\""; }
+    else if (hasDiscard) {
+      drawExpression(-1);
+      eOut.innerHTML = 'comment = "Invalid"' + (typo && g === "C" ? '\n<span class="bad">⚠ A C student sees "Invalid". The _ arm hid the missing \'C\' case. _ is a safety net, not a fix.</span>' : "");
+    } else {
+      drawExpression(null);
+      eOut.innerHTML = '<span class="bad">Unhandled exception. System.Runtime.CompilerServices.SwitchExpressionException:\nNon-exhaustive switch expression failed to match its input.\nUnmatched value was ' + g + ".</span>";
+      eOut.classList.remove("shake"); void eOut.offsetWidth; eOut.classList.add("shake");
+    }
+  });
+  stage.addEventListener("change", (e) => {
+    const t = e.target.dataset.t;
+    if (t === "default") { hasDefault = e.target.checked; drawStatement(); sOut.innerHTML = '<span class="dim">Press a button.</span>'; }
+    if (t === "discard" || t === "typo") {
+      if (t === "discard") hasDiscard = e.target.checked; else typo = e.target.checked;
+      drawExpression();
+      eOut.innerHTML = hasDiscard ? '<span class="dim">Press a button.</span>' : '<span class="dim">warning CS8509: The switch expression does not handle all possible values of its input type (it is not exhaustive).</span>';
+    }
+  });
+  drawStatement();
+  drawExpression();
+}
+
+function gitUndo(stage) {
+  const st = {
+    commits: [{ id: "717580a", msg: "Add switch lessons and grade calculator exercise" }, { id: "b59b86c", msg: "Update roadmap: swich done" }],
+    pushed: 2, next: 0,
+  };
+  const newMsgs = ["Add git practice file", "Add while loop example", "Fix guard in grade calculator"];
+  stage.innerHTML =
+    '<div class="btn-row"><button class="btn primary" data-a="commit">git commit</button><button class="btn" data-a="amend">git commit --amend</button>' +
+    '<button class="btn" data-a="push">git push</button><button class="btn" data-a="revert">git revert (last)</button></div>' +
+    '<ul class="commits"></ul><div class="term"><span class="dim">$ git log --oneline</span></div>';
+  const list = $(".commits", stage), term = $(".term", stage);
+  const draw = () => {
+    const n = st.commits.length;
+    list.innerHTML = [...st.commits].map((c, i) => ({ c, i })).reverse().map(({ c, i }) =>
+      '<li><span class="id">' + c.id + "</span>" + (i === n - 1 ? '<span class="ref">HEAD → main</span>' : "") +
+      (i === st.pushed - 1 ? '<span class="ref remote">origin/main</span>' : "") + "<span>" + esc(c.msg) + "</span></li>").join("");
+  };
+  stage.querySelector(".btn-row").addEventListener("click", (e) => {
+    const a = e.target.dataset.a;
+    if (!a) return;
+    const last = st.commits[st.commits.length - 1];
+    if (a === "commit") {
+      const msg = newMsgs[st.next++ % newMsgs.length];
+      const c = { id: hex7(), msg };
+      st.commits.push(c);
+      term.innerHTML = '<span class="dim">$ git commit -m "' + esc(msg) + '"</span>\n[main ' + c.id + "] " + esc(msg);
+    } else if (a === "amend") {
+      if (st.commits.length <= st.pushed) {
+        term.innerHTML = '<span class="bad">⚠ Stop! ' + last.id + " is already pushed.\nAmending would rewrite shared history: your teammates still have " + last.id + ".\nUse git revert instead.</span>";
+        term.classList.remove("shake"); void term.offsetWidth; term.classList.add("shake");
+      } else {
+        const old = last.id;
+        last.id = hex7();
+        term.innerHTML = '<span class="dim">$ git commit --amend --no-edit</span>\n[main ' + last.id + "] " + esc(last.msg) + '\n<span class="good">The ID changed: ' + old + " → " + last.id + ". The old photo was thrown away.</span>";
+      }
+    } else if (a === "push") {
+      if (st.pushed === st.commits.length) term.innerHTML = '<span class="dim">$ git push</span>\nEverything up-to-date';
+      else {
+        const from = st.commits[st.pushed - 1].id;
+        st.pushed = st.commits.length;
+        term.innerHTML = '<span class="dim">$ git push</span>\n   ' + from + ".." + st.commits[st.pushed - 1].id + "  main -> main";
+      }
+    } else if (a === "revert") {
+      const msg = 'Revert "' + last.msg + '"';
+      const c = { id: hex7(), msg };
+      st.commits.push(c);
+      term.innerHTML = '<span class="dim">$ git revert ' + last.id + ' --no-edit</span>\n[main ' + c.id + "] " + esc(msg) + '\n<span class="good">A new commit undoes ' + last.id + ". Nothing was erased, so it's safe even after a push.</span>";
+    }
+    draw();
+  });
+  draw();
+}
+
+/* ---------------- start ---------------- */
+window.addEventListener("hashchange", route);
+if (!location.hash) {
+  let lastView = "";
+  try { lastView = localStorage.getItem("lastView") || ""; } catch (e) {}
+  if (lastView) history.replaceState(null, "", "#" + lastView);
+}
+route();
+</script>

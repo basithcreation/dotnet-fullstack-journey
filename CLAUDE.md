@@ -57,6 +57,7 @@ At the end of the syllabus I will turn the book into a real illustrated/animated
 - Each chapter: LKG story → real explanation → Dart comparison → small code examples (with output) → common errors I actually hit (error code + why + fix) → team words → summary table → quiz with answers at the end.
 - Add `🎬 Animation idea:` notes where a picture or animation would help (e.g. a vending machine for a switch, a photo album for Git).
 - Simple English, written for a beginner reading it later with no chat history.
+- **Interactive book page:** https://claude.ai/artifact/6NPoyU6d3Hht5o3FCjSmMB (private). On "the day is over", after writing the chapters: add the day to `book/journey.json`, add a TOC line to `book/README.md`, write a playable widget for each new 🎬 note (`WIDGETS` in `book/site/template.html`), run `python book/build.py`, then republish `book/site/index.html` to that URL.
 
 ## Special modes
 

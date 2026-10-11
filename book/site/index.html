@@ -1,0 +1,998 @@
+<title>Flutter to .NET Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a study notebook. Chapter list on the left (a drawer on phones), one reading column on the right.
+   Graph-paper cover, highlighter for the LKG stories, a terminal look for program output. */
+:root {
+  --paper: #f6f7fb;
+  --sheet: #ffffff;
+  --ink: #1b1f3a;
+  --muted: #5b6183;
+  --line: #dde1ee;
+  --accent: #5b3fd9;
+  --accent-ink: #ffffff;
+  --accent-soft: #ece8fd;
+  --highlight: #fff3c2;
+  --ok: #1d7f50;
+  --ok-soft: #e1f4ea;
+  --bad: #b8342d;
+  --bad-soft: #fbe6e4;
+  --warn: #9a6512;
+  --warn-soft: #fbf0d9;
+  --type: #1f6fb2;
+  --code-bg: #eef0f8;
+  --term-bg: #1b1f3a;
+  --term-fg: #e6e8f2;
+  --term-dim: #9aa0bc;
+  --term-bad: #ff8a80;
+  --term-ok: #7be0a8;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Literata", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #11131d; --sheet: #171a27; --ink: #e6e8f2; --muted: #9aa0bc; --line: #2a2e44;
+    --accent: #a594ff; --accent-ink: #11131d; --accent-soft: #252046; --highlight: #3a3418;
+    --ok: #5fd39a; --ok-soft: #173326; --bad: #ff8a80; --bad-soft: #3a1d1c; --warn: #e8b85a; --warn-soft: #3a2e14;
+    --type: #7fb8f0; --code-bg: #1d2031; --term-bg: #0b0d16; --term-fg: #e6e8f2; --term-dim: #8a90ac;
+    --term-bad: #ff8a80; --term-ok: #7be0a8;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #11131d; --sheet: #171a27; --ink: #e6e8f2; --muted: #9aa0bc; --line: #2a2e44;
+  --accent: #a594ff; --accent-ink: #11131d; --accent-soft: #252046; --highlight: #3a3418;
+  --ok: #5fd39a; --ok-soft: #173326; --bad: #ff8a80; --bad-soft: #3a1d1c; --warn: #e8b85a; --warn-soft: #3a2e14;
+  --type: #7fb8f0; --code-bg: #1d2031; --term-bg: #0b0d16; --term-fg: #e6e8f2; --term-dim: #8a90ac;
+  --term-bad: #ff8a80; --term-ok: #7be0a8;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { background: var(--paper); color: var(--ink); }
+body { font-family: var(--font-body); font-size: 17px; line-height: 1.65; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code, pre, kbd { font-family: var(--font-mono); font-size: 0.86em; }
+
+/* ---------- top bar + drawer ---------- */
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px; background: var(--sheet); border-bottom: 1px solid var(--line);
+}
+.brand { font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -0.01em; text-decoration: none; color: var(--ink); }
+.brand span { color: var(--accent); }
+.menu-btn { display: none; }
+.topbar .day-chip { margin-left: auto; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+
+.layout { display: grid; grid-template-columns: 290px minmax(0, 1fr); min-height: calc(100vh - 52px); }
+.toc {
+  border-right: 1px solid var(--line); background: var(--sheet);
+  padding: 20px 16px 40px; position: sticky; top: 52px; align-self: start;
+  max-height: calc(100vh - 52px); overflow-y: auto;
+}
+.toc h3 {
+  font-family: var(--font-display); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted); margin: 20px 0 6px; font-weight: 700;
+}
+.toc a {
+  display: grid; grid-template-columns: 34px 1fr; gap: 6px; align-items: baseline;
+  padding: 6px 8px; border-radius: 8px; color: var(--ink); text-decoration: none;
+  font-family: var(--font-display); font-size: 15px; line-height: 1.3;
+}
+.toc a .num { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.toc a:hover { background: var(--accent-soft); }
+.toc a[aria-current="page"] { background: var(--accent); color: var(--accent-ink); }
+.toc a[aria-current="page"] .num { color: var(--accent-ink); }
+.toc .home-link { grid-template-columns: 1fr; font-weight: 700; }
+
+main { min-width: 0; padding-inline: 16px; padding-block: 32px 80px; }
+.column { max-width: 760px; margin: 0 auto; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .menu-btn { display: inline-flex; }
+  .toc {
+    position: fixed; inset: 52px 0 0 0; max-height: none; z-index: 15;
+    border-right: 0; transform: translateX(-100%); transition: transform .2s ease;
+  }
+  .toc.open { transform: none; }
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  font-family: var(--font-display); font-weight: 700; font-size: 14px;
+  border: 1px solid var(--line); background: var(--sheet); color: var(--ink);
+  padding: 7px 12px; border-radius: 8px; cursor: pointer; line-height: 1.2;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ---------- home ---------- */
+.cover {
+  border: 1px solid var(--line); border-radius: 14px; padding: 28px 24px;
+  background-color: var(--sheet);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--accent) 9%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 9%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.cover h1 {
+  font-family: var(--font-display); font-weight: 800; font-size: clamp(32px, 6vw, 52px);
+  line-height: 1.02; letter-spacing: -0.03em; margin: 10px 0 12px; text-wrap: balance;
+}
+.cover h1 .from { color: var(--muted); font-weight: 500; }
+.cover p { margin: 0; max-width: 56ch; color: var(--muted); }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 24px; }
+.stat { background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }
+.stat b { display: block; font-family: var(--font-display); font-size: 28px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 13px; color: var(--muted); font-family: var(--font-display); }
+@media (max-width: 600px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.home-section { margin-top: 44px; }
+.home-section > h2 { font-family: var(--font-display); font-size: 24px; letter-spacing: -0.01em; margin: 0 0 4px; }
+.home-section > p.lead { margin: 0 0 16px; color: var(--muted); font-size: 15px; }
+
+.chart-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--sheet); padding: 12px; }
+.chart-wrap svg { display: block; min-width: 520px; width: 100%; height: auto; }
+
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.timeline li {
+  display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 14px;
+  background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px;
+}
+.timeline .when { font-family: var(--font-display); }
+.timeline .when b { display: block; font-size: 20px; }
+.timeline .when span { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+.timeline h4 { margin: 0 0 6px; font-family: var(--font-display); font-size: 17px; }
+.timeline h4 small { color: var(--muted); font-weight: 500; font-size: 13px; margin-left: 6px; }
+.timeline ul { margin: 0 0 8px; padding-left: 18px; font-size: 15px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-family: var(--font-mono); font-size: 12px; padding: 3px 8px; border-radius: 99px; background: var(--code-bg); color: var(--ink); }
+.chip.score-high { background: var(--ok-soft); color: var(--ok); }
+.chip.score-mid { background: var(--warn-soft); color: var(--warn); }
+.chip.score-low { background: var(--bad-soft); color: var(--bad); }
+
+.chapter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.chapter-card {
+  display: block; text-decoration: none; color: var(--ink); background: var(--sheet);
+  border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px;
+}
+.chapter-card:hover { border-color: var(--accent); }
+.chapter-card .num { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
+.chapter-card b { display: block; font-family: var(--font-display); font-size: 16px; line-height: 1.3; margin-top: 2px; }
+.chapter-card span { font-size: 13px; color: var(--muted); }
+.phase-label { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--muted); margin: 18px 0 8px; }
+
+/* ---------- chapter ---------- */
+.chapter-head .eyebrow { display: block; margin-bottom: 6px; }
+.chapter-head h1 {
+  font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 5vw, 44px);
+  line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 14px; text-wrap: balance;
+}
+.chapter blockquote.meta {
+  margin: 0 0 8px; padding: 0; border: 0; font-family: var(--font-mono); font-size: 13px; color: var(--muted);
+}
+.chapter blockquote.meta p { margin: 0; }
+.chapter hr { display: none; }
+.chapter section { margin-top: 36px; }
+.chapter h2 {
+  font-family: var(--font-display); font-size: 26px; letter-spacing: -0.015em; line-height: 1.2;
+  margin: 0 0 12px; text-wrap: balance;
+}
+.chapter h3 { font-family: var(--font-display); font-size: 19px; margin: 28px 0 8px; }
+.chapter p, .chapter li { max-width: 68ch; }
+.chapter section.lkg {
+  background: var(--highlight); border-radius: 14px; padding: 20px 22px 8px;
+}
+.chapter section.errors h2 { color: var(--bad); }
+.chapter section.quiz { border-top: 2px dashed var(--line); padding-top: 24px; }
+.chapter :not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 5px; }
+.chapter pre {
+  background: var(--code-bg); border-radius: var(--radius); padding: 14px 16px; overflow-x: auto;
+  line-height: 1.5; border: 1px solid var(--line);
+}
+.chapter pre code { font-size: 14px; }
+.table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--sheet); }
+.chapter table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.45; }
+.chapter th, .chapter td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.chapter th { font-family: var(--font-display); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); background: var(--paper); }
+.chapter tr:last-child td { border-bottom: 0; }
+.chapter details {
+  background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 16px; margin-top: 16px;
+}
+.chapter summary { cursor: pointer; font-family: var(--font-display); font-weight: 700; color: var(--accent); }
+.chapter blockquote:not(.meta) { margin: 14px 0; padding: 10px 16px; border-left: 3px solid var(--warn); background: var(--warn-soft); border-radius: 0 8px 8px 0; }
+.chapter blockquote:not(.meta) p { margin: 4px 0; }
+
+.pager { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 56px; }
+.pager a { display: block; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius); text-decoration: none; color: var(--ink); background: var(--sheet); }
+.pager a:hover { border-color: var(--accent); }
+.pager small { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.pager b { font-family: var(--font-display); }
+.pager .next { text-align: right; grid-column: 2; }
+
+/* highlight.js tokens */
+.hljs-keyword, .hljs-built_in, .hljs-literal { color: var(--accent); font-weight: 600; }
+.hljs-string, .hljs-char { color: var(--ok); }
+.hljs-number { color: var(--warn); }
+.hljs-comment { color: var(--muted); font-style: italic; }
+.hljs-title, .hljs-type, .hljs-class { color: var(--type); }
+.hljs-subst { color: var(--ink); }
+
+/* ---------- animations ---------- */
+.anim { margin: 20px 0; border: 1px solid var(--line); border-radius: 14px; background: var(--sheet); overflow: hidden; }
+.anim-tag {
+  display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent);
+  background: var(--accent-soft);
+}
+.anim-stage { padding: 16px; display: grid; gap: 14px; }
+.anim figcaption { padding: 0 16px 14px; font-size: 14px; color: var(--muted); }
+.term {
+  background: var(--term-bg); color: var(--term-fg); font-family: var(--font-mono); font-size: 13px;
+  border-radius: 8px; padding: 12px 14px; white-space: pre-wrap; overflow-x: auto; line-height: 1.55; min-height: 3.2em;
+}
+.term .dim { color: var(--term-dim); }
+.term .bad { color: var(--term-bad); }
+.term .good { color: var(--term-ok); }
+.zones { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.zones.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 640px) { .zones, .zones.three { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.zone { border: 1px dashed var(--line); border-radius: 10px; padding: 10px; min-height: 110px; min-width: 0; transition: border-color .2s, background .2s; }
+.zone h5 { margin: 0 0 6px; font-family: var(--font-display); font-size: 13px; }
+.zone h5 small { display: block; color: var(--muted); font-weight: 500; font-size: 11px; font-family: var(--font-mono); }
+.zone.active { border-style: solid; border-color: var(--accent); background: var(--accent-soft); }
+.item {
+  font-family: var(--font-mono); font-size: 12px; padding: 4px 7px; border-radius: 6px; margin: 4px 0;
+  background: var(--code-bg); overflow-wrap: anywhere; animation: pop .35s ease;
+}
+.item.mod { background: var(--bad-soft); color: var(--bad); }
+.item.staged { background: var(--ok-soft); color: var(--ok); }
+@keyframes pop { from { transform: scale(.85); opacity: .3; } to { transform: none; opacity: 1; } }
+@keyframes shake { 0%,100% { transform: none; } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+.shake { animation: shake .4s ease; }
+.pick { display: flex; flex-wrap: wrap; gap: 6px; }
+.pick .btn { font-family: var(--font-mono); font-weight: 600; }
+.verdict { padding: 10px 12px; border-radius: 8px; font-size: 15px; background: var(--code-bg); }
+.verdict.good { background: var(--ok-soft); color: var(--ok); }
+.verdict.bad { background: var(--bad-soft); color: var(--bad); }
+.verdict.warn { background: var(--warn-soft); color: var(--warn); }
+.control { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 14px; }
+.control input[type="range"] { flex: 1 1 180px; accent-color: var(--accent); }
+.control input[type="text"] {
+  font-family: var(--font-mono); font-size: 14px; padding: 6px 10px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--paper); color: var(--ink); width: 9em;
+}
+.control output { font-family: var(--font-mono); font-weight: 600; min-width: 2.5em; }
+.chain { display: grid; gap: 6px; }
+.door {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center;
+  font-family: var(--font-mono); font-size: 13px; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line);
+  transition: background .25s, opacity .25s;
+}
+.door .tag { font-family: var(--font-display); font-size: 12px; font-weight: 700; }
+.door.false { opacity: .75; }
+.door.false .tag { color: var(--muted); }
+.door.open { background: var(--ok-soft); border-color: var(--ok); }
+.door.open .tag { color: var(--ok); }
+.door.skip { opacity: .4; text-decoration: line-through; }
+.belt { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 640px) { .belt { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.station { border: 1px solid var(--line); border-radius: 10px; padding: 10px; text-align: center; min-width: 0; }
+.station small { display: block; font-family: var(--font-display); font-size: 12px; color: var(--muted); }
+.station b { display: block; font-family: var(--font-mono); font-size: 16px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.station.changed { border-color: var(--accent); background: var(--accent-soft); }
+.station.off { opacity: .4; }
+.cookies { display: grid; gap: 4px; font-size: 20px; line-height: 1.3; }
+.cookies div { display: grid; grid-template-columns: 70px 1fr; align-items: center; }
+.cookies small { font-family: var(--font-display); font-size: 13px; color: var(--muted); }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 640px) { .two { grid-template-columns: minmax(0, 1fr); } }
+.panel { border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.panel h5 { margin: 0; font-family: var(--font-display); font-size: 15px; }
+.codebox { font-family: var(--font-mono); font-size: 13px; background: var(--code-bg); border-radius: 8px; padding: 10px 12px; white-space: pre; overflow-x: auto; line-height: 1.6; }
+.codebox .hit { background: var(--ok-soft); color: var(--ok); border-radius: 4px; }
+.codebox .miss { opacity: .5; }
+.check { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-size: 13px; cursor: pointer; }
+.check input { accent-color: var(--accent); }
+.commits { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.commits li {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-family: var(--font-mono); font-size: 13px;
+  padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; animation: pop .35s ease;
+}
+.commits .id { color: var(--warn); font-weight: 600; }
+.commits .ref { font-size: 11px; padding: 1px 6px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
+.commits .ref.remote { background: var(--ok-soft); color: var(--ok); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<header class="topbar">
+  <button class="btn menu-btn" id="menuBtn" aria-controls="toc" aria-expanded="false">Chapters</button>
+  <a class="brand" href="#home">Flutter <span>→</span> .NET</a>
+  <span class="day-chip" id="dayChip"></span>
+</header>
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Chapters"></nav>
+  <main id="main"><div class="column" id="view"></div></main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+const CHAPTERS = [{"id": "0.1", "phase": 0, "phaseName": "Meet .NET + Git", "file": "phase-00/01-meet-dotnet.md", "title": "Meet .NET and your first program", "md": "# Chapter 0.1: Meet .NET and your first program\n\n> Learned: Tue 6 Oct 2026 · Code: `projects/00-greeting-cli`, `lessons/phase-00/notes.md`\n\n---\n\n## 🧸 LKG story\n\n.NET is a **big toy box** from Microsoft. Inside are toys that can become websites, APIs, desktop apps, games and mobile apps.\n\n**C#** is the **language** you speak to the toys. You tell them what to do in C#.\n\nThere are two helpers:\n- The **SDK** is the **toolbox for the builder** (you, the developer). It has tools to create and build apps.\n- The **CLR** is the **engine** inside the toy. It makes the app run on the user's computer.\n\n🎬 **Animation idea:** a developer opens a toolbox (SDK) and builds a toy car. The car drives away on its own, powered by an engine labelled CLR. A user who only *plays* with the car never sees the toolbox.\n\n---\n\n## 💻 Real explanation\n\n| Word | What it really is |\n|---|---|\n| **.NET** | The **platform**: runtime + libraries + tools. Free, open source, runs on Windows, Linux and Mac. |\n| **C#** | The **programming language** you write. (.NET also supports F# and VB, but C# is the main one.) |\n| **SDK** (Software Development Kit) | What **developers** install: the compiler, the `dotnet` command, templates. |\n| **Runtime** / **CLR** (Common Language Runtime) | What **users** need to *run* the app. It runs your compiled code, manages memory (garbage collection), and more. |\n| **.NET Framework** | The **old**, Windows-only version (up to 4.8). Don't learn it for new work. |\n| **Modern .NET** | .NET 5, 6, 7, 8, 9, 10... We use **.NET 10 (LTS** = Long-Term Support, supported for 3 years). |\n\nMy setup: .NET SDK 10.0.401, VS Code, Visual Studio 2026, Git 2.53.\n\n### The three commands you use every day\n\n```\ndotnet new console -o my-app    // create a new console project in folder my-app\ndotnet run                      // build + run the project\ndotnet build                    // only build (check for errors), don't run\n```\n\n### What's inside a project\n\n```\nmy-app/\n├── my-app.csproj   ← project settings (like pubspec.yaml)\n├── Program.cs      ← your code\n├── bin/            ← built app (generated, never commit)\n└── obj/            ← temporary build files (generated, never commit)\n```\n\nThe `.csproj` file holds:\n- `TargetFramework`: which .NET version (`net10.0`)\n- `OutputType`: `Exe` = a program you can run\n- `Nullable`: `enable` = warn me about possible nulls\n- Package references (later): the libraries you add\n\n### Your first program\n\nModern C# uses **top-level statements**: you write code directly in `Program.cs`, without wrapping it in a `class` and a `Main` method.\n\n```csharp\nConsole.WriteLine(\"What is your name?\");\nstring? name = Console.ReadLine();\nConsole.WriteLine($\"Hello {name}!\");\n```\n\n- `Console.WriteLine(...)`: print a line of text\n- `Console.ReadLine()`: wait for the user to type and press Enter. It returns `string?` (text that **may be null**)\n- `$\"Hello {name}!\"`: **string interpolation**. Put a variable inside `{ }` in a `$` string.\n\n### Text → number: `int.Parse`\n\n`ReadLine` always gives you **text**. To do math, convert it:\n\n```csharp\nstring? birthYearText = Console.ReadLine();\nint birthYear = int.Parse(birthYearText);\nint age = DateTime.Now.Year - birthYear;\nConsole.WriteLine($\"Hello {name}! You are {age} years old.\");\n```\n\n`DateTime.Now.Year` gives the current year from the computer clock.\n(`int.Parse` crashes on bad input like `abc`. Chapter 1.2 shows the safe way: `TryParse`.)\n\n### Math operators\n\n| Operator | Meaning | Example | Result |\n|---|---|---|---|\n| `+` | add | `7 + 2` | `9` |\n| `-` | subtract | `7 - 2` | `5` |\n| `*` | multiply | `7 * 2` | `14` |\n| `/` | divide | `7 / 2` | `3` ⚠️ |\n| `%` | remainder (modulo) | `7 % 2` | `1` |\n\n⚠️ **Integer division:** when both numbers are `int`, C# **throws away the decimal part**: `10 / 3` is `3`, not `3.33`. To get decimals, use a decimal type: `10.0 / 3` → `3.333...`\n\n🎬 **Animation idea:** 10 cookies shared by 3 kids. Each kid gets 3 cookies (`10 / 3`), and 1 cookie is left on the plate (`10 % 3`).\n\n### Exit code\nWhen a program finishes, it returns an **exit code**. `0` = success. Visual Studio shows this in the Output window (\"exited with code 0\").\n\n---\n\n## 🎯 Dart comparison\n\n| | Dart / Flutter | C# / .NET |\n|---|---|---|\n| Project file | `pubspec.yaml` | `.csproj` |\n| Create | `dart create` / `flutter create` | `dotnet new console` |\n| Run | `dart run` / `flutter run` | `dotnet run` |\n| Entry point | `void main() { }` | top-level statements (or `static void Main()`) |\n| Print | `print('Hi')` | `Console.WriteLine(\"Hi\")` |\n| Read input | `stdin.readLineSync()` → `String?` | `Console.ReadLine()` → `string?` |\n| Interpolation | `'Hi $name'` / `'${a + b}'` | `$\"Hi {name}\"` / `$\"{a + b}\"` |\n| Text → int | `int.parse('5')` | `int.Parse(\"5\")` |\n| `10 / 3` | `3.333...` (always a double) | `3` (int ÷ int = int) |\n| Whole-number division | `10 ~/ 3` → `3` | `10 / 3` → `3` |\n\n---\n\n## 🐞 Errors and lessons from my code\n\n| What happened | Why | Lesson |\n|---|---|---|\n| Named a variable `age` but stored the birth year (2000) in it | The name lied about the content | Names must describe what's inside: `birthYear` |\n| Left lots of old code commented out in `Program.cs` | \"Dead code\" makes files hard to read | Delete it. Keep notes in `lessons/`, Git remembers old versions |\n| `2030 - DateTime.Now.Year` with `2030` typed directly | A **magic number**: nobody knows what 2030 means | Give it a name: `const int TargetYear = 2030;` |\n\n---\n\n## 🏢 Team words\n\n| Easy word | Real term | Team sentence |\n|---|---|---|\n| toy box | **platform** / **framework** | \"We're on .NET 10, the current LTS.\" |\n| builder's toolbox | **SDK** | \"Install the .NET 10 SDK to build the project.\" |\n| engine | **runtime** / **CLR** | \"The server only needs the runtime, not the SDK.\" |\n| settings file | **project file** (`.csproj`) | \"Add the package reference to the csproj.\" |\n| generated folders | **build output** / **build artifacts** (`bin/`, `obj/`) | \"Don't commit bin and obj.\" |\n| code straight in Program.cs | **top-level statements** | \"It's a minimal console app with top-level statements.\" |\n| `$\"Hi {x}\"` | **string interpolation** | \"Use interpolation instead of `+`.\" |\n| unnamed number | **magic number** | \"Extract that magic number into a constant.\" |\n\n---\n\n## 📋 Summary\n\n- **.NET** = platform, **C#** = language, **SDK** = developer tools, **CLR** = engine that runs the app\n- `dotnet new console`, `dotnet run`, `dotnet build`\n- `.csproj` ≈ `pubspec.yaml`; never commit `bin/` and `obj/`\n- `Console.WriteLine` prints, `Console.ReadLine` reads text (`string?`)\n- `int.Parse` turns text into a number (it crashes on bad input)\n- `int / int` = whole number (`10 / 3 = 3`); `%` gives the remainder\n\n---\n\n## 📝 Quiz\n\n1. What is the difference between the SDK and the CLR?\n2. Which two folders should never be committed, and why?\n3. What does `10 / 3` give in C#? And in Dart?\n4. What does `17 % 5` give?\n5. What type does `Console.ReadLine()` return, and what does the `?` mean?\n\n<details>\n<summary>Answers<\/summary>\n\n1. The **SDK** is for developers, to create and build apps. The **CLR** (runtime) is the engine that runs the app. Users only need the runtime.\n2. `bin/` and `obj/`. They are **generated** every time you build, so they're not your source code. They're big and change all the time.\n3. C#: `3` (int ÷ int throws away the decimal part). Dart: `3.3333333333333335` (Dart's `/` always gives a double).\n4. `2` (17 = 5 × 3 + **2**)\n5. `string?`, which is text that **may be null** (for example, when there is no more input).\n\n<\/details>\n"}, {"id": "0.2", "phase": 0, "phaseName": "Meet .NET + Git", "file": "phase-00/02-git-basics.md", "title": "Git basics, a time machine for code", "md": "# Chapter 0.2: Git basics, a time machine for code\n\n> Learned: Tue 6 Oct 2026 · Repo: https://github.com/basithcreation/dotnet-fullstack-journey\n\n---\n\n## 🧸 LKG story\n\nGit is a **photo album** for your code.\n\n- 📝 You work on your files at your **desk**.\n- 📦 You put the pages you want in the photo into a **box**.\n- 📸 You take a **photo** of the box and write a caption under it.\n- ☁️ You upload the album to **GitHub** so it's safe, and so others can see it.\n\nIf you break something tomorrow, you open the album and go back to yesterday's photo.\n\n🎬 **Animation idea:** a desk with papers → some papers move into a box (`git add`) → a camera flash (`git commit`) → the photo lands in an album → the album flies up into a cloud (`git push`).\n\n---\n\n## 💻 Real explanation\n\n| LKG | Real term | Command |\n|---|---|---|\n| desk | **working directory** (your files right now) | (just edit files) |\n| box | **staging area** (what goes into the next commit) | `git add` |\n| photo + caption | **commit** + **commit message** | `git commit -m \"...\"` |\n| album on your PC | **local repository** (the hidden `.git` folder) | `git init` |\n| album in the cloud | **remote repository** (GitHub) | `git push` |\n\n### First-time setup of a project\n\n```\ngit init                          // start a new repo in this folder\ngit add .                         // stage all files\ngit commit -m \"Add greeting CLI\"  // take the first photo\ngit remote add origin <url>       // connect to the GitHub repo\ngit push -u origin main           // upload (-u: remember this remote for next time)\n```\n\nAfter that, the daily loop is:\n```\ngit status                  // what changed?\ngit add <files>             // put them in the box\ngit commit -m \"message\"     // take the photo\ngit push                    // upload\n```\n\n### `.gitignore`: what Git should NOT save\n\nA `.gitignore` file lists files and folders Git must ignore. For .NET, create it with:\n```\ndotnet new gitignore\n```\nIt already ignores `bin/`, `obj/`, `.vs/` and other generated files.\n\n`git status --untracked-files=all` shows **every** new file, so you can check nothing unwanted slips in.\n\n### README\n\n`README.md` is the **front page** of your repo on GitHub. It's written in **Markdown**:\n```markdown\n# Project title\nShort description.\n\n## How to run\n    dotnet run\n```\n\n### Important ideas\n\n- A **commit is a local snapshot** of all your staged files. It's **not** only a message, and it's **not** on GitHub until you `push`.\n- Git only saves what you **commit**. Edits you didn't commit can be lost, so **commit often**.\n- The warning `LF will be replaced by CRLF` is about invisible line-ending characters (Windows vs Linux). It's **harmless**.\n- Use your **personal** email in Git for your own portfolio, not your work email: `git config --global user.email \"you@example.com\"`\n\n---\n\n## 🎯 Dart comparison\n\nGit is the same for every language. The only difference is the ignore file:\n\n| Flutter | .NET |\n|---|---|\n| Ignore `build/`, `.dart_tool/` | Ignore `bin/`, `obj/`, `.vs/` |\n| `flutter create` makes a `.gitignore` for you | `dotnet new gitignore` |\n\n---\n\n## 🐞 Errors and lessons from my repo\n\n| What happened | Lesson |\n|---|---|\n| Commit message `Imporve READMR` (2 typos) and `Complete pjase 0` | Read your message before pressing Enter. Typos stay in the history forever. |\n| Git was using my **work** email | Changed it to the personal email for my portfolio |\n\n---\n\n## 🏢 Team words\n\n| Easy word | Real term | Team sentence |\n|---|---|---|\n| photo album | **repository** (repo) | \"Clone the repo and run it.\" |\n| photo | **commit** | \"Commit small and often.\" |\n| box | **staging area** | \"Stage only what belongs in this commit.\" |\n| upload | **push** | \"Push your branch when you're done.\" |\n| GitHub copy | **remote** (`origin`) | \"Is it pushed to origin?\" |\n| ignore list | **.gitignore** | \"Add the bin folder to .gitignore.\" |\n\n---\n\n## 📋 Summary\n\n- Desk → box → photo → cloud = edit → `git add` → `git commit` → `git push`\n- `git status` tells you what changed. Check it often.\n- `.gitignore` keeps `bin/` and `obj/` out of the repo\n- A commit is a **local** snapshot. Push to put it on GitHub.\n- Commit often: Git can only bring back what you committed\n\n---\n\n## 📝 Quiz\n\n1. What is the difference between `git commit` and `git push`?\n2. You edited a file but didn't commit it, and then your laptop died. Can Git bring the edit back?\n3. What does `git add` do?\n4. Which command creates a .NET `.gitignore`?\n5. Is the warning \"LF will be replaced by CRLF\" a problem?\n\n<details>\n<summary>Answers<\/summary>\n\n1. `commit` takes a snapshot **on your PC**. `push` uploads your commits **to GitHub**.\n2. No. Git only saves what you **commit**. That's why we commit often.\n3. It puts files into the **staging area** (the box), so they go into the next commit.\n4. `dotnet new gitignore`\n5. No. It's only about invisible line-ending characters (Windows uses CRLF, Linux/Mac use LF). Git converts them automatically.\n\n<\/details>\n"}, {"id": "1.1", "phase": 1, "phaseName": "C# Bricks", "file": "phase-01/01-data-types.md", "title": "Data types, what can go in the box", "md": "# Chapter 1.1: Data types, what can go in the box\n\n> Learned: Wed 7 Oct 2026 · Code: `lessons/phase-01/01-data-types`, `02-cafe-bill`\n\n---\n\n## 🧸 LKG story\n\nA **variable** is a **box with a label**. The label is the name. But every box also has a **shape**, and only things of that shape fit inside:\n\n- A box for **whole numbers** (3, 28, -5) can't hold 2.5.\n- A box for **money** must be exact, without losing a single fils.\n- A box for **yes/no** holds only `true` or `false`.\n- A box for **one letter** holds exactly one character.\n- A box for **text** holds words and sentences.\n\nThe shape of the box is the **data type**.\n\n🎬 **Animation idea:** a shape-sorter toy. A round number `2.5` tries to go into the square \"int\" hole and bounces off. `3` drops straight in.\n\n---\n\n## 💻 Real explanation\n\n```csharp\nint age = 28;\n```\nreads as: *\"Make a box named `age` that holds only whole numbers (`int`), and put 28 in it.\"*\n\n### The six basic types\n\n| Type | Holds | Example | Notes |\n|---|---|---|---|\n| `int` | whole numbers | `int days = 3;` | about ±2.1 billion |\n| `double` | decimal numbers (approximate) | `double height = 172.8;` | fast, for science/measurements |\n| `decimal` | decimal numbers (**exact**) | `decimal price = 1.350m;` | **use for money**, needs the `m` suffix |\n| `bool` | `true` / `false` | `bool isWeekend = false;` | |\n| `char` | **one** character | `char tableLetter = 'C';` | **single** quotes |\n| `string` | text | `string name = \"Fatima\";` | **double** quotes |\n\n### Why `decimal` for money? The `0.1 + 0.2` problem\n\n```csharp\ndouble a = 0.1;\ndouble b = 0.2;\nConsole.WriteLine($\"double : {a + b}\");    // double : 0.30000000000000004\n\ndecimal c = 0.1m;\ndecimal d = 0.2m;\nConsole.WriteLine($\"decimal : {c + d}\");   // decimal : 0.3\n```\n\n`double` stores numbers in **binary** (base 2), and `0.1` can't be written exactly in binary, just like 1/3 can't be written exactly in decimal (0.3333...). So a tiny error appears. That's fine for a distance or a temperature, but **never** for money: tiny errors add up over thousands of bills.\n\n`decimal` stores numbers in **base 10**, the way we write money, so `0.1` is exactly `0.1`.\n\n🎬 **Animation idea:** two cashiers. The \"double\" cashier gives change of 0.30000000000000004 KWD and the customer looks confused. The \"decimal\" cashier gives exactly 0.300.\n\n### Safe and unsafe conversions (\"pouring\")\n\nThink of pouring water from one cup into another:\n- **Small cup → big cup** is **safe**, nothing spills: `int` → `decimal` or `int` → `double` happens **automatically** (**implicit conversion**).\n- `decimal` ↔ `double` is **not** automatic: they store numbers in different ways, so C# makes you decide.\n\n```csharp\nint days = 3;\ndecimal dailyFee = 0.750m;\ndecimal fee = days * dailyFee;            // int is converted to decimal automatically ✅\nConsole.WriteLine($\"Fee: {fee:F3} KWD\");  // Fee: 2.250 KWD\n```\n\n### Formatting money: `:F3`\n\nKuwaiti dinar has 3 decimal places (1 KWD = 1000 fils), so use `:F3`:\n```csharp\ndecimal total = 4.8m;\nConsole.WriteLine($\"{total:F3} KWD\");   // 4.800 KWD\n```\nAlways write the number. `:F` alone uses the PC's region settings, so it may show 2 digits on one computer and 3 on another.\n\n### `Console.Write` vs `Console.WriteLine`\n- `Console.WriteLine(\"Hi\")` prints and then moves to a **new line**\n- `Console.Write(\"Name: \")` prints and **stays on the same line** (good for questions)\n\n### Naming in C#\n- Local variables: **camelCase**: `totalBillAmount`, `latteQuantity`\n- Constants, methods and classes: **PascalCase**: `MaxDailyFee`\n\n---\n\n## 🎯 Dart comparison\n\n| | Dart | C# |\n|---|---|---|\n| Whole number | `int` (64-bit) | `int` (32-bit). `long` is the 64-bit one |\n| Decimal | `double` | `double` |\n| Exact money type | ❌ none built in (use a package or store fils as `int`) | ✅ `decimal` |\n| Yes/no | `bool` | `bool` |\n| Text | `String` (capital S) | `string` (small s) |\n| One character | ❌ no char type (a String of length 1) | `char` with `'A'` |\n| Quotes | `'text'` or `\"text\"` | `\"text\"` for strings, `'A'` only for one char |\n\n⚠️ The two biggest Dart habits to break: `String` → `string`, and `'text'` → `\"text\"`.\n\n---\n\n## 🐞 Errors I actually hit\n\n| Error | Why | Fix |\n|---|---|---|\n| Wrote `String` | Dart habit | C# uses `string` |\n| `'text'` → error CS1012 \"Too many characters in character literal\" | Single quotes are only for **one** `char` | Use `\"text\"` |\n| `decimal price = 1.35;` → error CS0664 | `1.35` without `m` is a `double` | `1.35m` |\n| Output `x1.000 cakes` | Used `:F3` on a quantity | `:F3` only on **money** |\n| Output `Fee: 0.750` with no currency | Didn't read the output like a customer | `Fee: 0.750 KWD` |\n| Renamed a variable by hand and the build broke twice | Missed one place | Use **F2** (rename) in VS Code |\n\n---\n\n## 🏢 Team words\n\n| Easy word | Real term | Team sentence |\n|---|---|---|\n| box | **variable** | \"Store the result in a variable called `wholeHours`.\" |\n| shape of the box | **data type** | \"Use `decimal` as the type for money.\" |\n| safe pour | **implicit conversion** | \"int to decimal is an implicit conversion.\" |\n| tiny error in double | **floating-point precision error** | \"Don't use double for money, you'll get rounding errors.\" |\n| `:F3` | **format specifier** | \"Format money with F3.\" |\n| `m` after a number | **literal suffix** | \"Add the m suffix, it's a decimal literal.\" |\n\n---\n\n## 📋 Summary\n\n- `int` whole numbers · `double` approximate decimals · `decimal` exact (money, `m`) · `bool` · `char` `'A'` · `string` `\"text\"`\n- `0.1 + 0.2` in double = `0.30000000000000004`, in decimal = `0.3`\n- `int` → `decimal`/`double` is automatic. `decimal` ↔ `double` is not.\n- Money: `decimal` + `:F3` + the currency in the text\n- camelCase for variables, PascalCase for constants\n\n---\n\n## 📝 Quiz\n\n1. Which type would you use for a product price in KWD, and why?\n2. What's wrong with `char letter = \"B\";`?\n3. What does `0.1 + 0.2` print with `double`?\n4. Is `decimal fee = 3 * 0.250m;` OK? Why?\n5. What does `Console.WriteLine($\"{2.5m:F3}\");` print?\n\n<details>\n<summary>Answers<\/summary>\n\n1. `decimal`, because it's **exact**. `double` gives tiny rounding errors that add up.\n2. `\"B\"` is a `string` (double quotes). A `char` needs single quotes: `'B'`.\n3. `0.30000000000000004`\n4. Yes. `3` is an `int`, and int → decimal is a safe **implicit conversion**.\n5. `2.500`\n\n<\/details>\n"}, {"id": "1.2", "phase": 1, "phaseName": "C# Bricks", "file": "phase-01/02-var-const-conversion.md", "title": "var, const, conversion, Parse and TryParse", "md": "# Chapter 1.2: var, const, conversion, Parse and TryParse\n\n> Learned: Wed 7 Oct 2026 · Code: `lessons/phase-01/03-parse-tryparse`, `04-parking-meter`\n\n---\n\n## 🧸 LKG story\n\n- **`var`**: you put a toy in a box, and the box **looks at the toy and takes its shape**. After that, the shape is **locked**.\n- **`const`**: a **rule painted on the wall**. \"Parking costs 0.250 per hour.\" Nobody can change it while the program runs.\n- **Cast `(int)`**: **scissors**. `2.75` → cut off the `.75` → `2`. It cuts, it does **not** round.\n- **`Parse`**: a **strict teacher**. Give them `\"abc\"` instead of a number and they **scream and stop the class** (crash).\n- **`TryParse`**: a **polite teacher**. Give them `\"abc\"` and they calmly say *\"No, that's not a number\"* (`false`) and write `0`.\n\n🎬 **Animation idea:** two teachers receive a paper saying \"abc\". The Parse teacher explodes 💥 (the program crashes). The TryParse teacher shakes their head, holds up a sign saying `false`, and writes `0` on the board.\n\n---\n\n## 💻 Real explanation\n\n### `var`: the type is inferred\n```csharp\nvar exactHeight = 172.8;     // C# sees 172.8 → the type is double\nvar count = 5;               // int\nvar name = \"Basith\";         // string\n```\n- The type is decided **once**, from the value, and then it's **locked**: `count = \"hi\";` is an error.\n- `var` **must** have a value: `var x;` is an error (CS0818). C# can't guess a type from nothing.\n\n### `const`: values that never change\n```csharp\nconst int CurrentYear = 2026;\nconst decimal PerHourRate = 0.250m;\n```\n- The value must be known **when you write the code** (not from user input or the clock).\n- Name constants in **PascalCase**.\n- Using constants instead of raw numbers removes **magic numbers**.\n\n### Casting: `(int)value` cuts\n```csharp\ndouble averageStayHours = 2.75;\nint wholeHours = (int)averageStayHours;   // 2  (cut, not rounded)\n```\n- This is an **explicit conversion**: you're telling C# *\"I know I'll lose the decimal part, do it anyway\"*.\n- The syntax is `(int)value`, **not** `int(value)`.\n\n### `Parse`: text → number, crashes on bad input\n```csharp\nint year = int.Parse(\"2000\");   // 2000 ✅\nint bad  = int.Parse(\"abc\");    // 💥 FormatException: the program crashes\n```\nAlso, with `string? input = Console.ReadLine();`, the call `int.Parse(input)` gives warning **CS8604** (\"possible null reference argument\"), because `input` might be null.\n\n### `TryParse`: the safe way\n```csharp\nConsole.Write(\"Enter your birth year: \");\nstring? input = Console.ReadLine();\n\nbool isNumber = int.TryParse(input, out int birthYear);\nConsole.WriteLine($\"valid number? {isNumber}\");\nConsole.WriteLine($\"Birth year: {birthYear}\");\n```\n| Input | `isNumber` | `birthYear` |\n|---|---|---|\n| `\"2000\"` | `true` | `2000` |\n| `\"abc\"` | `false` | `0` |\n| `\"2.5\"` | `false` | `0` (an int can't hold 2.5) |\n| (null) | `false` | `0`, with **no** warning |\n\n- It returns a **bool**: did it work?\n- The number comes out through **`out int birthYear`**: an **out parameter**. It creates the variable right there.\n- It **never crashes**, and it handles null, so there's no CS8604 warning.\n\n### TryParse **refuses**, cast **cuts**: two different tools\n| | Input `2.75` | What it does |\n|---|---|---|\n| `int.TryParse(\"2.75\", out int a)` | `false`, `a = 0` | **refuses**: \"this text is not a whole number\" |\n| `(int)2.75m` | `2` | **cuts** off the decimal part |\n\n### `string?`: may be null\nThe `?` means \"this can be null\". `Console.ReadLine()` returns `string?` because there might be no input at all.\n\n---\n\n## 🎯 Dart comparison\n\n| | Dart | C# |\n|---|---|---|\n| Inferred type | `var x = 5;` | `var x = 5;` (same idea) |\n| Never changes | `const` (compile-time) / `final` (set once) | `const` (compile-time). `readonly` comes later |\n| Strict parse | `int.parse('abc')` → throws | `int.Parse(\"abc\")` → throws |\n| Safe parse | `int.tryParse('abc')` → returns `null` | `int.TryParse(\"abc\", out int n)` → returns `false`, `n = 0` |\n| double → int | `2.75.toInt()` → `2` (cuts) | `(int)2.75` → `2` (cuts) |\n| May be null | `String?` | `string?` |\n\nMain difference: Dart's `tryParse` returns `int?` (null on failure). C#'s `TryParse` returns a `bool` and gives the number through `out`.\n\n---\n\n## 🐞 Errors I actually hit\n\n| Mistake | Why it's wrong | Fix |\n|---|---|---|\n| `var x;` | `var` needs a value to know the type (CS0818) | `var x = 0;` or `int x;` |\n| `int(2.75)` | Wrong cast syntax | `(int)2.75` |\n| Gave the same \"why\" for TryParse and cast | They're different tools | TryParse **refuses** (false, 0). Cast **cuts** (2) |\n| Couldn't explain why Parse warns on `input` | `ReadLine` returns `string?` | Parse can't handle null → CS8604. TryParse can. |\n| Used `double` for VAT | VAT is money | `decimal` |\n| Said \"fixed\" without running the code | — | Always `dotnet run` before saying \"done\" |\n\n---\n\n## 🏢 Team words\n\n| Easy word | Real term | Team sentence |\n|---|---|---|\n| box takes the toy's shape | **type inference** (`var`) | \"The compiler infers the type, it's still strongly typed.\" |\n| rule on the wall | **constant** (`const`) | \"Make the rate a constant, don't hard-code it.\" |\n| scissors | **cast** / **explicit conversion**, which **truncates** | \"The cast truncates, it doesn't round.\" |\n| TryParse refuses | **parsing fails**, returns `false` | \"If parsing fails, show an error and return.\" |\n| `out int x` | **out parameter** | \"TryParse gives the value through an out parameter.\" |\n| may be empty | **nullable** type | \"ReadLine returns a nullable string.\" |\n| crash | **exception** (`FormatException`) | \"Parse throws a FormatException on bad input.\" |\n\n---\n\n## 📋 Summary\n\n- `var` = the type is inferred and locked, and it must have a value\n- `const` = a fixed value known when you write the code, PascalCase\n- `(int)2.75` = `2` (cuts, never rounds)\n- `Parse` crashes on bad input. `TryParse` returns `true`/`false` + the value through `out` (0 on failure)\n- Use `TryParse` for user input, always\n\n---\n\n## 📝 Quiz\n\n1. Why is `var total;` an error?\n2. What does `(int)9.99` give?\n3. `int.TryParse(\"12a\", out int n)`: what is returned, and what is `n`?\n4. Why does `int.Parse(input)` show a warning when `input` is `string?`?\n5. Can a `const` get its value from `Console.ReadLine()`? Why?\n\n<details>\n<summary>Answers<\/summary>\n\n1. `var` decides the type from the value. With no value, it can't decide.\n2. `9`. The cast cuts the decimal part, it doesn't round to 10.\n3. It returns `false`, and `n` is `0`.\n4. `input` may be null, and `Parse` can't handle null (warning CS8604, possible null reference).\n5. No. A `const` value must be known **when you write the code**. User input only exists when the program runs.\n\n<\/details>\n"}, {"id": "1.3", "phase": 1, "phaseName": "C# Bricks", "file": "phase-01/03-if-else.md", "title": "if / else, making decisions", "md": "# Chapter 1.3: if / else, making decisions\n\n> Learned: Thu 8 Oct 2026 · Code: `lessons/phase-01/05-if-else`, `06-parking-meter-v2`\n\n---\n\n## 🧸 LKG story\n\nAn `if` is a **traffic light**: if it's green, go; else, stop.\n\nAn `if / else if / else` chain is a **row of doors**. You walk along and go through the **first door that opens**. Once you're through, you **don't try the other doors**.\n\nA **guard** is a **security guard at the entrance**: \"No ticket? Stop. Go home.\" (`return;`). Only good visitors get inside.\n\n**Scope** is a **room**: a toy made inside a room (`{ }`) disappears when you leave the room (`}`). If you need the toy later, make it **before** you enter the room.\n\n🎬 **Animation idea:** a character walks along 3 doors labelled `>= 100`, `<= 0`, `else`. The first door that opens swallows them, and the other doors fade away.\n\n---\n\n## 💻 Real explanation\n\n### Comparison operators\n| Operator | Meaning | `5 ? 5` |\n|---|---|---|\n| `==` | equal | `5 == 5` → true |\n| `!=` | not equal | `5 != 5` → false |\n| `>` | greater than | `5 > 5` → **false** (the edge is out) |\n| `>=` | greater or equal | `5 >= 5` → **true** (the edge is in) |\n| `<` `<=` | less than / less or equal | |\n\n⚠️ `=` **saves** a value (assignment). `==` **checks** a value (comparison).\n\n### Logical operators\n| | Meaning | Example |\n|---|---|---|\n| `&&` | AND (both must be true) | `temp >= 30 && temp <= 40` |\n| `\\|\\|` | OR (at least one is true) | `answer == \"y\" \\|\\| answer == \"Y\"` |\n| `!` | NOT (flip it) | `!isWeekend` |\n\nText comparison counts capitals: `\"Y\" == \"y\"` is **false**.\n\n### if / else if / else\n```csharp\nif (temperature <= 0)\n{\n    Console.WriteLine(\"Ice 🧊\");\n}\nelse if (temperature >= 100)\n{\n    Console.WriteLine(\"Steam ♨️\");\n}\nelse\n{\n    Console.WriteLine(\"Liquid water\");\n}\n```\nChecked **top to bottom**. The **first true one wins**, and the rest are skipped.\n\n### Guard clause + early return\nCheck the bad cases **first**, and stop with `return;`. Then the rest of the code only deals with good input (the **happy path**).\n```csharp\nif (!int.TryParse(input, out int totalHours))\n{\n    Console.WriteLine(\"Please enter whole hours.\");\n    return;                 // stop the program here\n}\n\nif (totalHours < 0)\n{\n    Console.WriteLine(\"Hours can't be negative.\");\n    return;\n}\n```\n`TryParse` returns a bool, so it goes straight into the `if`. `!` means \"if it did NOT work\".\n\n### Scope: born inside `{ }`, dies at `}`\n```csharp\nif (true)\n{\n    string msg = \"Hi\";\n}\nConsole.WriteLine(msg);    // ❌ CS0103: The name 'msg' does not exist\n```\nFix: **declare the variable before the block**, and only change it inside.\n\n### The \"factory line\": calculate once, adjust, print once\n```csharp\ndecimal fee = totalHours * PerHourRate;        // 1. base fee\n\nif (residentAnswer == \"y\" || residentAnswer == \"Y\")\n{\n    fee = fee * ResidentDiscount;              // 2. discount (0.5 = 50% off)\n}\n\nif (fee > MaxDailyFee)\n{\n    fee = MaxDailyFee;                         // 3. cap (maximum limit)\n}\n\nConsole.WriteLine($\"Fee: {fee:F3} KWD\");      // 4. print once\n```\n- One variable, each `if` changes it, one print at the end, so **no repeated code**.\n- A variable can change: `fee = fee * 0.5m` (no type the second time).\n- 50% off = **× 0.5**. Multiplying by less than 1 makes it smaller.\n- Discount first or cap first? That's a **business rule**. Ask the business, then write a comment.\n\n🎬 **Animation idea:** a factory conveyor belt. A box labelled `fee` passes a \"discount machine\" (it shrinks only for residents), then a \"cap machine\" (it gets cut down if too tall), then the printer.\n\n### Boundary testing\nAlways test the **edge numbers**: if the rule is \"max 24 hours\", test 23, **24** and 25. Most bugs live at the edges (`>` vs `>=`).\n\n### Two habits\n- **Save (Ctrl+S) before `dotnet run`**. Run only sees the saved file.\n- **Shift+Alt+F** formats the file.\n\n---\n\n## 🎯 Dart comparison\n\nAlmost everything is **the same** as Dart: `if / else if / else`, `== != > < >= <=`, `&& || !`, `return;`, block scope.\n\n| Small differences | Dart | C# |\n|---|---|---|\n| `if (x = 5)` | error | error too (CS0029, can't convert int to bool). C# protects you |\n| Safe parse in an `if` | `final n = int.tryParse(s); if (n == null) return;` | `if (!int.TryParse(s, out int n)) { return; }` |\n\n---\n\n## 🐞 Errors I actually hit\n\n| Mistake | What happened | Lesson |\n|---|---|---|\n| Forgot `return;` in a guard | Printed \"Max 24 hours\" **and then kept going** | Every guard ends with `return;` |\n| `(int)PerHourRate` | `0.250` became `0`, so every fee was 0 | Money stays `decimal`, never cast to int |\n| Used `TryParse` to check `y`/`n` | TryParse is only for numbers | Compare text with `==` |\n| Created `fee` inside `if` and `else` | Had to write the math + print twice | Born outside, change inside |\n| `fee * PerHourRate` again inside the print | Calculated twice | Once the box has a value, print the box |\n| Discount `0.125` | Treated the discount as a new rate | A discount is a **multiplier** (× 0.5) |\n| `isKuwaiti` held text | `is...` names are for bools only | `residentAnswer` |\n| Ran before saving | Saw an old result | Ctrl+S first |\n| Quiz: `else if (marks >= 90)` under `>= 50` | 95 printed \"Pass\" | Put the most specific check **first** |\n\n---\n\n## 🏢 Team words\n\n| Easy word | Real term | Team sentence |\n|---|---|---|\n| traffic light question | **condition** / **boolean expression** | \"The condition is always false.\" |\n| row of doors | **if-else chain**, evaluated **top to bottom** | \"Put the most specific check first.\" |\n| security guard | **guard clause** / **early return** | \"Add a guard clause for negative hours.\" |\n| good path after guards | **happy path** | \"After the guards, the rest is the happy path.\" |\n| room `{ }` | **code block** / **scope** | \"`fee` is out of scope there.\" |\n| edge number | **boundary value** | \"Test the boundary values: 0, 24 and 25.\" |\n| `>` instead of `>=` | **off-by-one error** | \"Looks like an off-by-one at 24.\" |\n| cap | **upper limit**; **clamping** | \"Clamp the fee to MaxDailyFee.\" |\n| same code twice | **duplication** → **DRY** | \"Pull the print out of the if/else.\" |\n| discount before cap | **business rule** | \"Confirm the business rule with the product owner.\" |\n\n---\n\n## 📋 Summary\n\n- `=` saves, `==` checks. `>` excludes the edge, `>=` includes it.\n- `&&` both, `||` either, `!` not. Capitals count in text.\n- if-else chains: top to bottom, first match wins\n- Guard clause: check bad input first, then `return;`\n- Scope: declare before the block, change inside\n- Factory line: calculate once, adjust with `if`s, print once\n- Test the boundary values\n\n---\n\n## 📝 Quiz\n\n1. `int age = 18;` Is `age > 18` true or false?\n2. What does this print for `marks = 95`, and how do you fix it?\n   ```csharp\n   if (marks >= 50) Console.WriteLine(\"Pass\");\n   else if (marks >= 90) Console.WriteLine(\"Excellent\");\n   ```\n3. Why do guard clauses end with `return;`?\n4. You need `total` after an `if` block, but you create it inside. What error do you get, and what's the fix?\n5. What is `\"Y\" == \"y\"`?\n\n<details>\n<summary>Answers<\/summary>\n\n1. False. `>` doesn't include the edge, and 18 is not greater than 18.\n2. \"Pass\". The first true condition wins. Fix: check `>= 90` **first**.\n3. To **stop** the program after the error message. Without it, the code keeps going with bad input.\n4. CS0103 (\"the name does not exist\"). Declare `total` **before** the block and only change it inside.\n5. `false`, because capital and small letters are different.\n\n<\/details>\n"}, {"id": "1.4", "phase": 1, "phaseName": "C# Bricks", "file": "phase-01/04-switch.md", "title": "switch and switch expressions", "md": "# Chapter 1.4: switch and switch expressions\n\n> Learned: Sat 10 Oct 2026 · Code: `lessons/phase-01/07-switch`, `08-grade-calculator`\n\n---\n\n## 🧸 LKG story\n\n**switch statement = a vending machine that does jobs.** You press button A1 and it drops chips. B2 drops juice. Any other button: \"Invalid\". It doesn't ask \"is it A1? no... is it B2? no...\" the way an if-else chain does. It looks up your button and does that job.\n\n**switch expression = a price list on the wall.** You look up an item and **get a value back**, which you keep in a box (a variable).\n\nThe big difference:\n- A machine that only **does jobs** can do **nothing** when you press a wrong button. No harm done.\n- A price list **must give you an answer**. If your item isn't on the list, it has nothing to give, and it **breaks** (crash). That's why the compiler wants a \"for everything else\" line (`_`).\n\n🎬 **Animation idea:** two machines side by side. Press an unknown button on the \"statement\" machine: a light blinks and nothing happens. Press an unknown button on the \"expression\" machine: it shakes, sparks fly, and the screen says `SwitchExpressionException`. Then a worker adds a sticker \"`_` = everything else\", and the machine calmly gives an answer.\n\n---\n\n## 💻 Real explanation\n\n### 1. The switch statement (`case` / `break`)\n\nUse it when you compare **one variable** against exact values, and each case **does something**.\n\n```csharp\nstring light = \"red\";\n\nswitch (light)\n{\n    case \"red\":\n        Console.WriteLine(\"Stop\");\n        break;\n    case \"yellow\":\n        Console.WriteLine(\"Slow down\");\n        break;\n    case \"green\":\n        Console.WriteLine(\"Go\");\n        break;\n    case \"flashing\":            // stacked cases: many values, one job\n    case \"off\":\n        Console.WriteLine(\"Drive carefully\");\n        break;\n    default:\n        Console.WriteLine(\"Unknown light\");\n        break;\n}\n```\n| Part | Meaning |\n|---|---|\n| `switch (light)` | the value we check |\n| `case \"red\":` | \"if light == \"red\"\" |\n| `break;` | stop here and leave the switch. **Required** at the end of every case (or `return;`) |\n| stacked cases | empty `case` labels on top of each other share one job |\n| `default:` | runs when no case matches (like the last `else`). **Optional** |\n\nText matching is exact: `\"Red\"` does **not** match `case \"red\"`.\n\n### 2. The switch expression (`=>`)\n\nUse it when you want to **get a value back**.\n\n```csharp\nint day = 6;\n\nstring dayType = day switch\n{\n    1 or 2 or 3 or 4 or 5 => \"Work day\",\n    6 or 7                => \"Weekend\",\n    _                     => \"Invalid day\"\n};\n```\n| Part | Meaning |\n|---|---|\n| `day switch { }` | the variable comes **before** `switch` |\n| `=>` | \"gives\": `6 or 7 => \"Weekend\"` reads \"6 or 7 gives Weekend\" |\n| `or` | many values, one result (**or pattern**) |\n| `_` | \"anything else\" (**discard pattern**) |\n| `,` after each line, `};` at the end | |\n\n**Ranges with relational patterns:**\n```csharp\nint temp = 35;\n\nstring feel = temp switch\n{\n    >= 40 => \"Very hot\",\n    >= 25 => \"Warm\",\n    >= 10 => \"Cool\",\n    _     => \"Cold\"\n};\n\nConsole.WriteLine(feel);    // Warm\n```\nTest results: 45 → Very hot, 25 → Warm (the edge is included), 24 → Cool, 5 → Cold.\n\nThe Day 3 rule still applies: **top to bottom, first match wins**. Put the biggest number first.\n\n### 3. The compiler protects you (better than if-else!)\n\n**Wrong order = build error.** Put `>= 10` at the top:\n```csharp\n>= 10 => \"Cool\",\n>= 40 => \"Very hot\",   // ❌ CS8510: The pattern is unreachable\n>= 25 => \"Warm\",       // ❌ CS8510\n```\nEvery number ≥ 40 is also ≥ 10, so those arms can **never** run. The program won't even build.\nWith if-else, the same mistake gives a **wrong answer silently** (95 → \"Pass\").\n\n**Missing values = warning, then a crash.** A `char` can hold about 65,000 different characters. If your switch expression doesn't cover all of them:\n```\nwarning CS8509: The switch expression does not handle all possible values\nof its input type (it is not exhaustive).\n```\nIf a value comes in that no arm matches, the program **crashes at runtime**:\n```\nUnhandled exception. System.Runtime.CompilerServices.SwitchExpressionException:\nNon-exhaustive switch expression failed to match its input.\nUnmatched value was C.\n   at Program.<Main>$(String[] args) in ...\\Program.cs:line 22\n```\nFix: add a `_ => ...` arm at the end. But first check that **no real case is missing**.\n\n### 4. Statement vs expression: which one?\n\n| | switch **statement** | switch **expression** |\n|---|---|---|\n| Purpose | **does** something | **returns** a value |\n| Syntax | `case X:` ... `break;` | `X => value,` |\n| Many values | stacked cases | `or` |\n| Ranges (`>= 90`) | possible (`case >= 90:`) but rarely used | natural ✅ |\n| Must cover every value? | No: with no match, it just skips | Yes: warning CS8509, crash at runtime |\n| \"Everything else\" | `default:` | `_` |\n\nIn modern code, the **expression** is preferred when you're choosing a value. You'll still see the statement a lot in older company code.\n\n### 5. Full example: Grade Calculator\n\n```csharp\nConsole.Write(\"Enter your mark (0-100): \");\nstring? input = Console.ReadLine();\n\nif (!int.TryParse(input, out int mark))\n{\n    Console.WriteLine(\"Please enter a number.\");\n    return;\n}\nif (mark < 0 || mark > 100)\n{\n    Console.WriteLine(\"Marks must be between 0 and 100.\");\n    return;\n}\n\nchar grade = mark switch\n{\n    >= 90 => 'A',\n    >= 75 => 'B',\n    >= 60 => 'C',\n    >= 50 => 'D',\n    _     => 'F'\n};\n\nstring gradeComment = \"\";          // declared BEFORE the switch (scope!)\n\nswitch (grade)\n{\n    case 'A':\n    case 'B':\n        gradeComment = \"Great job!\";\n        break;\n    case 'C':\n    case 'D':\n        gradeComment = \"You passed.\";\n        break;\n    case 'F':\n        gradeComment = \"Try again.\";\n        break;\n    default:\n        gradeComment = \"Unknown grade\";\n        break;\n}\n\nConsole.WriteLine($\"Marks: {mark} | Grade: {grade} | {gradeComment}\");\n```\n\n| Input | Output |\n|---|---|\n| `abc` | Please enter a number. |\n| `-5` / `101` | Marks must be between 0 and 100. |\n| `100` / `90` | Grade: A \\| Great job! |\n| `89` | Grade: B \\| Great job! |\n| `50` | Grade: D \\| You passed. |\n| `49` / `0` | Grade: F \\| Try again. |\n\n### Reading an error message\n`Program.cs(5,5): error CS0163` means **line 5, column 5**. The compiler tells you exactly where to look.\n\n---\n\n## 🎯 Dart comparison\n\n| | Dart 3 | C# |\n|---|---|---|\n| Statement `break` | not needed | **required** (CS0163) |\n| Fall-through from a case with code | not allowed | not allowed |\n| Expression syntax | `switch (day) { ... }` | `day switch { ... }` (variable first) |\n| Many values | `6 \\|\\| 7 =>` | `6 or 7 =>` |\n| Anything else | `_` | `_` (same) |\n| Ranges | `>= 90 =>` | `>= 90 =>` (same) |\n| Not exhaustive | **compile error** | **warning** (CS8509) + crash at runtime |\n\n```dart\n// Dart 3\nvar dayType = switch (day) { 6 || 7 => 'Weekend', _ => 'Work day' };\n```\n```csharp\n// C#\nvar dayType = day switch { 6 or 7 => \"Weekend\", _ => \"Work day\" };\n```\n\n---\n\n## 🐞 Errors I actually hit\n\n| Error / mistake | Why | Fix |\n|---|---|---|\n| **CS0163** \"Control cannot fall through from one case label\" | Removed `break;` after `\"Stop\"` | Every case ends with `break;` |\n| **CS8510** \"The pattern is unreachable\" | Put `>= 10` above `>= 40` | Biggest / most specific first |\n| **CS0103** \"The name 'A' does not exist\" | Wrote `A or B` without quotes, so C# looked for a **variable** named A | `'A' or 'B'` (a char needs single quotes) |\n| **CS8509** not exhaustive + crash on 65 | Typo `'B' or 'D'` instead of `'C' or 'D'`, so `'C'` had no arm | Fix the typo, then add `_` as a safety net |\n| Added `_ => \"Invalid\"` and 65 printed \"Invalid\" | `_` hid the missing case | `_` is a **safety net**, not a fix |\n| `<= 50 => 'F'` after `>= 50 => 'D'` | 50 matched both (it worked only because the first match wins) | Use `_` for \"everything else\" |\n| Range guard without `return;` | Printed the error, then a grade too | Every guard ends with `return;` |\n| `mark <= 0 \\|\\| mark >= 100` | Refused valid marks 0 and 100 | `mark < 0 \\|\\| mark > 100` |\n| Only tested 90 | The `'C'` bug stayed hidden | **Test every branch** |\n\n---\n\n## 🏢 Team words\n\n| Easy word | Real term | Team sentence |\n|---|---|---|\n| vending machine (does jobs) | **switch statement** | \"A switch statement is fine here, each case just prints.\" |\n| price list (gives a value) | **switch expression** | \"Turn that into a switch expression, it'll be shorter.\" |\n| each `case \"red\":` | **case label**; `default:` = **default case** | \"Add a default case.\" |\n| sliding into the next case | **fall-through** | \"C# doesn't allow fall-through.\" |\n| each `pattern => value` line | **arm** | \"That arm is unreachable.\" |\n| `>= 90` | **relational pattern** | |\n| `6 or 7` | **or pattern** | |\n| `_` | **discard pattern** | \"Add a discard arm at the end.\" |\n| covers every value | **exhaustive** | \"The switch isn't exhaustive, it can throw at runtime.\" |\n| line that can never run | **unreachable code** | |\n| crash while running | **exception**; the `at ...` lines are the **stack trace** | \"Send me the stack trace.\" |\n| yellow message | **warning** (it still builds) vs red **error** (it doesn't) | \"Don't ignore warnings.\" |\n| long if-else → switch | **refactor** | \"This if-else chain is long, let's refactor it to a switch expression.\" |\n\n---\n\n## 📋 Summary\n\n- **Statement** = does jobs: `case X:` + `break;`, stacked cases, optional `default:`\n- **Expression** = returns a value: `x switch { pattern => value, _ => ... };`\n- Patterns: exact values, `or`, relational `>= 90`, discard `_`\n- Order matters (first match wins). A wrong order in an expression → CS8510 build error\n- An expression must be **exhaustive**, or you get CS8509 and a runtime crash\n- `char` values need single quotes. Test **every** branch.\n\n---\n\n## 📝 Quiz\n\n1. What happens when you build this?\n   ```csharp\n   string s = n switch { > 5 => \"Big\", > 10 => \"Huge\", _ => \"Small\" };\n   ```\n2. What error do you get if a `case` has code but no `break;`?\n3. Why does a switch expression need `_`, while a switch statement doesn't need `default`?\n4. Fix: `char grade = mark switch { >= 50 => \"P\", _ => \"F\" }`\n5. Your teammate has 6 `else if`s that all check `day == 1`, `day == 2`... What do you suggest, using team words?\n\n<details>\n<summary>Answers<\/summary>\n\n1. It **doesn't build**: CS8510. `> 10` is unreachable, because `> 5` already catches every number above 10.\n2. **CS0163**, \"Control cannot fall through from one case label to another\".\n3. An expression must **return a value**. With no match, it has nothing to return, so it crashes. A statement only **does jobs**. With no match, it just skips.\n4. `char grade = mark switch { >= 50 => 'P', _ => 'F' };` (single quotes for char, and a `;` at the end)\n5. \"This if-else chain checks the same variable every time. Let's **refactor** it to a **switch expression**.\"\n\n<\/details>\n"}, {"id": "1.5", "phase": 1, "phaseName": "C# Bricks", "file": "phase-01/05-git-clean-history-undo.md", "title": "Git, clean history and undo", "md": "# Chapter 1.5: Git, clean history and undo\n\n> Learned: Sat 10 Oct 2026 · Builds on [Chapter 0.2](../phase-00/02-git-basics.md)\n\n---\n\n## 🧸 LKG story\n\nRemember the **photo album**: desk (your files) → box (staged) → photo (commit) → cloud (GitHub).\n\nToday's new skills:\n- **Look before you shoot:** check what's on the desk and in the box before you take the photo.\n- **Good captions:** a caption should tell anyone what's in the photo.\n- **Undo:**\n  - Scribbled on a page? **Swap it** for the page from the last photo (`git restore`).\n  - Put the wrong page in the box? **Take it out** (`git restore --staged`).\n  - Last photo was bad and **nobody has seen it yet**? **Retake it** (`git commit --amend`).\n  - Bad photo already **shared with friends**? You can't tear it out of their albums, so you add a **new photo that undoes it** (`git revert`).\n\n🎬 **Animation idea:** four short scenes, one per undo tool. For `revert`, show the album growing: photo 5 \"Add bad file\", then photo 6 \"Revert: Add bad file\", with the bad file vanishing from the desk while both photos stay in the album.\n\n---\n\n## 💻 Real explanation\n\n### 1. Look before you commit\n\n| Command | Shows |\n|---|---|\n| `git status` | **which** files changed. Red = not staged, green = staged, **untracked** = new files Git has never seen |\n| `git diff` | **what** changed inside files, line by line. `-` red = removed, `+` green = added |\n| `git diff <file>` | the same, for one file |\n| `git log --oneline` | the history, one line per commit |\n| `git log --oneline -3` | only the last 3 commits |\n| `git show --stat HEAD` | which files are in the **last** commit |\n\n- `git diff` doesn't show untracked files: there's no old version to compare with.\n- A changed line shows as the **whole old line removed** + the **whole new line added**.\n- **HEAD** = the commit you're on now (the latest photo).\n- If you see `:` or `~` at the bottom, you're in the **pager**. Press **q** to quit.\n\n### 2. Good commit messages\n\n**Rules:**\n1. Start with a **verb**, in **present tense**: `Add`, `Fix`, `Update`, `Remove`, `Rename`\n2. Say **what** changed, not when (\"Day 3\" doesn't help anyone)\n3. Short: about 50 characters, starting with a capital letter\n4. One topic per commit: **atomic commits**\n\n**The test:** the message should finish the sentence *\"If applied, this commit will ___\"*.\n✅ *\"If applied, this commit will* **Add switch lessons and grade calculator exercise***\"*\n\n| Verb | When | Example |\n|---|---|---|\n| Add | something new | `Add login page` |\n| Fix | a bug | `Fix crash when marks is 65` |\n| Update | changed something existing | `Update README with run steps` |\n| Remove | deleted something | `Remove unused test lines` |\n| Rename | changed a name | `Rename isKuwaiti to residentAnswer` |\n\n| ❌ Bad | ✅ Good |\n|---|---|\n| `Day:3 if/else, parking meter v2` | `Add parking meter v2 with guards and cap` |\n| `Updated Roadmap switch class is finish so the check box is ticked` | `Update roadmap: switch done` |\n| `fixed stuff` | `Fix missing return in grade guard` |\n\nAlways put the message in **quotes**: `git commit -m \"Add switch lessons\"`. Without quotes, Git may open the **Vim** editor. To escape Vim and cancel: press **Esc**, type **`:cq`**, press **Enter**.\n\n### 3. The four undo tools\n\n| Situation | Command | Your edits |\n|---|---|---|\n| I messed up my edits, throw them away | `git restore <file>` | **deleted** ⚠️ (no Ctrl+Z!) |\n| I staged the wrong file | `git restore --staged <file>` | **kept**, just unstaged ✅ |\n| My last commit is wrong and **not pushed** | `git commit --amend -m \"new message\"` | replaces the last commit |\n| ...and I only forgot a file | `git add <file>` then `git commit --amend --no-edit` | keeps the message |\n| A commit is wrong and **already pushed** | `git revert <commit-id> --no-edit` | adds a **new** commit that undoes it |\n\n**Amend makes a new commit ID** every time (`0436b38` → `b85ff63` → `717580a`). It throws the old photo away and makes a new one. That's why:\n\n> ⚠️ **Golden rule: never amend a commit you have already pushed.** Your teammates have the old ID, and their history won't match yours. Use `revert` instead.\n\n**Revert in action:**\n```\n64f8e6f Revert \"Add git practice file\"   ← new commit that undoes it\n2ebab8f Add git practice file            ← the bad commit is still in history\n```\nNothing is erased. The history tells the honest story: \"I did X, then I undid X.\"\n\n### 4. A pushed typo? Leave it.\n`b59b86c Update roadmap: swich done` was already pushed, so we **left it**. A small typo in history is fine. Rewriting shared history is worse.\n\n---\n\n## 🎯 Dart comparison\n\nGit works the same for every language. Nothing changes between Flutter and .NET here.\n\n---\n\n## 🐞 Mistakes I actually made\n\n| Mistake | What happened | Lesson |\n|---|---|---|\n| Only ran `git add` on 08, not 07 | The commit had 2 files instead of 4 | Check `git status` (all green?) **before** committing, and `git show --stat HEAD` after |\n| Commit message without quotes | Vim opened and I got stuck | Always `-m \"...\"`. Escape Vim with Esc → `:cq` |\n| `Updated ...` | Past tense | `Update ...` (present tense) |\n| Very long message with the \"why\" | 65 characters | Short: say *what* changed |\n| `swich`, `pratice`, `pjase`, `Imporve READMR` | Typos stay in history forever | Read the message before Enter |\n| Thought `restore --staged` deleted my comment | VS Code hadn't refreshed | `--staged` **never** deletes edits |\n\n---\n\n## 🏢 Team words\n\n| Easy word | Real term | Team sentence |\n|---|---|---|\n| desk | **working directory** / **working tree** | \"Your working tree is clean.\" |\n| box | **staging area** (index) | \"Stage only the files for this change.\" |\n| latest photo | **HEAD** | \"`git show HEAD` shows the last commit.\" |\n| one topic per photo | **atomic commit** | \"Split that into smaller, atomic commits.\" |\n| retake the last photo | **amend** | \"Don't amend pushed commits.\" |\n| take out of the box | **unstage** | \"I staged the bin folder by mistake, let me unstage it.\" |\n| throw away edits | **discard changes** | \"Discard your local changes and pull again.\" |\n| new photo that undoes | **revert** | \"That commit broke the build, let's revert it.\" |\n| `:` scroll screen | **pager** | \"Press q to quit the pager.\" |\n| rewriting pushed commits | **rewriting history** | \"Never rewrite shared history.\" |\n\n---\n\n## 📋 Summary\n\n- Before every commit: `git status` + `git diff`. After: `git show --stat HEAD`\n- Messages: verb first, present tense, short, one topic, in quotes\n- `restore` = throw away edits · `restore --staged` = unstage (edits kept)\n- `commit --amend` = fix the last commit, **only if it's not pushed**\n- `revert <id>` = safely undo any commit, even a pushed one\n\n---\n\n## 📝 Quiz\n\n1. What's the difference between `git restore file` and `git restore --staged file`?\n2. You pushed a commit with a bug. Amend or revert? Why?\n3. Rewrite this message: `fixed the bug where grade C crashed`\n4. Why does `git diff` show nothing for a brand-new file?\n5. You committed, but forgot one file. The commit isn't pushed. What 2 commands fix it and keep the message?\n\n<details>\n<summary>Answers<\/summary>\n\n1. `restore` **deletes** your edits (back to the last commit). `restore --staged` only takes the file out of the staging area. Your edits stay.\n2. **Revert.** The commit is pushed, so others may have it. Amend rewrites history (a new ID) and breaks their copy. Revert adds a new commit that undoes it.\n3. `Fix crash for grade C` (verb first, present tense, short)\n4. The file is **untracked**. Git has no old version to compare it with.\n5. `git add <file>` then `git commit --amend --no-edit`\n\n<\/details>\n"}];
+const JOURNEY = {"start": "2026-10-06", "phasesTotal": 14, "days": [{"day": 1, "date": "2026-10-06", "weekday": "Tue", "phase": "Phase 0", "title": "Meet .NET + Git", "learned": ["What .NET, C#, the SDK and the CLR are", "dotnet new / run / build, the .csproj file", "Console input and output, int.Parse, integer division", "Git: init, add, commit, push, .gitignore"], "built": ["Project 00: Greeting CLI (pushed to GitHub)"], "quizzes": [{"name": "Phase 0 quiz", "score": 3.5, "max": 5}, {"name": "Git quiz", "score": 3.5, "max": 5}]}, {"day": 2, "date": "2026-10-07", "weekday": "Wed", "phase": "Phase 1", "title": "Data types, var, const, TryParse", "learned": ["int, double, decimal, bool, char, string", "Why decimal for money (0.1 + 0.2)", "var, const, casting cuts", "Parse crashes, TryParse refuses safely"], "built": ["Café bill", "Parking meter v1"], "quizzes": [{"name": "Data types quiz", "score": 1.5, "max": 5}, {"name": "var / const / TryParse quiz", "score": 2, "max": 5}]}, {"day": 3, "date": "2026-10-08", "weekday": "Thu", "phase": "Phase 1", "title": "if / else", "learned": ["Comparison and logical operators", "First match wins in an if-else chain", "Guard clauses with return", "Scope: declare before the block"], "built": ["Water temperature example", "Parking meter v2 (guards, discount, daily cap)"], "quizzes": [{"name": "if / else quiz", "score": 1, "max": 5}]}, {"day": 4, "date": "2026-10-10", "weekday": "Sat", "phase": "Phase 1", "title": "switch + Git undo", "learned": ["switch statement: case, break, stacked cases", "switch expression: =>, or, >= patterns, _", "CS0163, CS8510, CS8509 and a runtime crash", "Commit messages, amend, restore, revert"], "built": ["Switch examples", "Grade calculator (9 tests pass)"], "quizzes": [{"name": "Revision quiz", "score": 4, "max": 5}, {"name": "switch quiz", "score": 3.5, "max": 5}]}]};
+
+const $ = (sel, root = document) => root.querySelector(sel);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const hashFor = (id) => "ch-" + id.replace(".", "-");
+const hex7 = () => Array.from({ length: 7 }, () => "0123456789abcdef"[Math.floor(Math.random() * 16)]).join("");
+
+/* ---------------- navigation ---------------- */
+function renderToc(activeId) {
+  const byPhase = groupByPhase();
+  let html = '<a class="home-link" href="#home"' + (activeId ? "" : ' aria-current="page"') + ">Home: my progress</a>";
+  for (const [phase, list] of byPhase) {
+    html += "<h3>Phase " + phase + ": " + esc(list[0].phaseName) + "</h3>";
+    for (const ch of list) {
+      html += '<a href="#' + hashFor(ch.id) + '"' + (ch.id === activeId ? ' aria-current="page"' : "") +
+        '><span class="num">' + ch.id + "</span><span>" + esc(ch.title) + "</span></a>";
+    }
+  }
+  $("#toc").innerHTML = html;
+}
+
+function groupByPhase() {
+  const map = new Map();
+  for (const ch of CHAPTERS) {
+    if (!map.has(ch.phase)) map.set(ch.phase, []);
+    map.get(ch.phase).push(ch);
+  }
+  return map;
+}
+
+function route() {
+  const h = location.hash.slice(1);
+  const ch = h.startsWith("ch-") ? CHAPTERS.find((c) => hashFor(c.id) === h) : null;
+  if (ch) renderChapter(ch); else renderHome();
+  closeMenu();
+  window.scrollTo(0, 0);
+  try { localStorage.setItem("lastView", h); } catch (e) {}
+}
+
+const menuBtn = $("#menuBtn");
+function closeMenu() { $("#toc").classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); }
+menuBtn.addEventListener("click", () => {
+  const open = $("#toc").classList.toggle("open");
+  menuBtn.setAttribute("aria-expanded", String(open));
+});
+
+/* ---------------- home ---------------- */
+function scoreClass(score, max) {
+  const r = score / max;
+  return r >= 0.7 ? "score-high" : r >= 0.5 ? "score-mid" : "score-low";
+}
+
+function renderHome() {
+  renderToc(null);
+  const days = JOURNEY.days || [];
+  const last = days[days.length - 1];
+  const quizzes = days.flatMap((d) => d.quizzes.map((q) => ({ ...q, day: d.day })));
+  const phaseNow = Math.max(...CHAPTERS.map((c) => c.phase));
+  const fmt = (iso) => new Date(iso + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+
+  let html = '<section class="cover">' +
+    '<span class="eyebrow">My reference book · Day ' + last.day + " · " + esc(last.phase) + "</span>" +
+    '<h1><span class="from">From Flutter</span><br>to .NET Full Stack</h1>' +
+    "<p>Everything I have learned so far, one chapter per topic, written right after I finished it. " +
+    "Every 🎬 box is a small animation you can play with.</p>" +
+    '<div class="stats">' +
+    '<div class="stat"><b>' + days.length + "</b><span>days studied</span></div>" +
+    '<div class="stat"><b>' + CHAPTERS.length + "</b><span>chapters</span></div>" +
+    '<div class="stat"><b>' + quizzes.length + "</b><span>quizzes taken</span></div>" +
+    '<div class="stat"><b>' + phaseNow + '<small style="font-size:15px;color:var(--muted)"> / ' + JOURNEY.phasesTotal + "</small></b><span>current phase</span></div>" +
+    "</div></section>";
+
+  html += '<section class="home-section"><h2>Quiz scores</h2>' +
+    '<p class="lead">First-try score for every quiz, out of 5.</p>' +
+    '<div class="chart-wrap">' + quizChart(quizzes) + "</div></section>";
+
+  html += '<section class="home-section"><h2>Day by day</h2><p class="lead">What I learned and built each day. Newest first.</p><ol class="timeline">';
+  for (const d of [...days].reverse()) {
+    html += '<li><div class="when"><b>Day ' + d.day + "</b><span>" + d.weekday + " " + fmt(d.date) + "</span></div><div>" +
+      "<h4>" + esc(d.title) + "<small>" + esc(d.phase) + "</small></h4><ul>" +
+      d.learned.map((x) => "<li>" + esc(x) + "</li>").join("") + "</ul>" +
+      '<div class="chips">' +
+      d.built.map((b) => '<span class="chip">🛠 ' + esc(b) + "</span>").join("") +
+      d.quizzes.map((q) => '<span class="chip ' + scoreClass(q.score, q.max) + '">' + esc(q.name) + ": " + q.score + "/" + q.max + "</span>").join("") +
+      "</div></div></li>";
+  }
+  html += "</ol></section>";
+
+  html += '<section class="home-section"><h2>Chapters</h2>';
+  for (const [phase, list] of groupByPhase()) {
+    html += '<div class="phase-label">Phase ' + phase + ": " + esc(list[0].phaseName) + '</div><div class="chapter-grid">';
+    for (const ch of list) {
+      const learned = (ch.md.match(/^> Learned: ([^·\n]+)/m) || [])[1] || "";
+      html += '<a class="chapter-card" href="#' + hashFor(ch.id) + '"><span class="num">Chapter ' + ch.id + "</span><b>" +
+        esc(ch.title) + "</b><span>" + esc(learned.trim()) + "</span></a>";
+    }
+    html += "</div>";
+  }
+  html += "</section>";
+
+  $("#view").innerHTML = html;
+  $("#dayChip").textContent = "Day " + last.day + " · " + fmt(last.date);
+}
+
+function quizChart(quizzes) {
+  const W = 640, H = 240, left = 34, right = 10, top = 14, bottom = 58;
+  const plotW = W - left - right, plotH = H - top - bottom;
+  const slot = plotW / quizzes.length, barW = Math.min(36, slot * 0.6);
+  const y = (v) => top + plotH - (v / 5) * plotH;
+  let svg = '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Quiz scores by day">';
+  for (let t = 0; t <= 5; t++) {
+    svg += '<line x1="' + left + '" x2="' + (W - right) + '" y1="' + y(t) + '" y2="' + y(t) + '" stroke="var(--line)" stroke-width="1"/>' +
+      '<text x="' + (left - 8) + '" y="' + (y(t) + 4) + '" text-anchor="end" font-size="11" fill="var(--muted)" font-family="JetBrains Mono, monospace">' + t + "</text>";
+  }
+  let prevDay = null;
+  quizzes.forEach((q, i) => {
+    const cx = left + slot * i + slot / 2;
+    const color = q.score / q.max >= 0.7 ? "var(--ok)" : q.score / q.max >= 0.5 ? "var(--warn)" : "var(--bad)";
+    svg += '<rect x="' + (cx - barW / 2) + '" y="' + y(q.score) + '" width="' + barW + '" height="' + (y(0) - y(q.score)) + '" rx="4" fill="' + color + '"><title>' + esc(q.name) + ": " + q.score + "/5</title></rect>" +
+      '<text x="' + cx + '" y="' + (y(q.score) - 5) + '" text-anchor="middle" font-size="11" font-weight="600" fill="var(--ink)" font-family="JetBrains Mono, monospace">' + q.score + "</text>";
+    if (q.day !== prevDay) {
+      svg += '<text x="' + cx + '" y="' + (H - bottom + 18) + '" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" font-family="Bricolage Grotesque, sans-serif">Day ' + q.day + "</text>";
+      prevDay = q.day;
+    }
+    const short = q.name.replace(/ quiz$/i, "");
+    svg += '<text x="' + cx + '" y="' + (H - bottom + 34) + '" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="Bricolage Grotesque, sans-serif">' + esc(short.length > 14 ? short.slice(0, 13) + "…" : short) + "</text>";
+  });
+  return svg + "</svg>";
+}
+
+/* ---------------- chapter ---------------- */
+const SECTION_KIND = { "🧸": "lkg", "💻": "real", "🎯": "dart", "🧪": "examples", "🐞": "errors", "🏢": "team", "📋": "summary", "📝": "quiz" };
+
+function renderChapter(ch) {
+  renderToc(ch.id);
+  const view = $("#view");
+  const body = window.marked ? marked.parse(ch.md.replace(/^# .+\n/, "")) : "<pre>" + esc(ch.md) + "</pre>";
+  view.innerHTML = '<article class="chapter"><header class="chapter-head"><span class="eyebrow">Chapter ' + ch.id +
+    " · Phase " + ch.phase + ": " + esc(ch.phaseName) + "</span><h1>" + esc(ch.title) + "</h1></header><div class=\"chapter-body\"></div></article>";
+  const holder = $(".chapter-body", view);
+  holder.innerHTML = body;
+
+  // the "> Learned: ..." line right under the title
+  const first = holder.firstElementChild;
+  if (first && first.tagName === "BLOCKQUOTE") first.classList.add("meta");
+
+  // wrap each h2 and what follows it in a <section>
+  let current = null;
+  for (const node of [...holder.childNodes]) {
+    if (node.nodeType === 1 && node.tagName === "H2") {
+      current = document.createElement("section");
+      const kind = SECTION_KIND[[...node.textContent.trim()][0]];
+      if (kind) current.className = kind;
+      holder.insertBefore(current, node);
+    }
+    if (current) current.appendChild(node);
+  }
+
+  holder.querySelectorAll("table").forEach((t) => {
+    const wrap = document.createElement("div");
+    wrap.className = "table-wrap";
+    t.replaceWith(wrap);
+    wrap.appendChild(t);
+  });
+
+  holder.querySelectorAll("pre code").forEach((el) => {
+    const lang = ((el.className.match(/language-(\w+)/) || [])[1] || "").toLowerCase();
+    if (window.hljs && lang && hljs.getLanguage(lang)) hljs.highlightElement(el);
+  });
+
+  holder.querySelectorAll("a[href]").forEach((a) => {
+    const href = a.getAttribute("href");
+    if (/\.md(#.*)?$/.test(href)) {
+      const name = href.split("/").pop().replace(/#.*$/, "");
+      const target = CHAPTERS.find((c) => c.file.endsWith(name));
+      if (target) a.setAttribute("href", "#" + hashFor(target.id));
+    } else if (/^https?:/.test(href)) {
+      a.target = "_blank";
+      a.rel = "noopener";
+    }
+  });
+
+  // 🎬 notes become playable animations
+  let n = 0;
+  holder.querySelectorAll("p").forEach((p) => {
+    if (!p.textContent.trim().startsWith("🎬")) return;
+    const make = (WIDGETS[ch.id] || [])[n++];
+    const fig = document.createElement("figure");
+    fig.className = "anim";
+    fig.innerHTML = '<div class="anim-tag">🎬 ' + (make ? "Try it" : "Animation idea") + '</div><div class="anim-stage"></div>' +
+      "<figcaption>" + p.innerHTML.replace(/^🎬\s*<strong>Animation idea:<\/strong>\s*/, "") + "</figcaption>";
+    p.replaceWith(fig);
+    const stage = $(".anim-stage", fig);
+    if (make) make(stage); else stage.remove();
+  });
+
+  const i = CHAPTERS.indexOf(ch);
+  const prev = CHAPTERS[i - 1], next = CHAPTERS[i + 1];
+  const pager = document.createElement("nav");
+  pager.className = "pager";
+  pager.innerHTML =
+    (prev ? '<a href="#' + hashFor(prev.id) + '"><small>← Chapter ' + prev.id + "</small><b>" + esc(prev.title) + "</b></a>" : "<span></span>") +
+    (next ? '<a class="next" href="#' + hashFor(next.id) + '"><small>Chapter ' + next.id + " →</small><b>" + esc(next.title) + "</b></a>" : "");
+  $(".chapter", view).appendChild(pager);
+}
+
+/* ---------------- animations ---------------- */
+const WIDGETS = {
+  "0.1": [sdkPipeline, cookieDivision],
+  "0.2": [gitAlbum],
+  "1.1": [shapeSorter, cashiers],
+  "1.2": [twoTeachers],
+  "1.3": [rowOfDoors, factoryLine],
+  "1.4": [twoMachines],
+  "1.5": [gitUndo],
+};
+
+function sdkPipeline(stage) {
+  const steps = [
+    { zone: 0, text: "You write C# in Program.cs. Right now it's only text." },
+    { zone: 1, text: "dotnet build: the SDK's compiler turns your code into an app file (.dll). Only developers need the SDK." },
+    { zone: 2, text: "The user runs the app. The CLR (runtime) is the engine that makes it run. Users only need the runtime." },
+  ];
+  let i = 0;
+  stage.innerHTML =
+    '<div class="zones three">' +
+    '<div class="zone"><h5>You<small>developer</small></h5><div class="item">Program.cs</div></div>' +
+    '<div class="zone"><h5>SDK<small>toolbox</small></h5><div class="item">dotnet build</div><div class="item">→ app.dll</div></div>' +
+    '<div class="zone"><h5>CLR<small>engine</small></h5><div class="item">runs app.dll</div><div class="item">for the user</div></div>' +
+    '</div><div class="verdict"></div><div class="btn-row"><button class="btn primary">Next step</button></div>';
+  const zones = stage.querySelectorAll(".zone"), verdict = $(".verdict", stage), btn = $(".btn", stage);
+  const show = () => {
+    zones.forEach((z, k) => z.classList.toggle("active", k === steps[i].zone));
+    verdict.textContent = "Step " + (i + 1) + " of 3: " + steps[i].text;
+    btn.textContent = i === steps.length - 1 ? "Start again" : "Next step";
+  };
+  btn.addEventListener("click", () => { i = (i + 1) % steps.length; show(); });
+  show();
+}
+
+function cookieDivision(stage) {
+  stage.innerHTML =
+    '<div class="control"><label for="ck-c">Cookies</label><input id="ck-c" type="range" min="0" max="20" value="10"><output></output></div>' +
+    '<div class="control"><label for="ck-k">Kids</label><input id="ck-k" type="range" min="1" max="6" value="3"><output></output></div>' +
+    '<div class="cookies"></div><div class="term"></div>';
+  const c = $("#ck-c", stage), k = $("#ck-k", stage), box = $(".cookies", stage), term = $(".term", stage);
+  const draw = () => {
+    const cookies = +c.value, kids = +k.value, each = Math.floor(cookies / kids), left = cookies % kids;
+    c.nextElementSibling.textContent = cookies;
+    k.nextElementSibling.textContent = kids;
+    let html = "";
+    for (let i = 1; i <= kids; i++) html += "<div><small>Kid " + i + "</small><span>" + ("🍪".repeat(each) || "<small>none</small>") + "</span></div>";
+    html += "<div><small>Plate</small><span>" + ("🍪".repeat(left) || "<small>empty</small>") + "</span></div>";
+    box.innerHTML = html;
+    const dart = cookies / kids;
+    term.innerHTML =
+      "int each = " + cookies + " / " + kids + ";   <span class=\"dim\">// " + each + "  (C# throws away the decimal part)</span>\n" +
+      "int left = " + cookies + " % " + kids + ";   <span class=\"dim\">// " + left + "  (the remainder)</span>\n" +
+      "<span class=\"dim\">// Dart: " + cookies + " / " + kids + " = " + (Number.isInteger(dart) ? dart + ".0" : dart) + "</span>";
+  };
+  c.addEventListener("input", draw);
+  k.addEventListener("input", draw);
+  draw();
+}
+
+function gitAlbum(stage) {
+  const st = { mod: new Set(), staged: new Set(), commits: [], pushed: 0 };
+  stage.innerHTML =
+    '<div class="zones">' +
+    '<div class="zone" data-z="desk"><h5>Desk<small>working directory</small></h5><div class="list"></div></div>' +
+    '<div class="zone" data-z="box"><h5>Box<small>staging area</small></h5><div class="list"></div></div>' +
+    '<div class="zone" data-z="album"><h5>Album<small>local repo</small></h5><div class="list"></div></div>' +
+    '<div class="zone" data-z="cloud"><h5>Cloud<small>GitHub</small></h5><div class="list"></div></div>' +
+    "</div>" +
+    '<div class="btn-row"><button class="btn" data-a="edit1">Edit Program.cs</button><button class="btn" data-a="edit2">Edit README.md</button>' +
+    '<button class="btn primary" data-a="add">git add .</button><button class="btn primary" data-a="commit">git commit</button><button class="btn primary" data-a="push">git push</button></div>' +
+    '<div class="term"><span class="dim">$ git status</span>\nnothing to commit, working tree clean</div>';
+  const term = $(".term", stage), zone = (z) => $('[data-z="' + z + '"]', stage);
+  const flash = (z) => { stage.querySelectorAll(".zone").forEach((el) => el.classList.toggle("active", el.dataset.z === z)); };
+  const draw = () => {
+    $(".list", zone("desk")).innerHTML = ["Program.cs", "README.md"].map((f) =>
+      '<div class="item' + (st.mod.has(f) ? " mod" : "") + '">' + f + (st.mod.has(f) ? " (modified)" : "") + "</div>").join("");
+    $(".list", zone("box")).innerHTML = [...st.staged].map((f) => '<div class="item staged">' + f + "</div>").join("");
+    const row = (c) => '<div class="item"><b>' + c.id + "</b> " + esc(c.msg) + "</div>";
+    $(".list", zone("album")).innerHTML = [...st.commits].reverse().map(row).join("");
+    $(".list", zone("cloud")).innerHTML = st.commits.slice(0, st.pushed).reverse().map(row).join("");
+  };
+  stage.querySelector(".btn-row").addEventListener("click", (e) => {
+    const a = e.target.dataset.a;
+    if (!a) return;
+    if (a === "edit1" || a === "edit2") {
+      const f = a === "edit1" ? "Program.cs" : "README.md";
+      st.mod.add(f);
+      flash("desk");
+      term.innerHTML = '<span class="dim">$ git status</span>\nChanges not staged for commit:\n<span class="bad">        modified:   ' + [...st.mod].join("\n        modified:   ") + "</span>";
+    } else if (a === "add") {
+      if (!st.mod.size) { term.innerHTML = '<span class="dim">$ git add .</span>\n<span class="dim">(nothing changed on the desk, so nothing to add)</span>'; }
+      else {
+        st.mod.forEach((f) => st.staged.add(f));
+        st.mod.clear();
+        flash("box");
+        term.innerHTML = '<span class="dim">$ git status</span>\nChanges to be committed:\n<span class="good">        modified:   ' + [...st.staged].join("\n        modified:   ") + "</span>";
+      }
+    } else if (a === "commit") {
+      if (!st.staged.size) {
+        term.innerHTML = '<span class="dim">$ git commit -m "..."</span>\n' + (st.mod.size ? 'no changes added to commit (use "git add")' : "nothing to commit, working tree clean");
+      } else {
+        const files = [...st.staged];
+        const msg = files.length > 1 ? "Update Program.cs and README" : files[0] === "README.md" ? "Update README with run steps" : "Update greeting in Program.cs";
+        const c = { id: hex7(), msg };
+        st.commits.push(c);
+        st.staged.clear();
+        flash("album");
+        term.innerHTML = '<span class="dim">$ git commit -m "' + esc(msg) + '"</span>\n[main ' + c.id + "] " + esc(msg) + "\n " + files.length + " file" + (files.length > 1 ? "s" : "") + " changed";
+      }
+    } else if (a === "push") {
+      if (st.pushed === st.commits.length) { term.innerHTML = '<span class="dim">$ git push</span>\nEverything up-to-date'; }
+      else {
+        const from = st.pushed ? st.commits[st.pushed - 1].id : "0000000";
+        st.pushed = st.commits.length;
+        flash("cloud");
+        term.innerHTML = '<span class="dim">$ git push</span>\nTo https://github.com/basithcreation/dotnet-fullstack-journey.git\n   ' + from + ".." + st.commits[st.pushed - 1].id + "  main -> main";
+      }
+    }
+    draw();
+  });
+  draw();
+}
+
+function shapeSorter(stage) {
+  const values = [
+    { code: "3", type: "int" }, { code: "2.5", type: "double" }, { code: "1.350m", type: "decimal" },
+    { code: "'B'", type: "char" }, { code: '"Hi"', type: "string" }, { code: "true", type: "bool" },
+  ];
+  const boxes = ["int", "double", "decimal", "bool", "char", "string"];
+  const cast = (from, to) => "error CS0266: Cannot implicitly convert type '" + from + "' to '" + to + "'. An explicit conversion exists (are you missing a cast?)";
+  const nope = (from, to) => "error CS0029: Cannot implicitly convert type '" + from + "' to '" + to + "'";
+  function judge(v, box) {
+    if (v.type === box) return ["good", "Fits! A " + box + " box holds exactly this."];
+    const t = v.type;
+    if (t === "int" && (box === "double" || box === "decimal")) return ["good", "Fits automatically: int → " + box + " is a safe pour (implicit conversion), nothing is lost."];
+    if (t === "int" && box === "char") return ["bad", cast("int", "char")];
+    if (t === "double" && box === "decimal") return ["bad", "error CS0664: Literal of type double cannot be implicitly converted to type 'decimal'; use an 'M' suffix. Write 2.5m."];
+    if (t === "double" && (box === "int" || box === "char")) return ["bad", cast("double", box) + " The decimal part would be lost, so C# wants you to decide."];
+    if (t === "decimal" && (box === "int" || box === "double" || box === "char")) return ["bad", cast("decimal", box)];
+    if (t === "char" && (box === "int" || box === "double" || box === "decimal")) return ["warn", "Surprise: it compiles, but the box gets 66, the character's number code. Real code almost never wants this."];
+    return ["bad", nope(t, box)];
+  }
+  let picked = values[0];
+  stage.innerHTML =
+    '<div class="control">1. Pick a value:</div><div class="pick" data-p="v">' +
+    values.map((v, i) => '<button class="btn" data-i="' + i + '" aria-pressed="' + (i === 0) + '">' + esc(v.code) + "</button>").join("") + "</div>" +
+    '<div class="control">2. Drop it into a box:</div><div class="pick" data-p="b">' +
+    boxes.map((b) => '<button class="btn" data-b="' + b + '">' + b + "</button>").join("") + "</div>" +
+    '<div class="codebox"></div><div class="verdict">Pick a value, then a box.</div>';
+  const verdict = $(".verdict", stage), code = $(".codebox", stage);
+  const vRow = $('[data-p="v"]', stage), bRow = $('[data-p="b"]', stage);
+  const showCode = (box) => { code.textContent = (box || "____") + " x = " + picked.code + ";"; };
+  vRow.addEventListener("click", (e) => {
+    const i = e.target.dataset.i;
+    if (i === undefined) return;
+    picked = values[+i];
+    vRow.querySelectorAll(".btn").forEach((b) => b.setAttribute("aria-pressed", String(b === e.target)));
+    showCode();
+    verdict.className = "verdict";
+    verdict.textContent = "Now pick a box for " + picked.code + ".";
+  });
+  bRow.addEventListener("click", (e) => {
+    const box = e.target.dataset.b;
+    if (!box) return;
+    const [kind, msg] = judge(picked, box);
+    showCode(box);
+    verdict.className = "verdict " + kind;
+    verdict.textContent = (kind === "good" ? "✅ " : kind === "warn" ? "⚠️ " : "❌ ") + msg;
+    if (kind === "bad") { verdict.classList.remove("shake"); void verdict.offsetWidth; verdict.classList.add("shake"); }
+  });
+  showCode();
+}
+
+function cashiers(stage) {
+  let n = 0, dbl = 0;
+  stage.innerHTML =
+    '<div class="two"><div class="panel"><h5>double cashier</h5><div class="codebox"></div></div>' +
+    '<div class="panel"><h5>decimal cashier</h5><div class="codebox"></div></div></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="add">Add 0.1 KWD</button><button class="btn" data-a="reset">Reset</button></div>' +
+    '<div class="verdict">Press "Add 0.1 KWD" three times and compare.</div>';
+  const [dBox, mBox] = stage.querySelectorAll(".codebox"), verdict = $(".verdict", stage);
+  const draw = () => {
+    dBox.textContent = "total = " + (n === 0 ? "0" : String(dbl));
+    mBox.textContent = "total = " + (n === 0 ? "0" : (n / 10).toFixed(1));
+    if (n === 0) { verdict.className = "verdict"; verdict.textContent = 'Press "Add 0.1 KWD" three times and compare.'; }
+    else if (String(dbl) !== (n / 10).toFixed(1) && String(dbl) !== String(n / 10)) {
+      verdict.className = "verdict bad";
+      verdict.textContent = "After " + n + " coins the double total is " + dbl + ". A customer would not accept that bill. The decimal total is exact.";
+    } else { verdict.className = "verdict good"; verdict.textContent = "After " + n + (n === 1 ? " coin" : " coins") + " both agree. Keep going."; }
+  };
+  stage.querySelector(".btn-row").addEventListener("click", (e) => {
+    if (e.target.dataset.a === "add") { n++; dbl += 0.1; }
+    if (e.target.dataset.a === "reset") { n = 0; dbl = 0; }
+    draw();
+  });
+  draw();
+}
+
+function twoTeachers(stage) {
+  stage.innerHTML =
+    '<div class="control"><label for="tt-in">Type an input:</label><input id="tt-in" type="text" value="abc" autocomplete="off">' +
+    '<span class="btn-row"><button class="btn" data-v="2000">2000</button><button class="btn" data-v="abc">abc</button><button class="btn" data-v="2.75">2.75</button><button class="btn" data-v="99999999999">99999999999</button></span></div>' +
+    '<div class="two"><div class="panel"><h5>Strict teacher: int.Parse</h5><div class="term" data-t="p"></div></div>' +
+    '<div class="panel"><h5>Polite teacher: int.TryParse</h5><div class="term" data-t="t"></div></div></div>' +
+    '<div class="control"><label for="tt-cut">Scissors: (int)</label><input id="tt-cut" type="text" value="2.75" autocomplete="off"><output></output></div>';
+  const input = $("#tt-in", stage), cut = $("#tt-cut", stage);
+  const pBox = $('[data-t="p"]', stage), tBox = $('[data-t="t"]', stage);
+  function parse(s) {
+    if (!/^\s*[+-]?\d+\s*$/.test(s)) return { error: "System.FormatException: The input string '" + s + "' was not in a correct format." };
+    const n = BigInt(s.trim());
+    if (n > 2147483647n || n < -2147483648n) return { error: "System.OverflowException: Value was either too large or too small for an Int32." };
+    return { value: Number(n) };
+  }
+  const draw = () => {
+    const s = input.value, r = parse(s);
+    if (r.error) {
+      pBox.innerHTML = '<span class="dim">int n = int.Parse("' + esc(s) + '");</span>\n<span class="bad">💥 Unhandled exception. ' + esc(r.error) + "</span>\n<span class=\"dim\">(the program stops here)</span>";
+      tBox.innerHTML = '<span class="dim">bool ok = int.TryParse("' + esc(s) + '", out int n);</span>\nok = <span class="bad">False</span>\nn  = 0\n<span class="dim">(no crash: show a message and return)</span>';
+      pBox.parentElement.classList.remove("shake"); void pBox.offsetWidth; pBox.parentElement.classList.add("shake");
+    } else {
+      pBox.innerHTML = '<span class="dim">int n = int.Parse("' + esc(s) + '");</span>\nn = <span class="good">' + r.value + "</span>";
+      tBox.innerHTML = '<span class="dim">bool ok = int.TryParse("' + esc(s) + '", out int n);</span>\nok = <span class="good">True</span>\nn  = ' + r.value;
+    }
+    const x = parseFloat(cut.value);
+    cut.nextElementSibling.textContent = isNaN(x) ? "?" : "→ " + Math.trunc(x) + "  (cut, not rounded)";
+  };
+  input.addEventListener("input", draw);
+  cut.addEventListener("input", draw);
+  stage.querySelector(".control .btn-row").addEventListener("click", (e) => {
+    if (e.target.dataset.v === undefined) return;
+    input.value = e.target.dataset.v;
+    draw();
+  });
+  draw();
+}
+
+function rowOfDoors(stage) {
+  const pass = { cond: "marks >= 50", test: (m) => m >= 50, out: "Pass" };
+  const exc = { cond: "marks >= 90", test: (m) => m >= 90, out: "Excellent" };
+  const fail = { cond: "else", test: () => true, out: "Fail" };
+  let fixed = false;
+  stage.innerHTML =
+    '<div class="control"><label for="rd-m">marks</label><input id="rd-m" type="range" min="0" max="100" value="95"><output></output></div>' +
+    '<div class="btn-row"><button class="btn" data-o="bug" aria-pressed="true">Buggy order</button><button class="btn" data-o="fix" aria-pressed="false">Fixed order</button></div>' +
+    '<div class="chain"></div><div class="verdict"></div>';
+  const m = $("#rd-m", stage), chain = $(".chain", stage), verdict = $(".verdict", stage);
+  const draw = () => {
+    const marks = +m.value;
+    m.nextElementSibling.textContent = marks;
+    const doors = fixed ? [exc, pass, fail] : [pass, exc, fail];
+    let opened = -1;
+    chain.innerHTML = doors.map((d, i) => {
+      let cls = "skip", tag = "skipped";
+      if (opened === -1) {
+        if (d.test(marks)) { opened = i; cls = "open"; tag = "opens ✅"; }
+        else { cls = "false"; tag = "checked: false"; }
+      }
+      const kw = i === 0 ? "if" : d.cond === "else" ? "else" : "else if";
+      return '<div class="door ' + cls + '"><span>' + kw + (d.cond === "else" ? "" : " (" + d.cond + ")") + " → \"" + d.out + "\"</span><span class=\"tag\">" + tag + "</span></div>";
+    }).join("");
+    const out = doors[opened].out;
+    const wrong = marks >= 90 && out !== "Excellent";
+    verdict.className = "verdict " + (wrong ? "bad" : "good");
+    verdict.textContent = 'Prints "' + out + '". ' + (wrong ? "Wrong! " + marks + " is excellent, but the >= 50 door opened first. First match wins." : "Correct.");
+  };
+  m.addEventListener("input", draw);
+  stage.querySelector(".btn-row").addEventListener("click", (e) => {
+    if (!e.target.dataset.o) return;
+    fixed = e.target.dataset.o === "fix";
+    stage.querySelectorAll("[data-o]").forEach((b) => b.setAttribute("aria-pressed", String(b === e.target)));
+    draw();
+  });
+  draw();
+}
+
+function factoryLine(stage) {
+  stage.innerHTML =
+    '<div class="control"><label for="fl-h">Hours parked</label><input id="fl-h" type="text" value="10" autocomplete="off">' +
+    '<label class="check"><input id="fl-r" type="checkbox"> Kuwait resident</label></div>' +
+    '<div class="belt"></div><div class="term"></div>';
+  const h = $("#fl-h", stage), r = $("#fl-r", stage), belt = $(".belt", stage), term = $(".term", stage);
+  const kwd = (fils) => (fils / 1000).toFixed(3);
+  const station = (label, value, cls) => '<div class="station ' + (cls || "") + '"><small>' + label + "</small><b>" + value + "</b></div>";
+  const draw = () => {
+    const s = h.value;
+    let stop = null;
+    if (!/^\s*[+-]?\d+\s*$/.test(s)) stop = "Please enter whole hours.";
+    else if (+s < 0) stop = "Hours can't be negative.";
+    else if (+s > 24) stop = "Max parking is 24 hours.";
+    else if (+s === 0) stop = "Free (under 1 hour)";
+    if (stop) {
+      belt.innerHTML = station("1. Guards", "stopped", "changed") + station("2. Base fee", "–", "off") + station("3. Discount", "–", "off") + station("4. Cap", "–", "off");
+      term.innerHTML = '<span class="bad">' + esc(stop) + '</span>\n<span class="dim">(return; the rest of the line never runs)</span>';
+      return;
+    }
+    const hours = +s, base = hours * 250, disc = r.checked ? base / 2 : base, capped = Math.min(disc, 1500);
+    belt.innerHTML =
+      station("1. Guards", "passed") +
+      station("2. Base fee", kwd(base), "changed") +
+      station("3. Discount ×0.5", kwd(disc), r.checked ? "changed" : "off") +
+      station("4. Cap 1.500", kwd(capped), capped !== disc ? "changed" : "off");
+    term.innerHTML = '<span class="dim">decimal fee = ' + hours + " * 0.250m;   // " + kwd(base) + "</span>\n" +
+      (r.checked ? '<span class="dim">fee = fee * 0.5m;            // ' + kwd(disc) + "</span>\n" : "") +
+      (capped !== disc ? '<span class="dim">fee = MaxDailyFee;           // 1.500</span>\n' : "") +
+      '<span class="good">Fee: ' + kwd(capped) + " KWD</span>";
+  };
+  h.addEventListener("input", draw);
+  r.addEventListener("change", draw);
+  draw();
+}
+
+function twoMachines(stage) {
+  let hasDefault = true, typo = false, hasDiscard = true;
+  stage.innerHTML =
+    '<div class="two">' +
+    '<div class="panel"><h5>switch statement (does jobs)</h5>' +
+    '<div class="pick" data-s="light">' + ["red", "yellow", "green", "flashing", "off", "Red", "blue"].map((v) => '<button class="btn">' + v + "</button>").join("") + "</div>" +
+    '<label class="check"><input type="checkbox" data-t="default" checked> has default:</label>' +
+    '<div class="codebox" data-c="s"></div><div class="term" data-o="s"><span class="dim">Press a button.</span></div></div>' +
+    '<div class="panel"><h5>switch expression (gives a value)</h5>' +
+    '<div class="pick" data-s="grade">' + ["A", "B", "C", "D", "F", "X"].map((v) => '<button class="btn">\'' + v + "'</button>").join("") + "</div>" +
+    '<label class="check"><input type="checkbox" data-t="discard" checked> has _ arm</label>' +
+    '<label class="check"><input type="checkbox" data-t="typo"> my typo: \'B\' or \'D\'</label>' +
+    '<div class="codebox" data-c="e"></div><div class="term" data-o="e"><span class="dim">Press a button.</span></div></div></div>';
+  const sCode = $('[data-c="s"]', stage), eCode = $('[data-c="e"]', stage), sOut = $('[data-o="s"]', stage), eOut = $('[data-o="e"]', stage);
+  const lightCases = [["red"], ["yellow"], ["green"], ["flashing", "off"]];
+  const lightOut = ["Stop", "Slow down", "Go", "Drive carefully"];
+  function drawStatement(hit) {
+    let lines = ["switch (light)", "{"];
+    lightCases.forEach((vals, i) => {
+      const cls = hit === i ? "hit" : hit !== undefined ? "miss" : "";
+      vals.forEach((v) => lines.push('<span class="' + cls + '">    case "' + v + '":</span>'));
+      lines.push('<span class="' + cls + '">        Console.WriteLine("' + lightOut[i] + '"); break;</span>');
+    });
+    if (hasDefault) {
+      const cls = hit === -1 ? "hit" : hit !== undefined ? "miss" : "";
+      lines.push('<span class="' + cls + '">    default:</span>', '<span class="' + cls + '">        Console.WriteLine("Unknown light"); break;</span>');
+    }
+    lines.push("}");
+    sCode.innerHTML = lines.join("\n");
+  }
+  function arms() {
+    return [
+      { pats: ["A", "B"], out: "Great job!" },
+      { pats: typo ? ["B", "D"] : ["C", "D"], out: "You passed." },
+      { pats: ["F"], out: "Try again." },
+    ];
+  }
+  function drawExpression(hit) {
+    const list = arms();
+    let lines = ["string comment = grade switch", "{"];
+    list.forEach((a, i) => {
+      const cls = hit === i ? "hit" : hit !== undefined ? "miss" : "";
+      lines.push('<span class="' + cls + '">    ' + a.pats.map((p) => "'" + p + "'").join(" or ") + ' => "' + a.out + '",</span>');
+    });
+    if (hasDiscard) {
+      const cls = hit === -1 ? "hit" : hit !== undefined ? "miss" : "";
+      lines.push('<span class="' + cls + '">    _ => "Invalid"</span>');
+    }
+    lines.push("};");
+    eCode.innerHTML = lines.join("\n");
+  }
+  $('[data-s="light"]', stage).addEventListener("click", (e) => {
+    if (e.target.tagName !== "BUTTON") return;
+    const v = e.target.textContent;
+    const i = lightCases.findIndex((vals) => vals.includes(v));
+    if (i >= 0) { drawStatement(i); sOut.innerHTML = lightOut[i]; }
+    else if (hasDefault) { drawStatement(-1); sOut.innerHTML = "Unknown light" + (v === "Red" ? '\n<span class="dim">("Red" is not "red": capitals count)</span>' : ""); }
+    else { drawStatement(null); sOut.innerHTML = '<span class="dim">(no case matched, nothing printed.\n The program just continues. No crash, no warning.)</span>'; }
+  });
+  $('[data-s="grade"]', stage).addEventListener("click", (e) => {
+    if (e.target.tagName !== "BUTTON") return;
+    const g = e.target.textContent.replace(/'/g, "");
+    const list = arms(), i = list.findIndex((a) => a.pats.includes(g));
+    if (i >= 0) { drawExpression(i); eOut.innerHTML = "comment = \"" + list[i].out + "\""; }
+    else if (hasDiscard) {
+      drawExpression(-1);
+      eOut.innerHTML = 'comment = "Invalid"' + (typo && g === "C" ? '\n<span class="bad">⚠ A C student sees "Invalid". The _ arm hid the missing \'C\' case. _ is a safety net, not a fix.</span>' : "");
+    } else {
+      drawExpression(null);
+      eOut.innerHTML = '<span class="bad">Unhandled exception. System.Runtime.CompilerServices.SwitchExpressionException:\nNon-exhaustive switch expression failed to match its input.\nUnmatched value was ' + g + ".</span>";
+      eOut.classList.remove("shake"); void eOut.offsetWidth; eOut.classList.add("shake");
+    }
+  });
+  stage.addEventListener("change", (e) => {
+    const t = e.target.dataset.t;
+    if (t === "default") { hasDefault = e.target.checked; drawStatement(); sOut.innerHTML = '<span class="dim">Press a button.</span>'; }
+    if (t === "discard" || t === "typo") {
+      if (t === "discard") hasDiscard = e.target.checked; else typo = e.target.checked;
+      drawExpression();
+      eOut.innerHTML = hasDiscard ? '<span class="dim">Press a button.</span>' : '<span class="dim">warning CS8509: The switch expression does not handle all possible values of its input type (it is not exhaustive).</span>';
+    }
+  });
+  drawStatement();
+  drawExpression();
+}
+
+function gitUndo(stage) {
+  const st = {
+    commits: [{ id: "717580a", msg: "Add switch lessons and grade calculator exercise" }, { id: "b59b86c", msg: "Update roadmap: swich done" }],
+    pushed: 2, next: 0,
+  };
+  const newMsgs = ["Add git practice file", "Add while loop example", "Fix guard in grade calculator"];
+  stage.innerHTML =
+    '<div class="btn-row"><button class="btn primary" data-a="commit">git commit</button><button class="btn" data-a="amend">git commit --amend</button>' +
+    '<button class="btn" data-a="push">git push</button><button class="btn" data-a="revert">git revert (last)</button></div>' +
+    '<ul class="commits"></ul><div class="term"><span class="dim">$ git log --oneline</span></div>';
+  const list = $(".commits", stage), term = $(".term", stage);
+  const draw = () => {
+    const n = st.commits.length;
+    list.innerHTML = [...st.commits].map((c, i) => ({ c, i })).reverse().map(({ c, i }) =>
+      '<li><span class="id">' + c.id + "</span>" + (i === n - 1 ? '<span class="ref">HEAD → main</span>' : "") +
+      (i === st.pushed - 1 ? '<span class="ref remote">origin/main</span>' : "") + "<span>" + esc(c.msg) + "</span></li>").join("");
+  };
+  stage.querySelector(".btn-row").addEventListener("click", (e) => {
+    const a = e.target.dataset.a;
+    if (!a) return;
+    const last = st.commits[st.commits.length - 1];
+    if (a === "commit") {
+      const msg = newMsgs[st.next++ % newMsgs.length];
+      const c = { id: hex7(), msg };
+      st.commits.push(c);
+      term.innerHTML = '<span class="dim">$ git commit -m "' + esc(msg) + '"</span>\n[main ' + c.id + "] " + esc(msg);
+    } else if (a === "amend") {
+      if (st.commits.length <= st.pushed) {
+        term.innerHTML = '<span class="bad">⚠ Stop! ' + last.id + " is already pushed.\nAmending would rewrite shared history: your teammates still have " + last.id + ".\nUse git revert instead.</span>";
+        term.classList.remove("shake"); void term.offsetWidth; term.classList.add("shake");
+      } else {
+        const old = last.id;
+        last.id = hex7();
+        term.innerHTML = '<span class="dim">$ git commit --amend --no-edit</span>\n[main ' + last.id + "] " + esc(last.msg) + '\n<span class="good">The ID changed: ' + old + " → " + last.id + ". The old photo was thrown away.</span>";
+      }
+    } else if (a === "push") {
+      if (st.pushed === st.commits.length) term.innerHTML = '<span class="dim">$ git push</span>\nEverything up-to-date';
+      else {
+        const from = st.commits[st.pushed - 1].id;
+        st.pushed = st.commits.length;
+        term.innerHTML = '<span class="dim">$ git push</span>\n   ' + from + ".." + st.commits[st.pushed - 1].id + "  main -> main";
+      }
+    } else if (a === "revert") {
+      const msg = 'Revert "' + last.msg + '"';
+      const c = { id: hex7(), msg };
+      st.commits.push(c);
+      term.innerHTML = '<span class="dim">$ git revert ' + last.id + ' --no-edit</span>\n[main ' + c.id + "] " + esc(msg) + '\n<span class="good">A new commit undoes ' + last.id + ". Nothing was erased, so it's safe even after a push.</span>";
+    }
+    draw();
+  });
+  draw();
+}
+
+/* ---------------- start ---------------- */
+window.addEventListener("hashchange", route);
+if (!location.hash) {
+  let lastView = "";
+  try { lastView = localStorage.getItem("lastView") || ""; } catch (e) {}
+  if (lastView) history.replaceState(null, "", "#" + lastView);
+}
+route();
+</script>
