@@ -30,6 +30,7 @@ At the end of the course, this text becomes a real illustrated / animated book.
 - [Chapter 1.3: if / else, making decisions](phase-01/03-if-else.md)
 - [Chapter 1.4: switch and switch expressions](phase-01/04-switch.md)
 - [Chapter 1.5: Git, clean history and undo](phase-01/05-git-clean-history-undo.md)
+- [Chapter 1.6: while loops and Random](phase-01/06-while-random.md)
 
 *(More chapters are added as I finish each topic.)*
 

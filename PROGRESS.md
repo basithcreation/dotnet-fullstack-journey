@@ -6,12 +6,57 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **First 5 minutes:** if not done on Day 4 night: commit + push `ROADMAP.md`, `PROGRESS.md`, `CLAUDE.md`, `lessons/glossary.md` ("Update Day 4 progress log") and `book/` ("Add reference book chapters for Phase 0-1"). Check spelling before Enter
-- **Sun 11 Oct (2 hrs):** quick 3-question warm-up (switch expression order → CS8510, missing `break` → CS0163, why `gradeComment` is declared before the switch). Then teach a basic **`while` loop** and **`Random`** (`Random.Shared.Next(1, 101)`, the upper number is excluded) with small examples, then a small exercise
-- **Mon 12 Oct:** **Project 01: Number Guessing Game** (Part 1) + README. Needs: `while`, `Random`, TryParse guard, `if`/`else`, a counter
-- **LinkedIn "Week 1" post** was skipped on Friday. Draft it this week in `career/linkedin/` (Phase 0 done + data types, TryParse, if/else, switch, Git undo)
-- Still to tick in ROADMAP: "Operators, string interpolation" (quick check, already used a lot)
-- **How to teach this student:** ONE step per message with a fill-in template. Check the clock before suggesting breaks (sessions are often in the evening). Open the file before accepting "done": test comments and experiments were skipped 3 times today until reminded
+- **First 10 minutes (Git practice, the student does it):** rename the folder `11-rool-until-six` → `11-roll-until-six` (and its `.csproj`), then make **2 atomic commits**: (1) the lessons `09-while-loop`, `10-random`, `11-roll-until-six` ("Add while loop and Random lessons"); (2) `PROGRESS.md`, `CLAUDE.md`, `ROADMAP.md`, `lessons/glossary.md`, `book/` ("Add Day 5 progress and while/Random chapter"). Check `git status` before each commit, spelling before Enter, then push
+- **Warm-up (3 questions, no model answers):** (1) `x = 5; while (x < 3)` → what prints? (zero iterations); (2) explain the off-by-one bug from Roll Until Six **in your own words** (copied the model answer on Day 5); (3) `Next(1, 10)` gives which numbers, and why?
+- **Mon 12 Oct:** **Project 01: Number Guessing Game** (Part 1) + README. Needs: `while` (loop until the guess is right), `Random.Shared.Next(1, 101)`, TryParse guard inside the loop (use if/else; `continue` is not taught yet), `if`/`else` for "too high / too low", an attempts counter (increment **before** printing). Teach how to test it with a **hard-coded** secret number first. Teach any new idea (e.g. `continue`) with examples before using it
+- **LinkedIn "Week 1" post** still not drafted. Do it on Friday 16 Oct in `career/linkedin/` (Phase 0 done + data types, TryParse, if/else, switch, Git undo, while + Random)
+- Still to tick in ROADMAP: "Operators, string interpolation" (quick check, already used a lot). The loops line needs `for`, `do-while`, `foreach`, `break`, `continue` too
+- **How to teach this student:** ONE step per message with a fill-in template. Open the file before accepting "done" (the prediction comment was skipped 3 times on Day 5). When a fix is shown as "how C# reads your code", say clearly it's **not** code to type (on Day 5 the `;` was moved, not deleted). Check the clock: Day 5 started 11:46 AM and ended after 9 PM with long breaks
+
+---
+
+## Day 5: Sun 11 Oct 2026 · Phase 1: `while` loops + `Random`
+
+(A long day with work breaks in between: started 11:46 AM, finished after 9 PM.)
+
+**Learned**
+
+- **`while` loop**: the condition is checked **before** every **iteration**; when it's false, C# jumps past the `}`
+- **Zero iterations**: if the condition is false at the start, the body never runs (tested with `bites = 0`)
+- **Infinite loop**: nothing in the body changes the condition → the app **hangs** → **Ctrl+C**
+- **Tracing / dry run** with a table (round, value at the check, true/false, output, value after)
+- **`Random.Shared.Next(min, max)`**: `min` inclusive, `max` **exclusive** (`Next(1, 7)` = 1–6). Output is **non-deterministic**, but the range and the number of lines are predictable
+- **Sentinel loop** ("loop until"): declare before the loop, a starting value that makes the condition true, update inside the loop. `"YES" != "yes"` (case-sensitive)
+- **Off-by-one error**: `rolls++` after the print → total one too high. Fix: start at 0 and increment **before** the print
+- Testing random code: **hard-code** the value for a moment (`Next(6, 7)`), test the edge case, then **revert**
+
+**Built**
+
+- `lessons/phase-01/09-while-loop` (the plate loop: 3 → 2 → 1 → "Plate empty")
+- `lessons/phase-01/10-random` (3 dice rolls + the "Are you ready?" sentinel loop, tested with no / Yes / YES / yes)
+- `lessons/phase-01/11-rool-until-six` (exercise: roll until a 6, count the rolls, "Lucky! First try!" bonus, 0 warnings. Got a real first-try 6!)
+
+**Quiz scores**
+
+- Warm-up (switch): 2/3 (CS8510 code forgotten, said a missing `break` gives no error, but it's CS0163)
+- while + Random quiz: 2/5 (Q1 zero iterations wrong, Q2 + Q4 missing the why / error code, Q5 copied the model answer)
+
+**Mistakes to remember (review these)**
+
+- `Writeline` → **CS0117**. C# is case-sensitive: `WriteLine`
+- `while (bites > 0) ;` → **CS0642** + the program hung. Then **moved** the `;` to the next line instead of deleting it. **Never** a `;` between `)` and `{`
+- Ran without saving: the file hadn't changed. Look for the white dot ● on the tab, Ctrl+S
+- First try of the exercise: `while (rolls <= 5)` (fixed count) instead of "until a 6". The loop must be controlled by `dice`
+- `dice` declared inside the loop → the condition can't see it (scope). Declare before, `dice = ...` inside without `int`
+- `"Got a {}"`: no `$` and no variable. And `$` is not needed when there's no `{ }`
+- Off-by-one (spotted it without help ✅, then tried `rolls = 0`, which moved the bug to "Roll 0")
+- Quiz: forgot to do the **first check** (`5 < 3` is false → zero iterations)
+- The prediction comment was skipped in 2 of 3 programs. **"Done" = every step**
+- Spelling: missging → **missing**, decler → **declare** (again), worng → **wrong**, rool → **roll**, realy → **really**
+
+**Career**
+
+- Nothing today (the LinkedIn "Week 1" post moves to Friday 16 Oct)
 
 ---
 

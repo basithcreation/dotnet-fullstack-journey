@@ -52,6 +52,19 @@
         { "name": "Revision quiz", "score": 4, "max": 5 },
         { "name": "switch quiz", "score": 3.5, "max": 5 }
       ]
+    },
+    {
+      "day": 5,
+      "date": "2026-10-11",
+      "weekday": "Sun",
+      "phase": "Phase 1",
+      "title": "while loops + Random",
+      "learned": ["while loop: check first, zero iterations", "Infinite loop from a stray ; (CS0642), Ctrl+C", "Random.Shared.Next(min, max): the max is excluded", "Sentinel loop and the off-by-one error"],
+      "built": ["Plate loop example", "Dice rolls + \"Are you ready?\" loop", "Roll Until Six (0 warnings)"],
+      "quizzes": [
+        { "name": "Warm-up (switch)", "score": 2, "max": 3 },
+        { "name": "while + Random quiz", "score": 2, "max": 5 }
+      ]
     }
   ]
 }

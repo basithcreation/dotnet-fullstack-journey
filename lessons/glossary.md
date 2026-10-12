@@ -58,6 +58,28 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | line that can never run | **unreachable code** | "That arm is unreachable, the one above already catches it." |
 | long if-else → switch | **refactor** | "This if-else chain is long, let's refactor it to a switch expression." |
 
+## Phase 1: `while` loops and `Random`
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| merry-go-round / "while the plate is not empty" | **loop** (`while` loop) | "Wrap that in a loop instead of copying it 3 times." |
+| one round | **iteration** | "On the third iteration, `bites` is 1." |
+| the check at the top | **loop condition** | "The loop condition is never false, so it hangs." |
+| the code inside `{ }` | **loop body** | "Move `rolls++` to the top of the loop body." |
+| never stops | **infinite loop**; the app **hangs** | "The app hung because of an infinite loop." |
+| the lonely `;` after `while (...)` | **empty statement** / **stray semicolon** (CS0642) | "There's a stray semicolon after the `while`." |
+| body never runs | **zero iterations** | "If the condition is false on entry, it runs zero iterations." |
+| loop until "yes" | **sentinel loop** / loop until a condition is met | "Use a sentinel loop until the user types yes." |
+| the variable the loop checks | **loop control variable** | "`dice` is the loop control variable." |
+| add 1 / take away 1 | **increment** `++` / **decrement** `--` | "Increment the counter before you print it." |
+| counter one too big | **off-by-one error** | "It's an off-by-one error: I incremented after printing." |
+| lucky-draw box | **random number generator** (`Random.Shared`) | "Use `Random.Shared`, don't create a new `Random` each time." |
+| `Next(1, 7)`: 1 in, 7 out | **inclusive lower bound** / **exclusive upper bound** | "`Next(1, 101)` returns 1 to 100, the upper bound is exclusive." |
+| different every run | **non-deterministic** | "Random output is non-deterministic, so test the range, not the exact value." |
+| capitals count | **case-sensitive** | "String comparison is case-sensitive by default." |
+| `Writeline` vs `WriteLine` | **casing typo** (CS0117) | "The build broke because of a casing typo." |
+| force the dice to 6 for a test | **hard-code** a value, test the **edge case**, then **revert** | "I hard-coded 6 to test the first-try branch, then reverted it." |
+
 ## Errors and testing
 
 | Easy word | Real term | Team sentence |

@@ -546,6 +546,7 @@ const WIDGETS = {
   "1.3": [rowOfDoors, factoryLine],
   "1.4": [twoMachines],
   "1.5": [gitUndo],
+  "1.6": [plateLoop, rollUntilSix],
 };
 
 function sdkPipeline(stage) {
@@ -985,6 +986,148 @@ function gitUndo(stage) {
     draw();
   });
   draw();
+}
+
+function plateLoop(stage) {
+  let start = 3, stray = false, bites, round, out, done, inBlock;
+  stage.innerHTML =
+    '<div class="control"><label for="pl-b">Start bites</label><input id="pl-b" type="range" min="0" max="5" value="3"><output></output>' +
+    '<label class="check"><input id="pl-s" type="checkbox"> stray <b>;</b> after while</label></div>' +
+    '<div class="codebox"></div><div class="cookies"></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="step">Next step</button><button class="btn" data-a="all">Run all</button><button class="btn" data-a="reset">Reset</button></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const b = $("#pl-b", stage), s = $("#pl-s", stage), code = $(".codebox", stage), plate = $(".cookies", stage);
+  const term = $(".term", stage), verdict = $(".verdict", stage);
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  function drawCode(hl) {
+    const L = (k, t) => '<span class="' + (hl === k ? "hit" : "") + '">' + t + "</span>";
+    code.innerHTML = [
+      "int bites = " + start + ";",
+      L("check", "while (bites > 0)" + (stray ? " ;" : "")),
+      "{",
+      L("body", '    Console.WriteLine($"Eating... {bites} bites left");'),
+      L("body", "    bites--;"),
+      "}",
+      L("after", 'Console.WriteLine("Plate empty! Go play");'),
+    ].join("\n");
+  }
+  function drawPlate() {
+    plate.innerHTML = "<div><small>Plate</small><span>" + ("🍪".repeat(Math.max(bites, 0)) || "<small>empty</small>") + "</span></div>" +
+      "<div><small>Round</small><span><small>" + round + "</small></span></div>";
+  }
+  function reset() {
+    start = +b.value; stray = s.checked;
+    bites = start; round = 0; out = []; done = false; inBlock = false;
+    b.nextElementSibling.textContent = start;
+    term.innerHTML = '<span class="dim">(output appears here)</span>';
+    drawCode(); drawPlate();
+    say("", stray ? "The ; ends the while early. The { } block is no longer the loop body. Press Next step." : "Press Next step to check the condition.");
+  }
+  function step() {
+    if (done) return;
+    if (inBlock) {
+      out.push("Eating... " + bites + " bites left"); bites--;
+      out.push("Plate empty! Go play"); done = true; drawCode("after");
+      say("warn", "The loop body was the empty ;, so the { } block ran once on its own (and bites even went to " + bites + "). Then the next line ran.");
+    } else if (bites > 0) {
+      round++;
+      if (stray) {
+        drawCode("check");
+        say("bad", "Round " + round + ": " + bites + " > 0 is true. The body is the empty ;, so nothing happens and bites stays " + bites + ". The condition can never become false: infinite loop.");
+        if (round >= 8) { done = true; say("bad", "💥 The app hangs: round " + round + " and counting, bites is still " + bites + ". In a real terminal you press Ctrl+C. Fix: delete the ;"); }
+      } else {
+        out.push("Eating... " + bites + " bites left"); bites--;
+        drawCode("body");
+        say("good", "Round " + round + ": " + (bites + 1) + " > 0 is true, so the body runs. bites is now " + bites + ".");
+      }
+    } else {
+      drawCode("check");
+      if (stray) { inBlock = true; say("", "Check: " + bites + " > 0 is false, so the (empty) loop ends. Next: the { } block that was cut off from the loop."); }
+      else {
+        out.push("Plate empty! Go play"); done = true; drawCode("after");
+        say(round === 0 ? "warn" : "good", "Check: 0 > 0 is false, so C# jumps past the }. " + (round === 0 ? "Zero iterations: the body never ran." : "The body ran " + round + " times, and \"Eating... 0\" never printed."));
+      }
+    }
+    drawPlate();
+    term.textContent = out.join("\n") || "(nothing printed yet)";
+  }
+  stage.querySelector(".btn-row").addEventListener("click", (e) => {
+    const a = e.target.dataset.a;
+    if (a === "step") step();
+    if (a === "all") { let guard = 0; while (!done && guard++ < 50) step(); }
+    if (a === "reset") reset();
+  });
+  b.addEventListener("input", reset);
+  s.addEventListener("change", reset);
+  reset();
+}
+
+function rollUntilSix(stage) {
+  let start = 0, after = false, force = false;
+  stage.innerHTML =
+    '<div class="control">rolls starts at:</div><div class="pick" data-p="start"><button class="btn" data-v="0" aria-pressed="true">int rolls = 0;</button><button class="btn" data-v="1" aria-pressed="false">int rolls = 1;</button></div>' +
+    '<div class="control">rolls++ goes:</div><div class="pick" data-p="order"><button class="btn" data-v="before" aria-pressed="true">before the print</button><button class="btn" data-v="after" aria-pressed="false">after the print</button></div>' +
+    '<label class="check"><input type="checkbox" data-t="force"> force a 6 (hard-code Next(6, 7) to test the first-try branch)</label>' +
+    '<div class="codebox"></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="run">dotnet run</button></div>' +
+    '<div class="term"><span class="dim">Press dotnet run.</span></div><div class="verdict"></div>';
+  const code = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  function drawCode() {
+    const inc = "    rolls++;";
+    code.textContent = [
+      "int rolls = " + start + ";",
+      "int dice = 7;",
+      "while (dice != 6)",
+      "{",
+      after ? null : inc,
+      "    dice = Random.Shared.Next(" + (force ? "6, 7);   // TEST ONLY" : "1, 7);"),
+      '    Console.WriteLine($"Roll {rolls}: {dice}");',
+      after ? inc : null,
+      "}",
+      'if (rolls == 1) Console.WriteLine("Lucky! First try!");',
+      'else Console.WriteLine($"🎉 Got a 6 after {rolls} rolls!");',
+    ].filter((l) => l !== null).join("\n");
+  }
+  function run() {
+    let rolls = start, dice = 7, guard = 0;
+    const lines = [], labels = [];
+    while (dice !== 6 && guard++ < 200) {
+      if (!after) rolls++;
+      dice = force ? 6 : 1 + Math.floor(Math.random() * 6);
+      lines.push("Roll " + rolls + ": " + dice);
+      labels.push(rolls);
+      if (after) rolls++;
+    }
+    lines.push(rolls === 1 ? "Lucky! First try!" : "🎉 Got a 6 after " + rolls + " rolls!");
+    term.textContent = lines.join("\n");
+    const real = labels.length, first = labels[0], last = labels[real - 1];
+    const problems = [];
+    if (first !== 1) problems.push("the labels start at Roll " + first);
+    if (rolls !== real) problems.push("the total says " + rolls + " but there were " + real + " rolls");
+    if (problems.length) {
+      verdict.className = "verdict bad";
+      verdict.textContent = "❌ Off-by-one error: " + problems.join(", and ") + ". Count first, then print.";
+      verdict.classList.remove("shake"); void verdict.offsetWidth; verdict.classList.add("shake");
+    } else {
+      verdict.className = "verdict good";
+      verdict.textContent = "✅ Labels start at 1, and the last label (" + last + ") = the total (" + rolls + ")." + (force ? " Now un-tick \"force a 6\": always revert a hard-coded test value." : "");
+    }
+  }
+  stage.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    const row = btn.parentElement.dataset.p;
+    if (row) {
+      btn.parentElement.querySelectorAll(".btn").forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
+      if (row === "start") start = +btn.dataset.v; else after = btn.dataset.v === "after";
+      drawCode();
+      term.innerHTML = '<span class="dim">Press dotnet run.</span>';
+      verdict.className = "verdict"; verdict.textContent = "";
+    }
+    if (btn.dataset.a === "run") run();
+  });
+  stage.addEventListener("change", (e) => { if (e.target.dataset.t === "force") { force = e.target.checked; drawCode(); } });
+  drawCode();
 }
 
 /* ---------------- start ---------------- */
