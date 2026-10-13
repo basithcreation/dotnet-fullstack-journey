@@ -65,6 +65,18 @@
         { "name": "Warm-up (switch)", "score": 2, "max": 3 },
         { "name": "while + Random quiz", "score": 2, "max": 5 }
       ]
+    },
+    {
+      "day": 6,
+      "date": "2026-10-12",
+      "weekday": "Mon",
+      "phase": "Phase 1",
+      "title": "Project 01: Number Guessing Game",
+      "learned": ["Input validation loop: TryParse + nested if", "A line above the loop runs once, inside runs every time", "Test with a hard-coded secret, test every path", "Meaningful names (F2), formatting, an honest README", "Git: pathspec errors, git add ., ahead of origin, push"],
+      "built": ["PIN lock example", "Project 01: Number Guessing Game + README"],
+      "quizzes": [
+        { "name": "Warm-up (while + Random)", "score": 3, "max": 3 }
+      ]
     }
   ]
 }

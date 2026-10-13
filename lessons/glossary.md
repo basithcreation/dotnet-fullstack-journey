@@ -80,6 +80,20 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | `Writeline` vs `WriteLine` | **casing typo** (CS0117) | "The build broke because of a casing typo." |
 | force the dice to 6 for a test | **hard-code** a value, test the **edge case**, then **revert** | "I hard-coded 6 to test the first-try branch, then reverted it." |
 
+## Phase 1: Project 01, validation loops
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| door that keeps asking | **input validation loop** | "Wrap the `TryParse` in a validation loop." |
+| an `if` inside an `if` | **nested `if`** | "The high/low check is a nested `if` inside the parse check." |
+| bad input not counted | **invalid input is rejected** | "Invalid input is rejected and doesn't count as an attempt." |
+| the random line wiped my guess | **overwrite** a variable | "The random call was overwriting the user's guess." |
+| picked once at the top | **initialized once** (before the loop) | "The secret is initialized once, so it stays constant for the whole game." |
+| guess the middle | **binary search** | "Binary search finds any number from 1 to 100 in 7 tries or fewer." |
+| good names | **meaningful variable names** | "Rename `randomNumber`, nothing about it is random." |
+| neat blank lines | **formatting** / **code style** | "`else` goes right after the `}`, no blank line." |
+| project front page | **README** (written in **Markdown**) | "Add a README with how to run it and an example." |
+
 ## Errors and testing
 
 | Easy word | Real term | Team sentence |
@@ -105,6 +119,10 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | new photo that undoes an old one | **revert** | "That commit broke the build, let's revert it." |
 | the `:` scroll screen | **pager** (press `q`) | |
 | invisible new-line characters | **line endings** (CRLF on Windows, LF on Linux/Mac) | "That's just a line-ending warning, it's harmless." |
+| Git couldn't find my path | **pathspec** error (`did not match any files`) | "The add failed, my pathspec had a typo." |
+| leftover `obj` folder | **build output** / **stray build folder** | "That's just build output, it's gitignored, delete it." |
+| `git add .` | **stage all changes** | "I staged everything because the working tree only had this change." |
+| saved on my PC, not on GitHub | **local commits**, **ahead of the remote** | "I'm 2 commits ahead of origin, let me push." |
 
 ## Tools and workflow
 

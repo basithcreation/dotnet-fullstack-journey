@@ -547,6 +547,7 @@ const WIDGETS = {
   "1.4": [twoMachines],
   "1.5": [gitUndo],
   "1.6": [plateLoop, rollUntilSix],
+  "1.7": [pinDoor, guessGame],
 };
 
 function sdkPipeline(stage) {
@@ -1128,6 +1129,145 @@ function rollUntilSix(stage) {
   });
   stage.addEventListener("change", (e) => { if (e.target.dataset.t === "force") { force = e.target.checked; drawCode(); } });
   drawCode();
+}
+
+function pinDoor(stage) {
+  const PIN = 4321;
+  let outside = false, tries = 0, badCounted = 0, open = false, log = [];
+  stage.innerHTML =
+    '<div class="control">tries++ goes:</div><div class="pick"><button class="btn" data-v="in" aria-pressed="true">inside the number check</button><button class="btn" data-v="out" aria-pressed="false">before the number check</button></div>' +
+    '<div class="codebox"></div>' +
+    '<div class="control"><label for="pd-in">Enter PIN:</label><input id="pd-in" type="text" value="abc" autocomplete="off">' +
+    '<div class="btn-row"><button class="btn primary" data-a="enter">Enter</button><button class="btn" data-a="reset">Reset door</button></div></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const code = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage), inp = $("#pd-in", stage);
+  function drawCode() {
+    const inc = outside ? "    tries++;" : "        tries++;";
+    code.textContent = [
+      "while (pin != 4321)",
+      "{",
+      outside ? inc : null,
+      "    if (int.TryParse(input, out pin))",
+      "    {",
+      outside ? null : inc,
+      '        if (pin != 4321) Console.WriteLine("Wrong PIN.");',
+      "    }",
+      '    else Console.WriteLine("Digits only, please.");',
+      "}",
+      'Console.WriteLine($"Unlocked after {tries} tries.");',
+    ].filter((l) => l !== null).join("\n");
+  }
+  function draw() {
+    term.innerHTML = log.length ? log.join("\n") : '<span class="dim">Try: abc, then 1111, then 4321.</span>';
+  }
+  function reset() {
+    tries = 0; badCounted = 0; open = false; log = [];
+    verdict.className = "verdict"; verdict.textContent = "";
+    draw();
+  }
+  function enter() {
+    if (open) return;
+    const s = inp.value.trim();
+    const ok = /^-?\d+$/.test(s);
+    if (outside) { tries++; if (!ok) badCounted++; }
+    log.push("Enter PIN: " + esc(s));
+    if (ok) {
+      if (!outside) tries++;
+      if (+s !== PIN) log.push("Wrong PIN.");
+    } else {
+      log.push('<span class="bad">Digits only, please.</span>');
+    }
+    if (ok && +s === PIN) {
+      open = true;
+      log.push('<span class="good">🚪 Unlocked after ' + tries + " tries.</span>");
+      if (badCounted) {
+        verdict.className = "verdict bad";
+        verdict.textContent = "❌ " + badCounted + " invalid input" + (badCounted > 1 ? "s were" : " was") + " counted as a try. Move tries++ inside the number check.";
+      } else {
+        verdict.className = "verdict good";
+        verdict.textContent = "✅ Only real numbers were counted: " + tries + " tries.";
+      }
+    }
+    draw();
+    inp.select();
+  }
+  stage.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.dataset.v) {
+      stage.querySelectorAll(".pick .btn").forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
+      outside = btn.dataset.v === "out";
+      drawCode(); reset();
+    }
+    if (btn.dataset.a === "enter") enter();
+    if (btn.dataset.a === "reset") reset();
+  });
+  inp.addEventListener("keydown", (e) => { if (e.key === "Enter") enter(); });
+  drawCode(); draw();
+}
+
+function guessGame(stage) {
+  let inside = false, secret, attempts, low, high, done, log;
+  const pickSecret = () => 1 + Math.floor(Math.random() * 100);
+  stage.innerHTML =
+    '<div class="control">The line <code>secretNumber = Random.Shared.Next(1, 101);</code> goes:</div>' +
+    '<div class="pick"><button class="btn" data-v="above" aria-pressed="true">above the loop (runs once)</button><button class="btn" data-v="inside" aria-pressed="false">inside the loop (every guess)</button></div>' +
+    '<div class="control"><label for="gg-in">Your guess:</label><input id="gg-in" type="text" value="50" autocomplete="off">' +
+    '<div class="btn-row"><button class="btn primary" data-a="guess">Guess</button><button class="btn" data-a="mid">Middle guess</button><button class="btn" data-a="new">New game</button></div></div>' +
+    '<div class="term" style="max-height: 16em; overflow-y: auto"></div><div class="verdict"></div>';
+  const term = $(".term", stage), verdict = $(".verdict", stage), inp = $("#gg-in", stage);
+  function start() {
+    secret = pickSecret(); attempts = 0; low = 1; high = 100; done = false;
+    log = ["I'm thinking of a number between 1 and 100."];
+    verdict.className = "verdict"; verdict.textContent = "";
+    draw();
+  }
+  function draw() { term.innerHTML = log.join("\n"); term.scrollTop = term.scrollHeight; }
+  function guess() {
+    if (done) return;
+    const s = inp.value.trim();
+    log.push("Your guess: " + esc(s));
+    if (!/^-?\d+$/.test(s)) {
+      log.push('<span class="bad">That\'s not a number. Try again.</span>');
+      draw(); return;
+    }
+    const g = +s;
+    attempts++;
+    if (inside) {
+      const old = secret;
+      secret = pickSecret();
+      if (secret !== old) log.push('<span class="dim">(the loop ran the Random line again: the secret quietly changed from ' + old + " to " + secret + ")</span>");
+    }
+    if (g > secret) { log.push("Too high!"); high = Math.min(high, g - 1); }
+    else if (g < secret) { log.push("Too low!"); low = Math.max(low, g + 1); }
+    else {
+      done = true;
+      log.push('<span class="good">' + (attempts === 1 ? "🎯 First try! Amazing!" : "🎉 Correct! You got it in " + attempts + " attempts.") + "</span>");
+      verdict.className = inside ? "verdict warn" : "verdict good";
+      verdict.textContent = inside ? "You won, but only by luck: the secret kept changing. Move the Random line above the loop." : "✅ The secret was picked once and stayed " + secret + " for the whole game.";
+    }
+    if (!done && low > high) {
+      verdict.className = "verdict bad";
+      verdict.textContent = "❌ The clues contradict each other (it must be above " + (low - 1) + " and below " + (high + 1) + "). The secret is being overwritten on every guess.";
+      verdict.classList.remove("shake"); void verdict.offsetWidth; verdict.classList.add("shake");
+    }
+    draw();
+    inp.select();
+  }
+  stage.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.dataset.v) {
+      stage.querySelectorAll(".pick .btn").forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
+      inside = btn.dataset.v === "inside";
+      start();
+    }
+    if (btn.dataset.a === "guess") guess();
+    if (btn.dataset.a === "mid") { inp.value = String(Math.floor((Math.max(low, 1) + Math.min(Math.max(high, low), 100)) / 2)); guess(); }
+    if (btn.dataset.a === "new") start();
+  });
+  inp.addEventListener("keydown", (e) => { if (e.key === "Enter") guess(); });
+  start();
 }
 
 /* ---------------- start ---------------- */

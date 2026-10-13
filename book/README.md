@@ -31,6 +31,7 @@ At the end of the course, this text becomes a real illustrated / animated book.
 - [Chapter 1.4: switch and switch expressions](phase-01/04-switch.md)
 - [Chapter 1.5: Git, clean history and undo](phase-01/05-git-clean-history-undo.md)
 - [Chapter 1.6: while loops and Random](phase-01/06-while-random.md)
+- [Chapter 1.7: Validation loops and the Number Guessing Game](phase-01/07-guessing-game.md)
 
 *(More chapters are added as I finish each topic.)*
 

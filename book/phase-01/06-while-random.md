@@ -1,6 +1,6 @@
 # Chapter 1.6: while loops and Random
 
-> Learned: Sun 11 Oct 2026 · Code: `lessons/phase-01/09-while-loop`, `10-random`, `11-rool-until-six`
+> Learned: Sun 11 Oct 2026 · Code: `lessons/phase-01/09-while-loop`, `10-random`, `11-roll-until-six`
 
 ---
 

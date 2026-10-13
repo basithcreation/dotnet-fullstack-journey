@@ -6,12 +6,69 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **First 10 minutes (Git practice, the student does it):** rename the folder `11-rool-until-six` → `11-roll-until-six` (and its `.csproj`), then make **2 atomic commits**: (1) the lessons `09-while-loop`, `10-random`, `11-roll-until-six` ("Add while loop and Random lessons"); (2) `PROGRESS.md`, `CLAUDE.md`, `ROADMAP.md`, `lessons/glossary.md`, `book/` ("Add Day 5 progress and while/Random chapter"). Check `git status` before each commit, spelling before Enter, then push
-- **Warm-up (3 questions, no model answers):** (1) `x = 5; while (x < 3)` → what prints? (zero iterations); (2) explain the off-by-one bug from Roll Until Six **in your own words** (copied the model answer on Day 5); (3) `Next(1, 10)` gives which numbers, and why?
-- **Mon 12 Oct:** **Project 01: Number Guessing Game** (Part 1) + README. Needs: `while` (loop until the guess is right), `Random.Shared.Next(1, 101)`, TryParse guard inside the loop (use if/else; `continue` is not taught yet), `if`/`else` for "too high / too low", an attempts counter (increment **before** printing). Teach how to test it with a **hard-coded** secret number first. Teach any new idea (e.g. `continue`) with examples before using it
-- **LinkedIn "Week 1" post** still not drafted. Do it on Friday 16 Oct in `career/linkedin/` (Phase 0 done + data types, TryParse, if/else, switch, Git undo, while + Random)
-- Still to tick in ROADMAP: "Operators, string interpolation" (quick check, already used a lot). The loops line needs `for`, `do-while`, `foreach`, `break`, `continue` too
-- **How to teach this student:** ONE step per message with a fill-in template. Open the file before accepting "done" (the prediction comment was skipped 3 times on Day 5). When a fix is shown as "how C# reads your code", say clearly it's **not** code to type (on Day 5 the `;` was moved, not deleted). Check the clock: Day 5 started 11:46 AM and ended after 9 PM with long breaks
+- **First 10 minutes (Git practice, the student does it):**
+  1. Fix the last README bit: delete the space before `I'm thinking...` in the Example of `projects/01-number-guessing-game/README.md` (line 13)
+  2. `git status` shows `lessons/phase-01/11-roll-until-six/Program.cs` as **modified**: only a blank line at the end was removed by accident. Practice **`git diff`** to see it, then **`git restore`** to throw it away
+  3. **3 atomic commits**: (1) `lessons/phase-01/12-pin-lock` ("Add PIN lock validation loop lesson"); (2) `projects/01-number-guessing-game` ("Add Number Guessing Game project"); (3) `PROGRESS.md`, `CLAUDE.md`, `ROADMAP.md`, `lessons/glossary.md`, `book/` ("Add Day 6 progress and guessing game chapter"). `git status` before each commit, then push
+  4. After the push: add the **Project 01 bullet** to `career/RESUME.md` (the rule: only once it's pushed) + the GitHub link
+- **Warm-up: a fresh 5-question quiz on validation loops** (none was done on Day 6). Don't reuse the book's chapter 1.7 quiz, it has the answers. Ideas: count the tries for given inputs, where a line runs (above vs inside the loop), why no final `else`, the missing-`else` double print, why a failed `TryParse` (0) is safe here
+- **Tue 13 Oct lesson:** the rest of the loops: **`for`** loop (counting loops, compare with Dart's `for`), then **`do-while`** (runs at least once: a natural fit for "ask until valid"). Teach with small examples first. Then `break` / `continue` on a later day, and use them for the game's **range check** (reject < 1 or > 100, needs `||`) as v1.1
+- **LinkedIn "Week 1" post** on **Fri 16 Oct** in `career/linkedin/`: Phase 0 + data types, TryParse, if/else, switch, Git undo, while + Random, and **Project 01** (the guessing game, with a screenshot of a real game)
+- Still to tick in ROADMAP: "Operators, string interpolation" (quick check, already used a lot). The loops line needs `for`, `do-while`, `foreach`, `break`, `continue`
+- **How to teach this student:**
+  - ONE step per message with a fill-in template. **Open the file** before accepting "done": on Day 6 the code sometimes didn't match "done" (Random still in the loop, missing `else`, README space)
+  - Say **which file** to type in, and ask them to check the open tab: the PIN example was typed into the project's `Program.cs`
+  - When asking "why does it print X?", say clearly: **"the code is correct, don't change it, just explain"**. On Day 6 they changed `tries = 0` to 1, then 2
+  - Blanks in a template: say what kind of thing goes there ("a folder name"): they typed the word "atomic" into a path blank
+  - Insist on running **every** test listed (only 1 of 2 bonus tests was run)
+  - The prediction comment was skipped again (PIN lock and the game). Ask for it in chat **before** they run, then check
+  - Check the clock: Day 6 started 10:50 AM, worked in between shifts, ended at 10 PM
+
+---
+
+## Day 6: Mon 12 Oct 2026 · Phase 1: Project 01, Number Guessing Game
+
+(Started 10:50 AM, worked between shifts, finished at 10 PM.)
+
+**Learned**
+
+- **Input validation loop:** `while` + `TryParse` + a **nested `if`**. Bad input goes to the `else` and **isn't counted**. `out pin` writes straight into the loop variable
+- A line **above** the loop runs **once**, a line **inside** runs **every iteration**. The secret is picked once (they asked about this on their own ✅). `Random` inside the loop **overwrote** the player's guess
+- 3 cases (high / low / equal) with `if` / `else if` and no final `else`: on "equal" the loop just ends
+- `if` / `else` = **one** path. A line after an `if` with no `else` always runs
+- **Testing:** hard-code the secret (`42`), test **every** path, then switch to `Random.Shared.Next(1, 101)`
+- **Clean code:** meaningful names (`randomNumber` → `numberOfAttempts` with **F2 Rename Symbol**), formatting (`}` + `else` together, one blank line between blocks)
+- **README** in Markdown, written honestly (Ctrl+Shift+V preview). **Binary search** guessing (7 tries or fewer)
+- **Git:** renamed a folder + `.csproj` with `Rename-Item`, deleted a stray `obj` folder, `pathspec ... did not match any files` (nothing is staged), `git add .` is OK only when `git status` shows nothing else, "ahead of origin by 2 commits" → push. The LF/CRLF warning is harmless
+
+**Built**
+
+- Git: renamed `11-rool-until-six` → `11-roll-until-six`, 2 atomic commits (`Add while loop and Random lessons`, `Add Day 5 progress and while/Random chapter`), pushed
+- `lessons/phase-01/12-pin-lock` (PIN door validation loop, tested with abc / 1111 / 4321 → 2 tries)
+- `projects/01-number-guessing-game` + `README.md`: secret 1–100, validation loop, too high / too low, attempts counter, first-try bonus, 0 warnings. Won a real game in 8 attempts. **Not committed yet**
+
+**Quiz scores**
+
+- Warm-up (while + Random): 3/3 ✅ (zero iterations, the off-by-one explained in their own words, `Next(1, 10)` = 1–9 because the max is exclusive)
+- No 5-question quiz today: do one at the start of Day 7
+
+**Mistakes to remember (review these)**
+
+- Typed the word `atomic` into a `git add` path blank → `fatal: pathspec`. Then staged `11-roll-until-six` twice and missed `10-random` (caught it with `git status` ✅)
+- A typo created the stray folder `11-ro11l-until-six`
+- Typed the PIN example into the **project's** `Program.cs` instead of the lesson folder
+- Changed correct code (`tries = 0` → `1` → `2`) when only asked to **explain** why it printed 2. **Trace first, change second**
+- Used `Random` for the **guess** (the player types the guess), and `Random` inside the loop **overwrote** the input. Also two variables for one guess (`guessNumber` + `inputNumber`)
+- Counter named `randomNumber` (it's not random) → `numberOfAttempts`
+- Bonus without `else`: a first-try win printed **two** lines. And only one of the two tests was run
+- README first draft: "tested with 50" (it was 42), "max is 100" (the max passed is 101, exclusive), hint text left in, a leading space in the example
+- ` I'm thinking...` had a space inside the quotes. `Too Low!` had a capital L (fixed)
+- The prediction comment was skipped again
+- Binary search: started at 42 instead of 50 → 8 tries instead of ≤ 7
+
+**Career**
+
+- Project 01 has a README. Resume bullet + LinkedIn mention after it's pushed (Day 7 / Fri 16 Oct)
 
 ---
 

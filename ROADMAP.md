@@ -102,7 +102,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [x] `git log --oneline`, `git diff`, `git status`: read what changed before you commit
 - [x] Undo mistakes: `git restore` (throw away edits), `git restore --staged` (un-add), `git revert` (undo a commit safely)
 
-**Projects:** 01 Number Guessing Game (Part 1) → 02 Console Calculator (Part 2) → 03 Shipment Tracker: add, list, mark delivered, search by tracking number (Part 3)
+**Projects:** 01 Number Guessing Game (Part 1) (✅ built Mon 12 Oct) → 02 Console Calculator (Part 2) → 03 Shipment Tracker: add, list, mark delivered, search by tracking number (Part 3)
 ✅ **Done when:** you can write a 100-line console app with loops, methods and error handling from scratch.
 📣 **LinkedIn:** "3 things in C# that surprised me as a Dart developer"
 📄 **Resume:** project bullet for the Shipment Tracker.
