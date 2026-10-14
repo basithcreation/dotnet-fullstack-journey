@@ -549,6 +549,8 @@ const WIDGETS = {
   "1.6": [plateLoop, rollUntilSix],
   "1.7": [pinDoor, guessGame],
   "1.8": [lapCounter, piggyBank],
+  "1.9": [twoWaiters, askUntilValid],
+  "1.10": [breakBelt],
 };
 
 function lapCounter(stage) {
@@ -1410,6 +1412,193 @@ function guessGame(stage) {
   });
   inp.addEventListener("keydown", (e) => { if (e.key === "Enter") guess(); });
   start();
+}
+
+function twoWaiters(stage) {
+  let wanted = 0, timer = null;
+  stage.innerHTML =
+    '<div class="control"><label for="tw-w">Plates the customer wants</label><input id="tw-w" type="range" min="0" max="4" value="0"><output></output></div>' +
+    '<div class="codebox"></div><div class="cookies"></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="serve">Serve</button></div>' +
+    '<div class="verdict"></div>';
+  const w = $("#tw-w", stage), code = $(".codebox", stage), tables = $(".cookies", stage), verdict = $(".verdict", stage);
+  code.textContent = [
+    "// while: asks at the door        // do-while: serves, then asks",
+    "while (hungry > 0)                do",
+    "{                                 {",
+    "    Serve(); hungry--;                Serve(); hungry--;",
+    "}                                 } while (hungry > 0);",
+  ].join("\n");
+  function draw(a, b) {
+    tables.innerHTML =
+      "<div><small>while</small><span>" + ("🍛".repeat(a) || "<small>0 plates</small>") + "</span></div>" +
+      "<div><small>do-while</small><span>" + ("🍛".repeat(b) || "<small>0 plates</small>") + "</span></div>";
+  }
+  function reset() {
+    clearInterval(timer); wanted = +w.value; w.nextElementSibling.textContent = wanted;
+    draw(0, 0); verdict.className = "verdict"; verdict.textContent = "Press Serve. Try 0 plates first.";
+  }
+  function serve() {
+    reset();
+    const whileTotal = wanted, doTotal = Math.max(wanted, 1);
+    let n = 0;
+    timer = setInterval(() => {
+      n++;
+      draw(Math.min(n, whileTotal), Math.min(n, doTotal));
+      if (n >= doTotal) {
+        clearInterval(timer);
+        if (wanted === 0) {
+          verdict.className = "verdict warn";
+          verdict.textContent = "hungry = 0. The while waiter asked first: 0 > 0 is false, so 0 plates (zero iterations). The do-while waiter served first and asked after: 1 plate, even though nobody wanted it. A do-while always runs at least once.";
+        } else {
+          verdict.className = "verdict good";
+          verdict.textContent = "hungry = " + wanted + ". Both waiters served " + wanted + " plate" + (wanted > 1 ? "s" : "") + ". The two loops only differ when the condition is false from the start.";
+        }
+      }
+    }, 450);
+  }
+  stage.querySelector(".btn-row").addEventListener("click", (e) => { if (e.target.dataset.a === "serve") serve(); });
+  w.addEventListener("input", reset);
+  reset();
+}
+
+function askUntilValid(stage) {
+  let log = [], done = false;
+  stage.innerHTML =
+    '<div class="codebox"></div>' +
+    '<div class="control"><label for="av-in">Which times table?</label><input id="av-in" type="text" value="abc" autocomplete="off">' +
+    '<div class="btn-row"><button class="btn primary" data-a="enter">Enter</button><button class="btn" data-a="reset">Reset</button></div></div>' +
+    '<div class="cookies"></div><div class="term"></div><div class="verdict"></div>';
+  const code = $(".codebox", stage), flag = $(".cookies", stage), term = $(".term", stage), verdict = $(".verdict", stage), inp = $("#av-in", stage);
+  function drawCode(hl) {
+    const L = (k, t) => '<span class="' + (hl === k ? "hit" : "") + '">' + esc(t) + "</span>";
+    code.innerHTML = [
+      "do",
+      "{",
+      '    Console.Write("Which times table? ");',
+      "    input = Console.ReadLine();",
+      "    ok = int.TryParse(input, out number);",
+      L("bad", "    if (!ok) Console.WriteLine(\"That's not a number.\");"),
+      L("loop", "} while (!ok);"),
+      L("after", "// for loop: the times table + sum"),
+    ].join("\n");
+  }
+  function drawFlag(ok) {
+    flag.innerHTML = "<div><small>ok</small><span>" + (ok === undefined ? "<small>not set yet</small>" : ok ? "🟢 <small>true</small>" : "🔴 <small>false</small>") + "</span></div>";
+  }
+  function reset() {
+    log = []; done = false; drawCode(); drawFlag();
+    term.innerHTML = '<span class="dim">Try: abc, then hi, then 7.</span>';
+    verdict.className = "verdict"; verdict.textContent = "";
+  }
+  function enter() {
+    if (done) return;
+    const s = inp.value.trim(), ok = /^-?\d+$/.test(s);
+    log.push("Which times table? " + esc(s));
+    drawFlag(ok);
+    if (!ok) {
+      log.push('<span class="bad">That\'s not a number.</span>');
+      drawCode("bad");
+      verdict.className = "verdict warn";
+      verdict.textContent = "ok is false, so !ok is true: print the message, and while (!ok) sends you back to the top.";
+    } else {
+      const n = +s;
+      let sum = 0;
+      for (let i = 1; i <= 10; i++) { sum += n * i; if (i <= 3) log.push(n + " x " + i + " = " + n * i); }
+      log.push("...", n + " x 10 = " + n * 10, '<span class="good">Sum of all answers: ' + sum + "</span>");
+      drawCode("after"); done = true;
+      verdict.className = "verdict good";
+      verdict.textContent = "ok is true, so !ok is false: the loop ends and the times table runs. TryParse was called once per try, and the flag remembered the answer.";
+    }
+    term.innerHTML = log.join("\n");
+    inp.select();
+  }
+  stage.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.dataset.a === "enter") enter();
+    if (btn.dataset.a === "reset") reset();
+  });
+  inp.addEventListener("keydown", (e) => { if (e.key === "Enter") enter(); });
+  reset();
+}
+
+function breakBelt(stage) {
+  let mode = "break", trigger = 4, i, out, done, states;
+  stage.innerHTML =
+    '<div class="pick"><button class="btn" data-v="break" aria-pressed="true">break</button><button class="btn" data-v="continue" aria-pressed="false">continue</button></div>' +
+    '<div class="control"><label for="bb-t">Trigger at i ==</label><input id="bb-t" type="range" min="1" max="10" value="4"><output></output></div>' +
+    '<div class="codebox"></div><div class="bb-row" style="display:flex;flex-wrap:wrap;gap:6px"></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="step">Next step</button><button class="btn" data-a="all">Run all</button><button class="btn" data-a="reset">Reset</button></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const t = $("#bb-t", stage), code = $(".codebox", stage), belt = $(".bb-row", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const STYLE = {
+    wait: "background:var(--code-bg)",
+    print: "background:var(--ok-soft);color:var(--ok)",
+    skip: "background:var(--warn-soft);color:var(--warn)",
+    exit: "background:var(--bad-soft);color:var(--bad)",
+    gone: "background:var(--code-bg);opacity:.35",
+  };
+  const ICON = { wait: "", print: " ✅", skip: " ⏭️", exit: " 🚪", gone: "" };
+  function drawCode(hl) {
+    const L = (k, s) => '<span class="' + (hl === k ? "hit" : "") + '">' + s + "</span>";
+    code.innerHTML = [
+      "for (int i = 1; i &lt;= 10; i++)",
+      "{",
+      L("jump", "    if (i == " + trigger + ") { " + mode + "; }"),
+      L("print", "    Console.WriteLine(i);"),
+      "}",
+      L("after", 'Console.WriteLine("after the loop");'),
+    ].join("\n");
+  }
+  function drawBelt() {
+    belt.innerHTML = states.map((st, k) =>
+      '<span style="font-family:var(--font-mono);padding:4px 9px;border-radius:6px;' + STYLE[st] + '">' + (k + 1) + ICON[st] + "</span>").join("");
+    term.textContent = out.length ? out.join("\n") : "(nothing printed yet)";
+  }
+  function reset() {
+    trigger = +t.value; t.nextElementSibling.textContent = trigger;
+    i = 1; out = []; done = false; states = Array(10).fill("wait");
+    drawCode(); drawBelt();
+    verdict.className = "verdict"; verdict.textContent = "Press Next step. Predict first: what will " + mode + " do at i == " + trigger + "?";
+  }
+  function step() {
+    if (done) return;
+    if (i > 10) {
+      out.push("after the loop"); done = true; drawCode("after");
+      verdict.className = "verdict good";
+      verdict.textContent = "11 <= 10 is false, so the loop ends normally. continue skipped only i == " + trigger + ", and every other round ran.";
+    } else if (i === trigger && mode === "break") {
+      states[i - 1] = "exit";
+      for (let k = i; k < 10; k++) states[k] = "gone";
+      out.push("after the loop"); done = true; drawCode("jump");
+      verdict.className = "verdict bad";
+      verdict.textContent = "i == " + trigger + ": break leaves the WHOLE loop now. " + (10 - i) + " round" + (10 - i === 1 ? "" : "s") + " never run, and the program jumps to the first line after the loop.";
+    } else if (i === trigger) {
+      states[i - 1] = "skip"; drawCode("jump");
+      verdict.className = "verdict warn";
+      verdict.textContent = "i == " + trigger + ": continue skips the rest of this round (no WriteLine), then i++ runs and the loop goes on.";
+      i++;
+    } else {
+      states[i - 1] = "print"; out.push(String(i)); drawCode("print");
+      verdict.className = "verdict"; verdict.textContent = "i = " + i + ": not the trigger, so the body prints " + i + ".";
+      i++;
+    }
+    drawBelt();
+  }
+  stage.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.dataset.v) {
+      stage.querySelectorAll(".pick .btn").forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
+      mode = btn.dataset.v; reset();
+    }
+    if (btn.dataset.a === "step") step();
+    if (btn.dataset.a === "all") { let g = 0; while (!done && g++ < 30) step(); }
+    if (btn.dataset.a === "reset") reset();
+  });
+  t.addEventListener("input", reset);
+  reset();
 }
 
 /* ---------------- start ---------------- */

@@ -111,6 +111,25 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | leave at the top if input is bad | **guard clause** + **early return**; the rest is the **happy path** | "Add a guard clause, so the happy path isn't nested in an `else`." |
 | output must equal the spec | **matches the expected output** (character for character) | "The test fails, the text doesn't match the expected output exactly." |
 
+## Phase 1: `do-while`, `break`, `continue`
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| waiter serves first, asks after | **`do-while` loop** | "Use a do-while here, because we have to ask the user at least once." |
+| check first (can run 0 times) | **pre-test loop** (`while`, `for`) | "A while is pre-test, so it can run zero times." |
+| check after (runs 1+ times) | **post-test loop** (`do-while`) | "A do-while is post-test, so the body runs at least once." |
+| create the box | **declare** a variable | "Declare `cmd` before the `do` so the condition can see it." |
+| give the box its first value | **initialize** a variable | "You don't need to initialize it, `out` assigns it." |
+| fake starting value (`int pin = 0;`) | **dummy value** / **placeholder value** | "With a do-while you don't need a dummy value." |
+| yes/no box | **flag** (a `bool` variable) | "Store the TryParse result in a flag, then use it in the loop condition." |
+| `{ }` not attached to anything | **standalone block** | "That's a standalone block, it's not part of the loop." |
+| a `using` line nobody needs | **unused using directive** | "Remove the unused using, the analyzer flags it." |
+| `(19,10)` in an error | **line 19, column 10** | "The error is at line 19, column 10, in the while condition." |
+| leave the cinema | **`break`** / **exit the loop early** | "We break out of the loop as soon as we find a match." |
+| skip one song | **`continue`** / **skip to the next iteration** | "If the input is invalid, we `continue` to skip it." |
+| `break`, `continue`, `return` | **jump statements** | "Too many jump statements make a loop hard to follow." |
+| stop searching when found | **early exit** | "Add an early exit once the item is found." |
+
 ## Errors and testing
 
 | Easy word | Real term | Team sentence |
@@ -146,6 +165,9 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | keep the message, add files | `git commit --amend --no-edit` | "I forgot a file, I'll amend with `--no-edit`." |
 | "1 file changed" line | **commit summary** (check the file count!) | "The commit only shows 1 file changed, I forgot to stage the rest." |
 | carry commits to GitHub | **push** to the **remote** | "I pushed, so I won't amend those commits anymore." |
+| shopping basket (order doesn't matter) | **staging area**: a commit takes everything staged at that moment | "I staged only the lesson files, so the commit stays atomic." |
+| amend throws the old photo away | **amend rewrites history** (new commit ID) | "Amend rewrites history, so never amend a pushed commit." |
+| amend with an empty basket | **message-only amend** | "Nothing's staged, so the amend only fixes the message." |
 
 ## Tools and workflow
 

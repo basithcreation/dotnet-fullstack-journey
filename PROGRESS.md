@@ -6,25 +6,73 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **First 10 minutes (Git practice, the student does it): 3 atomic commits, then push**
-  1. `lessons/phase-01/13-for-loop` + `lessons/phase-01/14-times-table` → "Add for loop lessons and times table exercise"
-  2. `career/RESUME.md` → "Add Project 01 to resume"
-  3. `PROGRESS.md`, `CLAUDE.md`, `ROADMAP.md`, `lessons/glossary.md`, `book/` → "Add Day 7 progress and for loop chapter"
-  - `git status` before **each** commit, read the **"N files changed"** line after each one, then `git push`. (Day 7: the 3rd commit first had the wrong message and only 1 of 10 files)
-- **Warm-up: 3 tracing questions on `for`** (the weak spot on Day 7: 2/5). Make them write a trace table for each. Test: a loop starting at **0** with `<`, an iterator that **skips** (`i += 2`), and an off-by-one (`>` vs `>=`). Don't reuse the chapter 1.8 quiz, it has the answers
-- **Wed 14 Oct lesson: `do-while`** (runs **at least once**, the check is at the **bottom**; the `;` after `while (...)` is **required** here, unlike CS0642). Natural fit for "ask until valid": rewrite the PIN lock or a "Which times table?" prompt with `do-while`. Compare with `while` (zero iterations possible) and Dart's `do { } while ();` (same syntax)
-- **Thu 15 Oct:** `break` / `continue`, then the guessing game **v1.1**: range check (reject < 1 or > 100, needs `||`), invalid input still not counted
-- **Fri 16 Oct: LinkedIn "Week 1" post** in `career/linkedin/`: Phase 0 + data types, TryParse, if/else, switch, Git undo, while + Random, `for`, and **Project 01** (link: https://github.com/basithcreation/dotnet-fullstack-journey/tree/main/projects/01-number-guessing-game, screenshot of a real game). Revise + quiz too
-- Still to tick in ROADMAP: "Operators, string interpolation" (quick check, used a lot). The loops line still needs `do-while`, `foreach` (with arrays/lists later), `break`, `continue`
+- **Thu 15 Oct, warm-up (5 min, chat only): 2 small traces** mixing the new keywords. ① a `while` with `continue` where the update is **before** the `continue` (e.g. skip multiples of 3) ② a `do-while` with `break` inside. Trace table for each. Don't reuse the chapter 1.9 / 1.10 quizzes, they have the answers
+- **Thu 15 Oct lesson: Number Guessing Game v1.1** (in `projects/01-number-guessing-game`, it's a project upgrade, so update the README "Features" too):
+  1. **Range check:** a guess < 1 or > 100 → `Please guess between 1 and 100.`, **not counted** as an attempt. Needs `||` (logical OR, met on Day 3: do a 2-minute refresher with a different example first)
+  2. **Flatten the nested if with `continue`:** `if (!int.TryParse(...)) { ...; continue; }` (a guard clause inside a loop, like the Day 7 guard clause but with `continue` instead of `return`)
+  3. **`q` to quit with `break`:** print `The number was {secret}.` Trap to let them discover: after a `break`, the "Correct!" message after the loop still runs. They need a flag (`bool won`) or a check (`guess == secret`). Teach the idea, let them find the fix
+  - Show the expected output for every path (bad text, out of range, too high/low, win on 1st try, quit). Test every path before "done"
+  - **Commit right after** (new rule): `Add range check and quit option to guessing game`
+- **Fri 16 Oct: LinkedIn "Week 1" post** in `career/linkedin/`: Phase 0 + data types, TryParse, if/else, switch, Git undo, all the loops (while, for, do-while, break/continue), and **Project 01** v1.1 (link: https://github.com/basithcreation/dotnet-fullstack-journey/tree/main/projects/01-number-guessing-game, screenshot of a real game). Revise + quiz too
+- Still to tick in ROADMAP: "Operators, string interpolation" (quick check: `%`, `||`/`&&`, `$"..."`, used a lot). The loops line only needs `foreach` (comes with arrays/lists)
 - **How to teach this student:**
-  - **Check the clock before saying "morning" / "tonight"**: on Day 7 Claude said "this morning" at 9:43 PM
-  - The **prediction** habit is improving (the accumulator was predicted first ✅), but they still ran the countdown before predicting. Keep asking in chat **before** they run
-  - "done" without output: ask for the output **every** time. Read the file + run it yourself before accepting
-  - Remind them: **"done" = output matches the expected output line by line**. Day 7: the sum line was missing, and the error text was wrong twice
-  - Trace tables work well. When they're unsure, give a half-filled table to complete
-  - They write from their **Dart memory** (the guard clause): praise it, then make them explain it in C# words
-  - ONE step per message, fill-in templates, say which file / which kind of blank (still true)
-  - Day 7: started 10:26 AM, studied in free hours during a full-day shift, stopped around 9:45 PM. Day 7 wrap-up was written on Wed 14 Oct morning
+  - **Keep Git short** (they asked on Day 8 if Git is worth the time; they want to finish .NET fast). Commit **right after each exercise** (1 minute). No long fix-up sessions. A typo in a message: point it out, amend only if not pushed and it takes 10 seconds. No new Git until Phase 2 (branches)
+  - **They forget a folder in `git add`** (Day 4 and Day 8, the same mistake). Always check the "N files changed" number against the expected one
+  - **Check the clock before saying "morning" / "tonight"**. They study in free hours during a full-day duty that ends ~9:30 PM, with a prayer break
+  - They predict from the **English meaning** of a keyword (`continue` = "carry on normally"). For new keywords, give the C# meaning in one line before asking for a prediction
+  - The prediction habit is working: they predict in chat **before** running now ✅. Keep asking
+  - Tracing: half-filled trace tables work. Their remaining mistake is the **final answer**: it doesn't come from the last row (Day 8: table said 6, answered 10). Ask "which row is the last true one?"
+  - When they write code, things often end up **outside** the loop or block they belong to (the standalone block after `while (...);`). Ask "which lines must repeat?"
+  - "done" without output: ask for the output **every** time. Read the file yourself before accepting
+  - ONE step per message, fill-in templates with blanks (worked well for the flag fix)
+  - Day 8: started 11:00 AM, stopped around 9:30 PM
+
+---
+
+## Day 8: Wed 14 Oct 2026 · Phase 1: Git catch-up, `do-while`, `break` / `continue`
+
+(Started 11:00 AM, studied in free hours during a full-day duty with a prayer break, stopped around 9:30 PM.)
+
+**Learned**
+
+- **Git (revision of Day 7, new angles):** the staging area is a **basket**: the order of `git add` doesn't matter, a commit takes everything in the basket. Empty the basket (`git restore --staged`) **before** `--amend`. Amend makes a **new commit ID**, an amend with an empty basket only changes the message. LF/CRLF warnings are harmless. `HEAD -> main` vs `origin/main` in `git log`
+- **Tracing `for`:** the `i = 0` row counts as an iteration; `total += i` adds `i`, not `i + 1`; `i` and `total` are separate variables. The answer = the value in the last **true** row
+- **`do-while`:** post-test loop, the body runs **at least once**, the `;` after `while (...)` is required. `while` = pre-test, can run 0 times
+- **Scope in do-while:** the condition is outside the `{ }` → declare before `do`, assign inside (CS0103 otherwise). Declare vs initialize
+- **`bool` flag:** `ok = int.TryParse(input, out number);` then `if (!ok)` / `while (!ok)`. Name it after what `true` means; `== true` is extra; don't call TryParse twice. No dummy value needed (`int number;`)
+- **`break`** leaves the whole loop; **`continue`** skips the rest of one iteration (in a `for`, the iterator still runs)
+
+**Built**
+
+- Day 7 in 3 atomic commits (`Add for loop lessons and times table exercise`, `Add project 01 to resume`, `Add Day 7 progress and for loop chapter`), fixed with 2 amends, pushed
+- `lessons/phase-01/15-do-while`: while vs do-while demo + the CS0103 scope trap
+- `lessons/phase-01/16-times-table-v2` (Exercise 14): ask until valid with a do-while + flag, then the table. Tests: `abc`, `hi`, `7` → 2 error lines + table + `Sum of all answers: 385` ✅
+- `lessons/phase-01/17-break-continue`: break at 4, continue at 3
+- 2 lesson commits (`Add do-while lessons and times table v2`, `Add break and coutinue lesson`), pushed
+
+**Quiz scores**
+
+- Tracing warm-up (`for`, `i = 0; i < 4`, `total += i`): **0.5/1** (first trace wrong; with a half-filled table: 4 runs ✅, printed 10 instead of 6 ❌)
+- `do-while` quiz: **3/5** (Q1 ✅; Q2 "don't know" ❌, then solved with a trace table → 16; Q3 CS0103 ✅; Q4 (a) ✅ (b) didn't understand "empty list" ½; Q5 line A ✅, called CS0642 an error ½)
+- `break` vs `continue` check: **2/2** ✅ (after 2 wrong predictions)
+
+**Mistakes to remember (review these)**
+
+- `git add` on `14-times-table` only, `13-for-loop` forgotten ("2 files changed" instead of 4). **The same mistake as Day 4**
+- Staged the book chapter right before amending the lesson commit (it would have gone into the wrong commit)
+- Commit typos: `excercise`, `progres` (amended), `coutinue` (already pushed, left as is), lowercase `project 01`
+- Trace: added `i + 1` instead of `i`, let `i` jump to `total`'s value, and the final answer didn't match the table
+- Typed `while (x < 5)` instead of `do` at the start of the do-while → only `end` printed
+- Accepted an auto-complete that added `using System.Formats.Asn1;`
+- Put the error message in a `{ }` **after** `} while (...);` → a standalone block that ran once, after the valid number
+- `ok = number;` (an `int` into a `bool`)
+- `ok = !int.TryParse(...)` (flag name lies), `if (ok == true)`, TryParse called again in the `while`
+- Predicted `break` = skip one value, and `continue` = no effect (the English meaning)
+- Said "initialize" for "declare"; called the CS0642 warning an error
+
+**Career**
+
+- Nothing new. Fri 16 Oct: LinkedIn "Week 1" post
 
 ---
 

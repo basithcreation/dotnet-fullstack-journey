@@ -90,6 +90,20 @@
         { "name": "Validation loops quiz", "score": 2.5, "max": 5 },
         { "name": "for loop quiz", "score": 2, "max": 5 }
       ]
+    },
+    {
+      "day": 8,
+      "date": "2026-10-14",
+      "weekday": "Wed",
+      "phase": "Phase 1",
+      "title": "do-while, break and continue",
+      "learned": ["Git: the staging area is a basket (order doesn't matter), clean it before --amend", "do-while: post-test loop, runs at least once, ; required", "Declare before do so the condition can see it (CS0103)", "bool flag: ok = int.TryParse(...), name it honestly", "break leaves the loop, continue skips one iteration"],
+      "built": ["Day 7 committed in 3 atomic commits + pushed", "while vs do-while demo", "Times Table v2: ask until valid (3 tests pass)", "break / continue examples"],
+      "quizzes": [
+        { "name": "Tracing warm-up (for)", "score": 0.5, "max": 1 },
+        { "name": "do-while quiz", "score": 3, "max": 5 },
+        { "name": "break vs continue check", "score": 2, "max": 2 }
+      ]
     }
   ]
 }

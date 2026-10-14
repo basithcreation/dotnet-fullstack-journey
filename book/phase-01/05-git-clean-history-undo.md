@@ -90,6 +90,21 @@ Nothing is erased. The history tells the honest story: "I did X, then I undid X.
 ### 4. A pushed typo? Leave it.
 `b59b86c Update roadmap: swich done` was already pushed, so we **left it**. A small typo in history is fine. Rewriting shared history is worse.
 
+### 5. The basket: order doesn't matter, contents do (added Wed 14 Oct)
+
+The staging area is like a **shopping basket**. `git add` puts an item in, and `git commit` is the cashier: you pay for **everything in the basket at that moment**.
+
+```
+git add file3.cs      ← basket: file3
+git add file1.cs      ← basket: file3, file1
+git commit -m "..."   ← the commit has file1 + file3 (file2 waits for the next commit)
+```
+
+- The **order** of `git add` doesn't matter.
+- What's **in the basket** when you commit does.
+- `git commit --amend` also takes **everything in the basket**. So before amending, empty out anything that belongs to a different commit with `git restore --staged <file>`.
+- An amend with an **empty basket** only changes the message.
+
 ---
 
 ## 🎯 Dart comparison
@@ -108,6 +123,9 @@ Git works the same for every language. Nothing changes between Flutter and .NET 
 | Very long message with the "why" | 65 characters | Short: say *what* changed |
 | `swich`, `pratice`, `pjase`, `Imporve READMR` | Typos stay in history forever | Read the message before Enter |
 | Thought `restore --staged` deleted my comment | VS Code hadn't refreshed | `--staged` **never** deletes edits |
+| Day 8: `git add` on `14-times-table` only, `13-for-loop` forgotten (the same mistake as Day 4) | "2 files changed" instead of 4 | Unstage the extra file, `git add` the missing folder, `git commit --amend` → "4 files changed" |
+| Day 8: staged the book chapter right before amending the lesson commit | The amend would have pulled it into the wrong commit | Empty the basket first: `git restore --staged <file>` |
+| Day 8: `excercise`, `progres`, `coutinue` | Fixed the first two with an amend (not pushed yet). `coutinue` was already pushed, so it stays | Read the `-m "..."` part once before pressing Enter |
 
 ---
 

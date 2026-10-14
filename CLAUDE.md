@@ -13,8 +13,8 @@ I do NOT know JavaScript or Node.js. Teach JS from zero when we reach it.
 
 ## Current status (update at the end of each day)
 
-- Started: Tue 6 Oct 2026 · Last session: Tue 13 Oct 2026 (Day 7, wrapped up Wed 14 Oct)
-- ✅ Phase 0 done · Phase 1 in progress (started early; planned 11–24 Oct 2026): ✅ data types, ✅ var/const/TryParse, ✅ `if` / `else`, ✅ `switch` + switch expressions, ✅ Phase 1 Git skill, ✅ `while` + `Random`, ✅ `for` loop + accumulator, ✅ Project 01 Number Guessing Game (pushed, on the resume) · ▶️ Next: Wed 14 Oct commit + push Day 7, `for` tracing warm-up, then `do-while`; Thu `break`/`continue` + game v1.1; LinkedIn "Week 1" post on Fri 16 Oct
+- Started: Tue 6 Oct 2026 · Last session: Wed 14 Oct 2026 (Day 8)
+- ✅ Phase 0 done · Phase 1 in progress (started early; planned 11–24 Oct 2026): ✅ data types, ✅ var/const/TryParse, ✅ `if` / `else`, ✅ `switch` + switch expressions, ✅ Phase 1 Git skill, ✅ `while` + `Random`, ✅ `for` loop + accumulator, ✅ Project 01 Number Guessing Game (pushed, on the resume), ✅ `do-while`, ✅ `break` / `continue` · ▶️ Next: Thu 15 Oct short trace warm-up, then Guessing Game v1.1 (range check with `||`, `continue` guard, `q` to quit with `break`); LinkedIn "Week 1" post on Fri 16 Oct
 - Schedule: Sun–Thu 2 hrs (lesson + exercise), Fri 1.5 hrs (revise + quiz + LinkedIn), Sat 4–5 hrs (project day). ~16 hrs/week, guided path ends mid-Apr 2027.
 - Job plan: keep current job; apply for backend roles after Phase 8, full-stack after Phase 10; resign only with a signed offer (Kuwait residency is tied to the employer).
 - At the start of every new chat, read `PROGRESS.md` ("Next session starts here" + the last day's "Mistakes to remember") and continue from there.
