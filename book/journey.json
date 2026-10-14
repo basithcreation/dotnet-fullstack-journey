@@ -77,6 +77,19 @@
       "quizzes": [
         { "name": "Warm-up (while + Random)", "score": 3, "max": 3 }
       ]
+    },
+    {
+      "day": 7,
+      "date": "2026-10-13",
+      "weekday": "Tue",
+      "phase": "Phase 1",
+      "title": "Git cleanup + the for loop",
+      "learned": ["Git: diff, restore, restore --staged, atomic commits, --amend, push", "for loop: initializer, condition, iterator", "The body runs before the iterator; N iterations = N + 1 checks", "Accumulator: declare before, update inside, print after", "Guard clause: ! + early return"],
+      "built": ["Project 01 pushed + first resume bullet", "Countdown and accumulator examples", "Exercise 13: Times Table (3 tests pass)"],
+      "quizzes": [
+        { "name": "Validation loops quiz", "score": 2.5, "max": 5 },
+        { "name": "for loop quiz", "score": 2, "max": 5 }
+      ]
     }
   ]
 }

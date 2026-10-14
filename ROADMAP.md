@@ -87,7 +87,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [x] `if` / `else`, `switch`, switch expressions
 
 **Part 2: Merry-go-rounds and helpers**
-- [ ] Loops: `for`, `while`, `do-while`, `foreach`, `break`, `continue` (✅ `while` done Sun 11 Oct)
+- [ ] Loops: `for`, `while`, `do-while`, `foreach`, `break`, `continue` (✅ `while` done Sun 11 Oct, ✅ `for` done Tue 13 Oct)
 - [ ] Arrays and `List<T>`
 - [ ] Methods: parameters, return values, `ref`, `out`, optional and named parameters, overloading
 - [ ] Built-in helpers: string methods (`Trim`, `ToUpper`, `Contains`, `Split`, `Replace`, `Substring`, `IsNullOrWhiteSpace`), `StringBuilder`, `Math`, `Random`, `DateTime` / `DateOnly` / `TimeSpan` (✅ `Random` done Sun 11 Oct)

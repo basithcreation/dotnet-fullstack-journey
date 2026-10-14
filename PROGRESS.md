@@ -6,23 +6,72 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **First 10 minutes (Git practice, the student does it):**
-  1. Fix the last README bit: delete the space before `I'm thinking...` in the Example of `projects/01-number-guessing-game/README.md` (line 13)
-  2. `git status` shows `lessons/phase-01/11-roll-until-six/Program.cs` as **modified**: only a blank line at the end was removed by accident. Practice **`git diff`** to see it, then **`git restore`** to throw it away
-  3. **3 atomic commits**: (1) `lessons/phase-01/12-pin-lock` ("Add PIN lock validation loop lesson"); (2) `projects/01-number-guessing-game` ("Add Number Guessing Game project"); (3) `PROGRESS.md`, `CLAUDE.md`, `ROADMAP.md`, `lessons/glossary.md`, `book/` ("Add Day 6 progress and guessing game chapter"). `git status` before each commit, then push
-  4. After the push: add the **Project 01 bullet** to `career/RESUME.md` (the rule: only once it's pushed) + the GitHub link
-- **Warm-up: a fresh 5-question quiz on validation loops** (none was done on Day 6). Don't reuse the book's chapter 1.7 quiz, it has the answers. Ideas: count the tries for given inputs, where a line runs (above vs inside the loop), why no final `else`, the missing-`else` double print, why a failed `TryParse` (0) is safe here
-- **Tue 13 Oct lesson:** the rest of the loops: **`for`** loop (counting loops, compare with Dart's `for`), then **`do-while`** (runs at least once: a natural fit for "ask until valid"). Teach with small examples first. Then `break` / `continue` on a later day, and use them for the game's **range check** (reject < 1 or > 100, needs `||`) as v1.1
-- **LinkedIn "Week 1" post** on **Fri 16 Oct** in `career/linkedin/`: Phase 0 + data types, TryParse, if/else, switch, Git undo, while + Random, and **Project 01** (the guessing game, with a screenshot of a real game)
-- Still to tick in ROADMAP: "Operators, string interpolation" (quick check, already used a lot). The loops line needs `for`, `do-while`, `foreach`, `break`, `continue`
+- **First 10 minutes (Git practice, the student does it): 3 atomic commits, then push**
+  1. `lessons/phase-01/13-for-loop` + `lessons/phase-01/14-times-table` → "Add for loop lessons and times table exercise"
+  2. `career/RESUME.md` → "Add Project 01 to resume"
+  3. `PROGRESS.md`, `CLAUDE.md`, `ROADMAP.md`, `lessons/glossary.md`, `book/` → "Add Day 7 progress and for loop chapter"
+  - `git status` before **each** commit, read the **"N files changed"** line after each one, then `git push`. (Day 7: the 3rd commit first had the wrong message and only 1 of 10 files)
+- **Warm-up: 3 tracing questions on `for`** (the weak spot on Day 7: 2/5). Make them write a trace table for each. Test: a loop starting at **0** with `<`, an iterator that **skips** (`i += 2`), and an off-by-one (`>` vs `>=`). Don't reuse the chapter 1.8 quiz, it has the answers
+- **Wed 14 Oct lesson: `do-while`** (runs **at least once**, the check is at the **bottom**; the `;` after `while (...)` is **required** here, unlike CS0642). Natural fit for "ask until valid": rewrite the PIN lock or a "Which times table?" prompt with `do-while`. Compare with `while` (zero iterations possible) and Dart's `do { } while ();` (same syntax)
+- **Thu 15 Oct:** `break` / `continue`, then the guessing game **v1.1**: range check (reject < 1 or > 100, needs `||`), invalid input still not counted
+- **Fri 16 Oct: LinkedIn "Week 1" post** in `career/linkedin/`: Phase 0 + data types, TryParse, if/else, switch, Git undo, while + Random, `for`, and **Project 01** (link: https://github.com/basithcreation/dotnet-fullstack-journey/tree/main/projects/01-number-guessing-game, screenshot of a real game). Revise + quiz too
+- Still to tick in ROADMAP: "Operators, string interpolation" (quick check, used a lot). The loops line still needs `do-while`, `foreach` (with arrays/lists later), `break`, `continue`
 - **How to teach this student:**
-  - ONE step per message with a fill-in template. **Open the file** before accepting "done": on Day 6 the code sometimes didn't match "done" (Random still in the loop, missing `else`, README space)
-  - Say **which file** to type in, and ask them to check the open tab: the PIN example was typed into the project's `Program.cs`
-  - When asking "why does it print X?", say clearly: **"the code is correct, don't change it, just explain"**. On Day 6 they changed `tries = 0` to 1, then 2
-  - Blanks in a template: say what kind of thing goes there ("a folder name"): they typed the word "atomic" into a path blank
-  - Insist on running **every** test listed (only 1 of 2 bonus tests was run)
-  - The prediction comment was skipped again (PIN lock and the game). Ask for it in chat **before** they run, then check
-  - Check the clock: Day 6 started 10:50 AM, worked in between shifts, ended at 10 PM
+  - **Check the clock before saying "morning" / "tonight"**: on Day 7 Claude said "this morning" at 9:43 PM
+  - The **prediction** habit is improving (the accumulator was predicted first ✅), but they still ran the countdown before predicting. Keep asking in chat **before** they run
+  - "done" without output: ask for the output **every** time. Read the file + run it yourself before accepting
+  - Remind them: **"done" = output matches the expected output line by line**. Day 7: the sum line was missing, and the error text was wrong twice
+  - Trace tables work well. When they're unsure, give a half-filled table to complete
+  - They write from their **Dart memory** (the guard clause): praise it, then make them explain it in C# words
+  - ONE step per message, fill-in templates, say which file / which kind of blank (still true)
+  - Day 7: started 10:26 AM, studied in free hours during a full-day shift, stopped around 9:45 PM. Day 7 wrap-up was written on Wed 14 Oct morning
+
+---
+
+## Day 7: Tue 13 Oct 2026 · Phase 1: Git cleanup + the `for` loop
+
+(Started 10:26 AM, studied in free hours during a full-day duty, stopped around 9:45 PM. Wrapped up on Wed 14 Oct.)
+
+**Learned**
+
+- **Git:** `git diff` (`-` deletion, `+` addition, a space = **context line**), `git restore <file>` (discard edits, dangerous), `git restore --staged <file>` (unstage only, safe), **atomic commits**, `git commit --amend -m` / `--amend --no-edit` (only before a push), "ahead of origin by 3 commits" → `git push`, `HEAD -> main` vs `origin/main`
+- **`for` loop:** initializer (runs **once**), condition (before **every** iteration), iterator (after every iteration). Order: init → check → **body** → iterator → check…
+- The first body run uses the **initializer** value. N iterations = **N + 1** checks
+- Counting down (`i--`), skipping (`i += 3`), `<` vs `<=` decides the last value (**off-by-one**)
+- `for` when you **know the count**, `while` when you loop **until** something happens (their own words ✅)
+- **Scope:** the loop variable and anything declared inside dies at the `}` → **CS0103**
+- **Accumulator:** declare **before** the loop, update **inside** (`+=`, the compound assignment operator), print **after**. `+= i` sums, `+= 1` counts
+- **Guard clause:** `if (!int.TryParse(input, out int number)) { ...; return; }` with `!` (logical NOT) + **early return**. They wrote it themselves from Dart memory (it was also in Day 3's lesson) and explained why `return` matters (without it: `number = 0`, a table of zeros)
+
+**Built**
+
+- Git: restored the accidental blank-line change in lesson 11, 3 atomic commits (`Add PIN lock validation loop lesson`, `Add Number Guessing Game project`, `Add Day 6 progress and guessing game chapter`), pushed. **Project 01 is on GitHub**
+- `career/RESUME.md`: first project bullet (Number Guessing Game + GitHub link)
+- `lessons/phase-01/13-for-loop`: countdown + accumulator examples
+- `lessons/phase-01/14-times-table` (Exercise 13): `for` 1–10, accumulator sum, guard clause. Tests: 7 → 385, 3 → 165, hello → `That's not a number.` ✅. **Not committed yet**
+
+**Quiz scores**
+
+- Validation loops warm-up: **2.5/5** (attempts count ✅; "Your guess" prints on every iteration, 5 not 2 ❌; the success message is **after** the loop, the loop condition ends it ❌; why 0 can't win = the secret is 1–100 (½); "iteration" ❌)
+- `for` loop quiz: **2/5** (the 3 parts ½: "iteration" instead of "iterator", forgot "initializer runs once"; `i = 0; i < 3` = 3 times / 4 checks ❌; `i = 2; i += 3` prints 2 first ❌; CS0103 not CS1083 ½; for vs while ✅). Retry with a trace table: the table was right, the output line wasn't (listed 4)
+
+**Mistakes to remember (review these)**
+
+- Answered "yes" to "`-` or `+`?", and thought the `WriteLine` **context line** had changed (only a blank line was deleted)
+- Staged **3** things for an atomic commit (`git add` on the book chapter + PIN lesson + project). Caught it with `git status` before committing ✅, then fixed with `git restore --staged`
+- Committed the book chapter alone as "Add Number Guessing **Exercise**" (wrong message, wrong grouping). `--amend` fixed the message but **`git add .` was skipped**, so "1 file changed". A second `--amend --no-edit` → 10 files ✅. **Read the "N files changed" line**
+- Ran the countdown **before** predicting (3rd time in a row)
+- `total += 1` instead of `total += i` → `Total: 4`
+- Said "done" on the Times Table without the **sum line**. Then the error text: `That is not a number` → `This is not a number` → finally `That's not a number.` **Copy exact text from the spec**
+- Thinks a line **at the top** of a loop only runs for valid input. No: it runs **every iteration**
+- Thinks the program "stops" after a correct guess because nothing prints. No: the **loop condition** becomes false, the loop exits, the code **after** it runs
+- Forgets that the **first** iteration uses the start value (0 or 2), and that the **body runs before the iterator**
+- Trace table correct, but the output line copied values that were never printed (`10,8,6,4`). The output = only the "print" column
+- Copy-paste slips in tables (`print 2` on the `i = 3` row). Read the answer once before sending
+
+**Career**
+
+- Project 01 pushed to GitHub, first resume bullet added. LinkedIn "Week 1" post planned for Fri 16 Oct
 
 ---
 

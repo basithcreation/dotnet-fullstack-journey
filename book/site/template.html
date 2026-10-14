@@ -548,7 +548,149 @@ const WIDGETS = {
   "1.5": [gitUndo],
   "1.6": [plateLoop, rollUntilSix],
   "1.7": [pinDoor, guessGame],
+  "1.8": [lapCounter, piggyBank],
 };
+
+function lapCounter(stage) {
+  let start, op, end, inc, i, phase, laps, checks, out, done;
+  stage.innerHTML =
+    '<div class="control"><label for="lc-s">Start</label><input id="lc-s" type="range" min="0" max="5" value="1"><output></output></div>' +
+    '<div class="control"><label for="lc-e">End</label><input id="lc-e" type="range" min="1" max="8" value="5"><output></output>' +
+    '<label class="check"><input id="lc-o" type="checkbox" checked> use <b>&lt;=</b> (off: <b>&lt;</b>)</label></div>' +
+    '<div class="control"><label for="lc-k">Step</label><input id="lc-k" type="range" min="1" max="3" value="1"><output></output></div>' +
+    '<div class="codebox"></div><div class="cookies"></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="step">Next step</button><button class="btn" data-a="all">Run all</button><button class="btn" data-a="reset">Reset</button></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const s = $("#lc-s", stage), e = $("#lc-e", stage), o = $("#lc-o", stage), k = $("#lc-k", stage);
+  const code = $(".codebox", stage), track = $(".cookies", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  const pass = () => (op === "<=" ? i <= end : i < end);
+  function drawCode(hl) {
+    const L = (key, t) => '<span class="' + (hl === key ? "hit" : "") + '">' + t + "</span>";
+    code.innerHTML =
+      "for (" + L("init", "int i = " + start) + "; " + L("check", "i " + op.replace("<", "&lt;") + " " + end) + "; " +
+      L("step", inc === 1 ? "i++" : "i += " + inc) + ")\n{\n" + L("body", '    Console.WriteLine($"Lap {i}");') + "\n}";
+  }
+  function drawTrack() {
+    track.innerHTML = "<div><small>Laps</small><span>" + ("🏃".repeat(laps) || "<small>none yet</small>") + "</span></div>" +
+      "<div><small>i</small><span><small>" + (phase === "init" ? "–" : i) + "</small></span></div>" +
+      "<div><small>Checks</small><span><small>" + checks + "</small></span></div>";
+  }
+  function reset() {
+    start = +s.value; end = +e.value; inc = +k.value; op = o.checked ? "<=" : "<";
+    s.nextElementSibling.textContent = start; e.nextElementSibling.textContent = end; k.nextElementSibling.textContent = inc;
+    phase = "init"; laps = 0; checks = 0; out = []; done = false;
+    term.innerHTML = '<span class="dim">(output appears here)</span>';
+    drawCode(); drawTrack();
+    say("", "Press Next step. Watch the order: initializer, condition, body, iterator.");
+  }
+  function step() {
+    if (done) return;
+    if (phase === "init") {
+      i = start; phase = "check"; drawCode("init");
+      say("", "① Initializer: i = " + i + ". This runs only once.");
+    } else if (phase === "check") {
+      checks++; drawCode("check");
+      if (pass()) { phase = "body"; say("good", "② Condition: " + i + " " + op + " " + end + " is true, so the body runs."); }
+      else {
+        done = true;
+        say("warn", "② Condition: " + i + " " + op + " " + end + " is false, so the loop exits. " + laps + " lap" + (laps === 1 ? "" : "s") + ", " + checks + " checks: always one check more than laps." +
+          (op === "<" ? " Tick <= to include " + end + " (off-by-one)." : ""));
+      }
+    } else if (phase === "body") {
+      laps++; out.push("Lap " + i); phase = "step"; drawCode("body");
+      say("good", "Body: prints Lap " + i + ". The body uses i BEFORE the iterator changes it.");
+    } else {
+      i += inc; phase = "check"; drawCode("step");
+      say("", "③ Iterator: i is now " + i + ". Back to the condition.");
+    }
+    drawTrack();
+    term.textContent = out.join("\n") || "(nothing printed yet)";
+  }
+  stage.querySelector(".btn-row").addEventListener("click", (ev) => {
+    const a = ev.target.dataset.a;
+    if (a === "step") step();
+    if (a === "all") { let guard = 0; while (!done && guard++ < 100) step(); }
+    if (a === "reset") reset();
+  });
+  [s, e, k].forEach((x) => x.addEventListener("input", reset));
+  o.addEventListener("change", reset);
+  reset();
+}
+
+function piggyBank(stage) {
+  let inside, plusOne, i, total, out, done, coins;
+  stage.innerHTML =
+    '<div class="control"><label class="check"><input id="pb-in" type="checkbox"> move <b>int total = 0;</b> inside the loop</label>' +
+    '<label class="check"><input id="pb-one" type="checkbox"> <b>total += 1</b> instead of <b>+= i</b></label></div>' +
+    '<div class="codebox"></div><div class="cookies"></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="step">Next iteration</button><button class="btn" data-a="all">Run all</button><button class="btn" data-a="reset">Reset</button></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const inBox = $("#pb-in", stage), oneBox = $("#pb-one", stage);
+  const code = $(".codebox", stage), bank = $(".cookies", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  function drawCode(hl) {
+    const L = (key, t) => '<span class="' + (hl === key ? "hit" : "") + '">' + t + "</span>";
+    const add = plusOne ? "total += 1;" : "total += i;";
+    code.innerHTML = [
+      inside ? null : L("decl", "int total = 0;"),
+      "for (int i = 1; i &lt;= 4; i++)",
+      "{",
+      inside ? L("decl", "    int total = 0;") : null,
+      L("body", "    " + add),
+      "}",
+      L("print", 'Console.WriteLine($"Total: {total}");'),
+    ].filter((x) => x !== null).join("\n");
+  }
+  function drawBank() {
+    bank.innerHTML = "<div><small>Coins in</small><span>" + (coins.map((c) => "🪙" + c).join(" ") || "<small>empty</small>") + "</span></div>" +
+      "<div><small>Bank</small><span>🐷 <small>total = " + total + "</small></span></div>";
+  }
+  function reset() {
+    inside = inBox.checked; plusOne = oneBox.checked;
+    i = 1; total = 0; out = []; done = false; coins = [];
+    term.innerHTML = '<span class="dim">(output appears here)</span>';
+    drawCode("decl"); drawBank();
+    say(inside ? "warn" : "", inside
+      ? "The piggy bank is now born INSIDE the loop. (Real C# won't even build this. Step through to see why.)"
+      : "The piggy bank (accumulator) is ready BEFORE the loop. Press Next iteration.");
+  }
+  function step() {
+    if (done) return;
+    if (i <= 4) {
+      if (inside) { total = 0; coins = []; }
+      const coin = plusOne ? 1 : i;
+      coins.push(coin); total += coin;
+      drawCode("body");
+      say(inside ? "warn" : "good", inside
+        ? "i = " + i + ": a NEW empty piggy bank, then +" + coin + ", so total = " + total + ". It resets every iteration and can never grow."
+        : "i = " + i + ": old total " + (total - coin) + " + " + coin + " = " + total + "." + (plusOne ? " Adding 1 only counts the iterations." : ""));
+      i++;
+    } else {
+      done = true; drawCode("print");
+      if (inside) {
+        term.innerHTML = '<span class="bad">error CS0103: The name \'total\' does not exist in the current context</span>';
+        say("bad", "total died at the } of the loop, so the print line can't see it. Two reasons, one rule: declare the accumulator BEFORE the loop.");
+      } else {
+        out.push("Total: " + total);
+        term.textContent = out.join("\n");
+        say(plusOne ? "warn" : "good", plusOne
+          ? "Total: 4. With += 1 the bank counted the laps instead of summing 1 + 2 + 3 + 4. Use += i."
+          : "Total: 10. Declared before, updated inside, printed after.");
+      }
+    }
+    drawBank();
+  }
+  stage.querySelector(".btn-row").addEventListener("click", (ev) => {
+    const a = ev.target.dataset.a;
+    if (a === "step") step();
+    if (a === "all") { let guard = 0; while (!done && guard++ < 20) step(); }
+    if (a === "reset") reset();
+  });
+  inBox.addEventListener("change", reset);
+  oneBox.addEventListener("change", reset);
+  reset();
+}
 
 function sdkPipeline(stage) {
   const steps = [

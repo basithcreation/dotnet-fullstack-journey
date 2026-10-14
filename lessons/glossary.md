@@ -94,6 +94,23 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | neat blank lines | **formatting** / **code style** | "`else` goes right after the `}`, no blank line." |
 | project front page | **README** (written in **Markdown**) | "Add a README with how to run it and an example." |
 
+## Phase 1: `for` loop
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| run this many times | **`for` loop** / counting loop | "We know the count up front, so use a `for` loop instead of a `while`." |
+| ① start (runs once) | **initializer** | "The initializer runs only once, before the first check." |
+| ② check | **loop condition** | "The condition is checked before every iteration." |
+| ③ step (`i++`) | **iterator** (not "iteration"!) | "The iterator is `i += 3`, so it skips values." |
+| `i` | **loop counter** / **loop variable** | "Don't use the loop counter after the loop, it's out of scope." |
+| the extra `false` check | **final evaluation** of the condition (N iterations = N + 1 checks) | "The condition is evaluated once more than the body runs." |
+| piggy bank | **accumulator** | "Initialize the accumulator before the loop, otherwise it resets on every iteration." |
+| `+=` | **compound assignment operator** | "Use `sum += answer` instead of `sum = sum + answer`." |
+| `+= 1` vs `+= i` | **counting** vs **summing** | "That's counting the iterations, not summing them. Use `+= i`." |
+| `!` flips true/false | **logical NOT operator** / **negation** | "`!` negates the TryParse result." |
+| leave at the top if input is bad | **guard clause** + **early return**; the rest is the **happy path** | "Add a guard clause, so the happy path isn't nested in an `else`." |
+| output must equal the spec | **matches the expected output** (character for character) | "The test fails, the text doesn't match the expected output exactly." |
+
 ## Errors and testing
 
 | Easy word | Real term | Team sentence |
@@ -123,6 +140,12 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | leftover `obj` folder | **build output** / **stray build folder** | "That's just build output, it's gitignored, delete it." |
 | `git add .` | **stage all changes** | "I staged everything because the working tree only had this change." |
 | saved on my PC, not on GitHub | **local commits**, **ahead of the remote** | "I'm 2 commits ahead of origin, let me push." |
+| old photo next to new file | **diff** of **unstaged changes** (`git diff`) | "Run `git diff` to review your unstaged changes before committing." |
+| `-` / `+` / space lines in a diff | **deletion** / **addition** / **context line** | "The diff is one deleted blank line, the rest is context." |
+| where GitHub is (`origin/main`) | **remote-tracking branch** | "`origin/main` is still on yesterday's commit, I haven't pushed." |
+| keep the message, add files | `git commit --amend --no-edit` | "I forgot a file, I'll amend with `--no-edit`." |
+| "1 file changed" line | **commit summary** (check the file count!) | "The commit only shows 1 file changed, I forgot to stage the rest." |
+| carry commits to GitHub | **push** to the **remote** | "I pushed, so I won't amend those commits anymore." |
 
 ## Tools and workflow
 
