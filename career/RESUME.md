@@ -18,4 +18,5 @@ Flutter Developer → learning .NET Full Stack (C#, ASP.NET Core, SQL Server, An
 <!-- Format: **Project name** · Tech · [GitHub link]
      - Action verb + what you built + tech + result -->
 
-*(First entry is added after Phase 0.)*
+**Number Guessing Game** · C#, .NET console · [GitHub](https://github.com/basithcreation/dotnet-fullstack-journey/tree/main/projects/01-number-guessing-game)
+- Built a C# console game that picks a random number (1–100) and gives "too high / too low" hints, using a `while` loop, `Random.Shared` and `int.TryParse` input validation so invalid input is rejected and not counted as an attempt
