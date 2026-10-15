@@ -8,29 +8,44 @@ while (guessNumber != secretNumber)
 {
     Console.Write("Your guess: ");
     string? input = Console.ReadLine();
-    if (int.TryParse(input, out guessNumber))
+
+    if (input == "q")
     {
-        numberOfAttempts++;
-        if (guessNumber > secretNumber)
-        {
-            Console.WriteLine("Too high!");
-        }
-        else if (guessNumber < secretNumber)
-        {
-            Console.WriteLine("Too low!");
-        }
+        Console.WriteLine($"The number was {secretNumber}.");
+        break;
     }
-    else
+
+    if (!int.TryParse(input, out guessNumber))
     {
         Console.WriteLine("That's not a number. Try again.");
+        continue;
+    }
+
+    if (guessNumber < 1 || guessNumber > 100)
+    {
+        Console.WriteLine("Please guess between 1 and 100.");
+        continue;
+    }
+
+    numberOfAttempts++;
+    if (guessNumber > secretNumber)
+    {
+        Console.WriteLine("Too high!");
+    }
+    else if (guessNumber < secretNumber)
+    {
+        Console.WriteLine("Too low!");
     }
 }
 
-if (numberOfAttempts == 1)
+if (guessNumber == secretNumber)
 {
-    Console.WriteLine("🎯 First try! Amazing!");
-}
-else
-{
-    Console.WriteLine($"🎉 Correct! You got it in {numberOfAttempts} attempts.");
+    if (numberOfAttempts == 1)
+    {
+        Console.WriteLine("🎯 First try! Amazing!");
+    }
+    else
+    {
+        Console.WriteLine($"🎉 Correct! You got it in {numberOfAttempts} attempts.");
+    }
 }
