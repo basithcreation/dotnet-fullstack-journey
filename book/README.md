@@ -35,6 +35,7 @@ At the end of the course, this text becomes a real illustrated / animated book.
 - [Chapter 1.8: The for loop](phase-01/08-for-loop.md)
 - [Chapter 1.9: do-while, the loop that runs at least once](phase-01/09-do-while.md)
 - [Chapter 1.10: break and continue](phase-01/10-break-continue.md)
+- [Chapter 1.11: Remainder, OR, guard clauses and loop exits (Guessing Game v1.1)](phase-01/11-guard-clauses-loop-exits.md)
 
 *(More chapters are added as I finish each topic.)*
 

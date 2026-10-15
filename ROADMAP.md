@@ -83,7 +83,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 **Part 1: Boxes and choices**
 - [x] Data types: `int`, `double`, `decimal` (use this for money!), `bool`, `char`, `string`
 - [x] `var`, `const`, type conversion, `Parse` / `TryParse`
-- [ ] Operators, string interpolation `$"Hi {name}"`
+- [x] Operators, string interpolation `$"Hi {name}"` (✅ Thu 15 Oct: `%` modulo, `||` / `&&`, `>` vs `>=`, `$"..."` used in every project)
 - [x] `if` / `else`, `switch`, switch expressions
 
 **Part 2: Merry-go-rounds and helpers**
@@ -102,7 +102,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [x] `git log --oneline`, `git diff`, `git status`: read what changed before you commit
 - [x] Undo mistakes: `git restore` (throw away edits), `git restore --staged` (un-add), `git revert` (undo a commit safely)
 
-**Projects:** 01 Number Guessing Game (Part 1) (✅ built Mon 12 Oct) → 02 Console Calculator (Part 2) → 03 Shipment Tracker: add, list, mark delivered, search by tracking number (Part 3)
+**Projects:** 01 Number Guessing Game (Part 1) (✅ built Mon 12 Oct, ✅ v1.1 Thu 15 Oct: range check, guard clauses, `q` to quit) → 02 Console Calculator (Part 2) → 03 Shipment Tracker: add, list, mark delivered, search by tracking number (Part 3)
 ✅ **Done when:** you can write a 100-line console app with loops, methods and error handling from scratch.
 📣 **LinkedIn:** "3 things in C# that surprised me as a Dart developer"
 📄 **Resume:** project bullet for the Shipment Tracker.
@@ -476,6 +476,11 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 
 ## Phase 14: YOUR Main Project (solo, no help) 🏆
 You will bring your own project idea. This phase proves you are a real developer.
+
+**✅ Chosen (15 Oct 2026): KACT (Kattimedu Adirangam Charity Trust).** The charity app for collecting money from friends and family for needs in my native place. Today it's a Flutter + Firebase app (web, Android, iOS: `D:\FlutterProject\kact\CLAUDE.md`), but the web version is slow and looks old. The rebuild: **ASP.NET Core Web API + SQL Server + EF Core + Angular**, with the existing Flutter mobile app later calling the new API.
+- **MVP first:** login + 4 roles (Super Admin, Admin, Volunteer, Donor), donors, donations + payments (`decimal`!), beneficiaries, dashboard
+- **Then:** emergency requests, supports, reports (Excel export), audit logs, notifications, Excel data import, settings
+- **Last:** move the real data from Firestore into SQL Server
 
 **Rules (Solo mode)**
 - I do **not** write code, give hints or give solutions, even if you ask.

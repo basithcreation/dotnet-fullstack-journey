@@ -1,6 +1,6 @@
 # Learning mode
 
-I am learning C# and ASP.NET Core, SQL Server and Angular (full stack). I already know Dart/Flutter.
+I am learning C# and ASP.NET Core, SQL Server and Angular (full stack). I know Dart/Flutter at an intermediate level (not expert).
 I do NOT know JavaScript or Node.js. Teach JS from zero when we reach it.
 
 - Do NOT write full solutions unless I say "show solution".
@@ -13,8 +13,11 @@ I do NOT know JavaScript or Node.js. Teach JS from zero when we reach it.
 
 ## Current status (update at the end of each day)
 
-- Started: Tue 6 Oct 2026 · Last session: Wed 14 Oct 2026 (Day 8)
-- ✅ Phase 0 done · Phase 1 in progress (started early; planned 11–24 Oct 2026): ✅ data types, ✅ var/const/TryParse, ✅ `if` / `else`, ✅ `switch` + switch expressions, ✅ Phase 1 Git skill, ✅ `while` + `Random`, ✅ `for` loop + accumulator, ✅ Project 01 Number Guessing Game (pushed, on the resume), ✅ `do-while`, ✅ `break` / `continue` · ▶️ Next: Thu 15 Oct short trace warm-up, then Guessing Game v1.1 (range check with `||`, `continue` guard, `q` to quit with `break`); LinkedIn "Week 1" post on Fri 16 Oct
+- Started: Tue 6 Oct 2026 · Last session: Thu 15 Oct 2026 (Day 9)
+- ✅ Phase 0 done · Phase 1 in progress (started early; planned 11–24 Oct 2026): ✅ data types, ✅ var/const/TryParse, ✅ operators (`%`, `||`, `&&`) + interpolation, ✅ `if` / `else`, ✅ `switch` + switch expressions, ✅ Phase 1 Git skill, ✅ `while` + `Random`, ✅ `for` loop + accumulator, ✅ `do-while`, ✅ `break` / `continue`, ✅ Project 01 Number Guessing Game **v1.1** (range check, guard clauses, `q` to quit; pushed, on the resume) · ▶️ Next: Fri 16 Oct (home laptop) setup check + LinkedIn "Week 1" post + honest Experience section on the resume; Sun 18 Oct arrays + `foreach`
+- Main project (Phase 14): **KACT**, my charity app, rebuilt in ASP.NET Core + SQL Server + Angular (details in ROADMAP Phase 14)
+- My background: IT Support at KPOST Couriers, Kuwait (May 2023 to now) + in-house Flutter developer since Sep 2024 (KPOST-HR, used by staff; its backend is ASP.NET). Only real experience goes on the resume
+- This repo is PUBLIC: never write private career plans (resigning, notice periods, salary) in any file here
 - Schedule: Sun–Thu 2 hrs (lesson + exercise), Fri 1.5 hrs (revise + quiz + LinkedIn), Sat 4–5 hrs (project day). ~16 hrs/week, guided path ends mid-Apr 2027.
 - Job plan: keep current job; apply for backend roles after Phase 8, full-stack after Phase 10; resign only with a signed offer (Kuwait residency is tied to the employer).
 - At the start of every new chat, read `PROGRESS.md` ("Next session starts here" + the last day's "Mistakes to remember") and continue from there.

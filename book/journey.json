@@ -104,6 +104,20 @@
         { "name": "do-while quiz", "score": 3, "max": 5 },
         { "name": "break vs continue check", "score": 2, "max": 2 }
       ]
+    },
+    {
+      "day": 9,
+      "date": "2026-10-15",
+      "weekday": "Thu",
+      "phase": "Phase 1",
+      "title": "Guessing Game v1.1: %, ||, guard clauses",
+      "learned": ["% is the remainder, not percent: 7 % 3 = 1", "|| needs one true, && needs both; > excludes the edge", "Guard clauses with continue keep the loop body flat", "A break gives the loop a second exit: check the exit reason", "CS0162: unreachable code after break"],
+      "built": ["Project 01 v1.1: range check, guard clauses, q to quit (pushed)"],
+      "quizzes": [
+        { "name": "Warm-up traces", "score": 1.5, "max": 2 },
+        { "name": "|| temperatures", "score": 3, "max": 4 },
+        { "name": "Guessing Game v1.1 quiz", "score": 3.5, "max": 5 }
+      ]
     }
   ]
 }

@@ -6,16 +6,19 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **Thu 15 Oct, warm-up (5 min, chat only): 2 small traces** mixing the new keywords. ① a `while` with `continue` where the update is **before** the `continue` (e.g. skip multiples of 3) ② a `do-while` with `break` inside. Trace table for each. Don't reuse the chapter 1.9 / 1.10 quizzes, they have the answers
-- **Thu 15 Oct lesson: Number Guessing Game v1.1** (in `projects/01-number-guessing-game`, it's a project upgrade, so update the README "Features" too):
-  1. **Range check:** a guess < 1 or > 100 → `Please guess between 1 and 100.`, **not counted** as an attempt. Needs `||` (logical OR, met on Day 3: do a 2-minute refresher with a different example first)
-  2. **Flatten the nested if with `continue`:** `if (!int.TryParse(...)) { ...; continue; }` (a guard clause inside a loop, like the Day 7 guard clause but with `continue` instead of `return`)
-  3. **`q` to quit with `break`:** print `The number was {secret}.` Trap to let them discover: after a `break`, the "Correct!" message after the loop still runs. They need a flag (`bool won`) or a check (`guess == secret`). Teach the idea, let them find the fix
-  - Show the expected output for every path (bad text, out of range, too high/low, win on 1st try, quit). Test every path before "done"
-  - **Commit right after** (new rule): `Add range check and quit option to guessing game`
-- **Fri 16 Oct: LinkedIn "Week 1" post** in `career/linkedin/`: Phase 0 + data types, TryParse, if/else, switch, Git undo, all the loops (while, for, do-while, break/continue), and **Project 01** v1.1 (link: https://github.com/basithcreation/dotnet-fullstack-journey/tree/main/projects/01-number-guessing-game, screenshot of a real game). Revise + quiz too
-- Still to tick in ROADMAP: "Operators, string interpolation" (quick check: `%`, `||`/`&&`, `$"..."`, used a lot). The loops line only needs `foreach` (comes with arrays/lists)
+- **Fri 16 Oct (day off, on the HOME LAPTOP for the first time).** First 15 min: check the setup (`git pull` or `git clone`, `dotnet --version` = 10.x, `dotnet run` in `projects/01-number-guessing-game`, `git config user.name` / `user.email` set). The Claude memory folder lives on the office PC only, so everything important must be in this file and in CLAUDE.md
+- **Fri 16 Oct, career block (the priority, it's overdue):**
+  1. **LinkedIn "Week 1" post** in `career/linkedin/01-week-1.md`: Phase 0 + data types, TryParse, if/else, switch, Git undo, all the loops, and **Project 01 v1.1** (link: https://github.com/basithcreation/dotnet-fullstack-journey/tree/main/projects/01-number-guessing-game, a screenshot of a real game with `abc`, `500`, a win). Only Day 0 was ever posted, so from now on: **one post every Friday**
+  2. **Resume:** add an honest **Experience** section to `career/RESUME.md`: *IT Support Engineer & In-house App Developer, KPOST Couriers, Kuwait (May 2023 to now)*, KPOST-HR (Flutter app used by staff, ASP.NET REST API, JWT, EN/AR), IT support (servers, AD, CCTV, antivirus). Plus Syrma SGS Bengaluru (IT Support, Jan–May 2023), web developer 2021 (2 months). BSc IT 2020. **Never invent experience**
+  3. **LinkedIn profile** (`career/LINKEDIN_PROFILE.md`): headline like *"IT Support & Flutter Developer (KPOST-HR) | Learning .NET Backend"*
+- **Fri revision quiz:** `%` (they confused it with divide/percent), `||` with `>` vs `>=` edges, `break` vs `continue` inside a while, "why can't we always print Correct after the loop?" (exit reason, Q5 today was 0)
+- **Sun 18 Oct: next Phase 1 topic: arrays + `foreach`** (finishes the loops line in ROADMAP), then methods. Projects 02 Console Calculator and 03 Shipment Tracker are still to come in Phase 1 (planned until 24 Oct)
+- **Career context (told on Day 9):** KPOST's backend is ASP.NET, so from Phase 6 suggest they ask their senior to let them write real endpoints. Phase 14 main project = **KACT** charity app rebuild (see ROADMAP Phase 14). Private career plans are in Claude's local memory only, never in this public repo
 - **How to teach this student:**
+  - **Dart/Flutter level is intermediate, not expert** (Day 9). Compare only with basic Dart
+  - **Weak at mental maths** (they said so). In traces, ask them to write each sum out (`12 + 7 =`) and check the answer a second way. They didn't know `%` = remainder (thought percent/divide), and Windows Calculator's `%` is percent
+  - **Keep messages SHORT.** On Day 9 a 3-part message (string `==` + placement + `break`) made them say "I'm not understanding". One idea, one blank, one test
+  - **Be exact when listing "ideas for later":** they read "What I'd add next: Play again" as an instruction and started coding it. Say "only write this in the README, don't code it"
   - **Keep Git short** (they asked on Day 8 if Git is worth the time; they want to finish .NET fast). Commit **right after each exercise** (1 minute). No long fix-up sessions. A typo in a message: point it out, amend only if not pushed and it takes 10 seconds. No new Git until Phase 2 (branches)
   - **They forget a folder in `git add`** (Day 4 and Day 8, the same mistake). Always check the "N files changed" number against the expected one
   - **Check the clock before saying "morning" / "tonight"**. They study in free hours during a full-day duty that ends ~9:30 PM, with a prayer break
@@ -26,6 +29,57 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - "done" without output: ask for the output **every** time. Read the file yourself before accepting
   - ONE step per message, fill-in templates with blanks (worked well for the flag fix)
   - Day 8: started 11:00 AM, stopped around 9:30 PM
+
+---
+
+## Day 9: Thu 15 Oct 2026 · Phase 1: `%`, `||`, guard clauses in loops, Guessing Game v1.1
+
+(Started 10:07 AM, studied in free hours during a full-day duty, stopped around 7:30 PM.)
+
+**Learned**
+
+- **`%` = the remainder (modulo)**, not percent and not divide: `7 % 3` = 1 (7 sweets, 3 kids, 1 left over), `6 % 3` = 0. `x % 3 == 0` = "x is a multiple of 3"
+- **Tracing with the update before `continue`:** the condition checks `6 < 7`, then `i++` makes 7, and 7 is still processed (sum = 19). A row with `continue` = yes can't change `sum`
+- **`||` (OR):** one true is enough; `&&` (AND): both must be true. `>` is strictly greater (40 > 40 is false), `>=` includes the edge
+- **Range check:** `guessNumber < 1 || guessNumber > 100` keeps 1 and 100 allowed. The check goes **before** `numberOfAttempts++`
+- **Guard clauses with `continue`:** reject the bad case first (`!int.TryParse` → message → `continue`), so the loop body is flat instead of a staircase. Order matters: quit → not a number → out of range → count
+- **String `==`:** `input == "q"`, double quotes, case-sensitive (`Q` doesn't quit)
+- **`break` vs `continue` in the game:** `break` after a bad guess ended the whole game; `continue` asks again
+- **The exit reason:** a loop with a `break` has 2 exits (won or quit), so after the loop check `guessNumber == secretNumber` before printing "Correct!"
+- **CS0162 unreachable code:** lines after `break` in the same block can never run (a yellow warning)
+
+**Built**
+
+- `projects/01-number-guessing-game` **v1.1**: range check (not counted), flat guard clauses, `q` to quit with `The number was N.`, "Correct!" only if they really won. Tested: `abc`, `hi`, `500`, `0`, `Q`, `q`, a win in 5 and 6 attempts ✅. README updated (real example, 3 new "practiced" bullets, 3 ideas for later)
+- Commit `Add range check and wuit to guessing game` (typo `wuit`, already pushed, left as is), **2 files changed** ✅ (the `git add` count was right this time)
+
+**Quiz scores**
+
+- Warm-up trace 1 (`while` + `continue`, skip multiples of 3): **½** (finished with step-by-step help: `%` unknown, added the remainder instead of `i`, said row 7 doesn't run, 12 + 7 = 21)
+- Warm-up trace 2 (`do-while` + `break`): **1** (one fix: `1 < 3` → yes)
+- `||` temperatures: **3/4** (40 > 40 → said "Danger")
+- v1.1 quiz: **3.5/5** (Q1 `%` ✅, Q2 `||` ✅, Q3 "why `q` before TryParse" ½, Q4 break/continue trace ✅, Q5 exit reason ❌, the question was worded badly)
+
+**Mistakes to remember (review these)**
+
+- Thought `%` meant divide / percent; used the Windows Calculator `%` button (that's percent)
+- In a trace: added the remainder to `sum` instead of `i`; rows said "continue = yes" but still added; adding slips (7 + 5 = 8, 12 + 7 = 21)
+- Thought the last row (`6 < 7` → `i` becomes 7) doesn't run
+- Used `break` instead of `continue` for the range check → one bad guess ended the game with "Correct! 0 attempts"
+- Range message said the opposite (`Enter number below 1 or grater 100`), `grater` for `greater`
+- `{input}` instead of `{secretNumber}` in `The number was ...` (printed `q`)
+- Moved the after-loop "Correct!" code **into** the loop twice (once into the `q` block, once above the TryParse guard). The same "inside vs outside the loop" mistake as Day 8
+- Deleted `break` because of the CS0162 warning, instead of moving the lines after it
+- Started coding "Play again?" because it was listed in the README's "What I'd add next" (my message was unclear)
+- README: copied my hint text into a bullet, missing backticks, the old line left next to the new bullets
+- Commit typo `wuit`
+
+**Career**
+
+- Told me their real history: BSc IT 2020, web dev 2 months (2021), videography (2022), IT Support Syrma SGS Bengaluru (Jan 2023), IT Support KPOST Kuwait (May 2023 to now), Flutter since Sep 2024 (FITA Academy), 5–7 apps, **KPOST-HR** is in production for company staff (its backend is ASP.NET, written by their senior)
+- Talked about how to present the experience honestly: the **real** ~2 years of in-house development count. Idea: get real .NET work inside KPOST from Phase 6
+- **Phase 14 main project chosen: KACT** (the charity app), to be rebuilt in ASP.NET Core + SQL Server + Angular, MVP first
+- LinkedIn: only the Day 0 post so far → the "Week 1" post is tomorrow, then every Friday
 
 ---
 

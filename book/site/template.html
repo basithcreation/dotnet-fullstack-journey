@@ -551,6 +551,7 @@ const WIDGETS = {
   "1.8": [lapCounter, piggyBank],
   "1.9": [twoWaiters, askUntilValid],
   "1.10": [breakBelt],
+  "1.11": [sweetShare, guardCorridor],
 };
 
 function lapCounter(stage) {
@@ -1599,6 +1600,147 @@ function breakBelt(stage) {
   });
   t.addEventListener("input", reset);
   reset();
+}
+
+function sweetShare(stage) {
+  let timer;
+  stage.innerHTML =
+    '<div class="control"><label for="ss-s">Sweets</label><input id="ss-s" type="range" min="0" max="20" value="7"><output></output></div>' +
+    '<div class="control"><label for="ss-k">Kids</label><input id="ss-k" type="range" min="1" max="6" value="3"><output></output></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="share">Share them out</button></div>' +
+    '<div class="cookies"></div><div class="term"></div><div class="verdict"></div>';
+  const s = $("#ss-s", stage), k = $("#ss-k", stage), box = $(".cookies", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  function draw(given) {
+    const sweets = +s.value, kids = +k.value, each = Math.floor(sweets / kids), left = sweets % kids;
+    const rounds = Math.min(given, each);
+    let html = "";
+    for (let i = 1; i <= kids; i++) html += "<div><small>Kid " + i + "</small><span>" + ("🍬".repeat(rounds) || "<small>none yet</small>") + "</span></div>";
+    const middle = sweets - rounds * kids;
+    html += "<div><small>Left in the middle</small><span>" + ("🍬".repeat(middle) || "<small>empty</small>") + "</span></div>";
+    box.innerHTML = html;
+    if (given >= each) {
+      term.innerHTML =
+        sweets + " / " + kids + " = " + each + "   <span class=\"dim\">// each kid gets</span>\n" +
+        '<span class="good">' + sweets + " % " + kids + " = " + left + "</span>   <span class=\"dim\">// left over: the remainder</span>\n" +
+        sweets + " % " + kids + " == 0   <span class=\"dim\">// " + (left === 0) + "</span>";
+      verdict.className = left === 0 ? "verdict good" : "verdict warn";
+      verdict.textContent = left === 0
+        ? "Nothing is left over, so " + sweets + " is a multiple of " + kids + ". That's what x % n == 0 tests."
+        : left + " sweet" + (left > 1 ? "s" : "") + " can't make a full round, so " + sweets + " % " + kids + " is " + left + ". Not percent, not divide: the leftovers.";
+    } else {
+      term.innerHTML = '<span class="dim">Round ' + (given + 1) + ": one sweet for every kid...</span>";
+      verdict.className = "verdict"; verdict.textContent = "";
+    }
+  }
+  function reset() {
+    clearInterval(timer);
+    s.nextElementSibling.textContent = s.value; k.nextElementSibling.textContent = k.value;
+    box.innerHTML = ""; term.innerHTML = '<span class="dim">Predict ' + s.value + " % " + k.value + ", then press Share them out.</span>";
+    verdict.className = "verdict"; verdict.textContent = "";
+  }
+  function share() {
+    reset();
+    const each = Math.floor(+s.value / +k.value);
+    let given = 0;
+    draw(0);
+    if (each === 0) { draw(0); return; }
+    timer = setInterval(() => { given++; draw(given); if (given >= each) clearInterval(timer); }, 500);
+  }
+  stage.querySelector(".btn-row").addEventListener("click", (e) => { if (e.target.dataset.a === "share") share(); });
+  s.addEventListener("input", reset);
+  k.addEventListener("input", reset);
+  reset();
+}
+
+function guardCorridor(stage) {
+  let secret, attempts, done, log, checkExit = true;
+  stage.innerHTML =
+    '<div class="control">After the loop:</div>' +
+    '<div class="pick"><button class="btn" data-v="check" aria-pressed="true">check the exit reason first</button><button class="btn" data-v="nocheck" aria-pressed="false">always print Correct!</button></div>' +
+    '<div class="cookies"></div>' +
+    '<div class="control"><label for="gc-in">Your guess:</label><input id="gc-in" type="text" value="abc" autocomplete="off">' +
+    '<div class="btn-row"><button class="btn primary" data-a="guess">Enter</button><button class="btn" data-a="new">New game</button></div></div>' +
+    '<div class="term" style="max-height: 14em; overflow-y: auto"></div><div class="verdict"></div>';
+  const guards = $(".cookies", stage), term = $(".term", stage), verdict = $(".verdict", stage), inp = $("#gc-in", stage);
+  const GUARDS = [
+    ["Guard 0", 'input == "q"', "break 🚪"],
+    ["Guard 1", "!int.TryParse", "continue"],
+    ["Guard 2", "< 1 || > 100", "continue"],
+    ["Inside", "attempts++", "high / low"],
+  ];
+  function drawGuards(hit, kind) {
+    guards.innerHTML = GUARDS.map((g, n) => {
+      const on = n === hit;
+      const style = on ? (kind === "pass" ? "color:var(--ok)" : kind === "exit" ? "color:var(--bad)" : "color:var(--warn)") : "opacity:.6";
+      return '<div style="' + style + '"><small>' + g[0] + "</small><span><code>" + esc(g[1]) + "</code><br><small>" + (on ? (kind === "pass" ? "✅ passed every guard" : "🛑 " + g[2]) : g[2]) + "</small></span></div>";
+    }).join("");
+  }
+  function draw() { term.innerHTML = log.join("\n"); term.scrollTop = term.scrollHeight; }
+  function start() {
+    secret = 1 + Math.floor(Math.random() * 100); attempts = 0; done = false;
+    log = ["I'm thinking of a number between 1 and 100."];
+    drawGuards(-1); draw();
+    verdict.className = "verdict"; verdict.textContent = "Try abc, 500, a few numbers, then q.";
+  }
+  function afterLoop(won) {
+    done = true;
+    if (won || !checkExit) {
+      log.push('<span class="' + (won ? "good" : "bad") + '">' + (attempts === 1 ? "🎯 First try! Amazing!" : "🎉 Correct! You got it in " + attempts + " attempts.") + "</span>");
+    }
+    if (won) {
+      verdict.className = "verdict good";
+      verdict.textContent = "Exit reason: won. guessNumber == secretNumber is true, so Correct! is right.";
+    } else if (checkExit) {
+      verdict.className = "verdict good";
+      verdict.textContent = "Exit reason: quit (break). guessNumber == secretNumber is false, so the if after the loop skips Correct!.";
+    } else {
+      verdict.className = "verdict bad";
+      verdict.textContent = "❌ The player quit, but the code after the loop doesn't know why the loop ended, so it says Correct! anyway. Check the exit reason first.";
+      verdict.classList.remove("shake"); void verdict.offsetWidth; verdict.classList.add("shake");
+    }
+  }
+  function guess() {
+    if (done) return;
+    const s = inp.value.trim();
+    log.push("Your guess: " + esc(s));
+    if (s === "q") {
+      log.push("The number was " + secret + ".");
+      drawGuards(0, "exit"); afterLoop(false);
+    } else if (!/^-?\d+$/.test(s)) {
+      log.push('<span class="bad">That\'s not a number. Try again.</span>');
+      drawGuards(1, "skip");
+      verdict.className = "verdict warn";
+      verdict.textContent = (s === "Q" ? '"Q" is not "q" (case-sensitive), and it\'s not a number. ' : "") + "Guard 1 sends it back with continue. attempts stays " + attempts + ".";
+    } else if (+s < 1 || +s > 100) {
+      log.push('<span class="bad">Please guess between 1 and 100.</span>');
+      drawGuards(2, "skip");
+      verdict.className = "verdict warn";
+      verdict.textContent = "Guard 2 catches it before attempts++, so it isn't counted. attempts stays " + attempts + ".";
+    } else {
+      attempts++;
+      drawGuards(3, "pass");
+      const g = +s;
+      if (g > secret) log.push("Too high!");
+      else if (g < secret) log.push("Too low!");
+      if (g === secret) afterLoop(true);
+      else { verdict.className = "verdict"; verdict.textContent = "Passed every guard: attempts is now " + attempts + "."; }
+    }
+    draw();
+    inp.select();
+  }
+  stage.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.dataset.v) {
+      stage.querySelectorAll(".pick .btn").forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
+      checkExit = btn.dataset.v === "check";
+      start();
+    }
+    if (btn.dataset.a === "guess") guess();
+    if (btn.dataset.a === "new") start();
+  });
+  inp.addEventListener("keydown", (e) => { if (e.key === "Enter") guess(); });
+  start();
 }
 
 /* ---------------- start ---------------- */

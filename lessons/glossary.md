@@ -130,6 +130,25 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | `break`, `continue`, `return` | **jump statements** | "Too many jump statements make a loop hard to follow." |
 | stop searching when found | **early exit** | "Add an early exit once the item is found." |
 
+## Phase 1: Guessing Game v1.1 (`%`, `||`, guard clauses in loops)
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| sweets left over after sharing (`7 % 3` = 1) | **modulo operator** / **remainder operator** (`%`) | "Use `i % 2 == 0` to check if the number is even." |
+| divides exactly (`x % 3 == 0`) | **is a multiple of** / **is divisible by** | "Skip every number that's divisible by 3." |
+| one true is enough | **logical OR operator** (`\|\|`) | "Use `\|\|` to reject values outside the range." |
+| both must be true | **logical AND operator** (`&&`) | "`t >= 0 && t <= 40` means the value is inside the range." |
+| stops checking once the left side is true | **short-circuit evaluation** | "`\|\|` short-circuits, so the right side isn't evaluated." |
+| bigger, but equal doesn't count | **strictly greater than** (`>`) vs **greater than or equal** (`>=`) | "Use `>=` if 40 itself should count." |
+| staircase of `if`s | **deeply nested code** (**arrow code**) | "The nesting is too deep, can you flatten it?" |
+| security guard throws out bad cases first | **guard clause** + **early `continue`** | "Add a guard clause with `continue` for invalid input, then the happy path stays flat." |
+| making the staircase flat | **flatten** / **reduce nesting** | "I flattened the loop body with two guard clauses." |
+| glue text and a number with `+` | **string concatenation** | "Prefer interpolation over concatenation." |
+| `"Q"` is not `"q"` | **case-sensitive string comparison** | "The quit check is case-sensitive, so `Q` doesn't work yet." |
+| lines after `break` that never run | **unreachable code** / **dead code** (warning **CS0162**) | "The compiler flagged dead code after the `break`." |
+| why did the loop stop? (won or quit) | **exit reason** / **exit condition** | "The loop has two exits, so check the exit reason before printing the result." |
+| loop checks 6 but works with 7 | **off-by-one** (update **before** the work) | "Because the increment comes first, the loop processes 7 even though the condition is `i < 7`." |
+
 ## Errors and testing
 
 | Easy word | Real term | Team sentence |
