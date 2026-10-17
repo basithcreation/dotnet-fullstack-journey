@@ -1,7 +1,7 @@
 # LinkedIn profile: suggestions (update as skills grow)
 
 ## Headline (now)
-Flutter Developer | Learning .NET Full Stack (C# · ASP.NET Core · SQL Server · Angular) | Building in public
+Flutter Developer · 2+ yrs building in-house apps used daily by staff | Dart · GetX · REST APIs (ASP.NET backend) | Learning .NET: C# · ASP.NET Core · SQL Server
 
 ## Headline (after Phase 10)
 Full Stack Developer | .NET · ASP.NET Core Web API · SQL Server · Angular · Flutter
