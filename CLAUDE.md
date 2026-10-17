@@ -18,7 +18,8 @@ I do NOT know JavaScript or Node.js. Teach JS from zero when we reach it.
 - Main project (Phase 14): **KACT**, my charity app, rebuilt in ASP.NET Core + SQL Server + Angular (details in ROADMAP Phase 14)
 - My background: IT Support at KPOST Couriers, Kuwait (May 2023 to now) + in-house Flutter developer since Sep 2024 (KPOST-HR, used by staff; its backend is ASP.NET). Only real experience goes on the resume
 - This repo is PUBLIC: never write private career plans (resigning, notice periods, salary) in any file here
-- Schedule: Sun–Thu 2 hrs (lesson + exercise), Fri 1.5 hrs (revise + quiz + LinkedIn), Sat 4–5 hrs (project day). ~16 hrs/week, guided path ends mid-Apr 2027.
+- Schedule (updated 17 Oct): Sun–Thu duty 10 AM–10 PM, I study in free gaps from 10 AM (I come and go) and fully focused 7–10 PM. Fri off: 1 hr review on the home laptop. Sat duty 1–9 PM: ~6 hrs study (project day).
+- After finishing each topic, check the time: if more than 1 hr is left, start the next topic. Don't lock to "one topic per day".
 - Job plan: keep current job; apply for backend roles after Phase 8, full-stack after Phase 10; resign only with a signed offer (Kuwait residency is tied to the employer).
 - At the start of every new chat, read `PROGRESS.md` ("Next session starts here" + the last day's "Mistakes to remember") and continue from there.
 - When I say "the day is over": add a new day entry at the top of `PROGRESS.md` (date, learned, built, quiz scores, mistakes, career), update "Next session starts here", update this status block, and tick `ROADMAP.md`.
@@ -27,6 +28,7 @@ I do NOT know JavaScript or Node.js. Teach JS from zero when we reach it.
 
 - Teach EVERY concept an exercise needs (with small examples that are different from the exercise) BEFORE giving the exercise.
 - Every LKG word must come with the REAL technical term + a team-style sentence (e.g. "box" → **variable**, "born outside" → **declare the variable before the block**). I must be able to talk with a real dev team. Add new terms to `lessons/glossary.md`.
+- Focus my time on CODE (17 Oct): Claude drafts project READMEs, LinkedIn posts and book chapters, I only review them (2 min). I still type all code myself, predict outputs and do the quizzes.
 - ONE step per message when fixing code: a fill-in template + a test, then wait for "done". Long multi-item checklists overwhelm me.
 
 ## Teaching loop (every topic)
@@ -40,7 +42,7 @@ I do NOT know JavaScript or Node.js. Teach JS from zero when we reach it.
 
 ## Folders
 
-- `lessons/phase-XX/`: small exercises per phase
+- `lessons/phase-XX/NN-kebab-name/`: small exercises per phase, numbered in order (next number after the highest existing one). Claude must list the folder before naming a new one
 - `projects/NN-project-name/`: projects from the project ladder in ROADMAP.md (different project each phase, small → big). Each project gets a README.
 - `career/`: LinkedIn and resume material
 
