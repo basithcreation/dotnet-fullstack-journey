@@ -13,6 +13,7 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   3. **LinkedIn profile** (`career/LINKEDIN_PROFILE.md`): headline like *"IT Support & Flutter Developer (KPOST-HR) | Learning .NET Backend"*
 - **Fri revision quiz:** `%` (they confused it with divide/percent), `||` with `>` vs `>=` edges, `break` vs `continue` inside a while, "why can't we always print Correct after the loop?" (exit reason, Q5 today was 0)
 - **Sun 18 Oct: next Phase 1 topic: arrays + `foreach`** (finishes the loops line in ROADMAP), then methods. Projects 02 Console Calculator and 03 Shipment Tracker are still to come in Phase 1 (planned until 24 Oct)
+- **Work dates:** the student's own resumes and LinkedIn are the source of truth for job dates (confirmed 15 and 17 Oct). The Day 9 "Career" notes below were a rough chat story. Don't use them to question the dates
 - **Career context (told on Day 9):** KPOST's backend is ASP.NET, so from Phase 6 suggest they ask their senior to let them write real endpoints. Phase 14 main project = **KACT** charity app rebuild (see ROADMAP Phase 14). Private career plans are in Claude's local memory only, never in this public repo
 - **How to teach this student:**
   - **Dart/Flutter level is intermediate, not expert** (Day 9). Compare only with basic Dart
