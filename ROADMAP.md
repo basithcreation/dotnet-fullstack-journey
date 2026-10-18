@@ -89,7 +89,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 **Part 2: Merry-go-rounds and helpers**
 - [x] Loops: `for`, `while`, `do-while`, `foreach`, `break`, `continue` (✅ `while` done Sun 11 Oct, ✅ `for` done Tue 13 Oct, ✅ `do-while`, `break`, `continue` done Wed 14 Oct, ✅ `foreach` done Sat 17 Oct)
 - [x] Arrays and `List<T>` (✅ arrays done Sat 17 Oct, ✅ `List<T>` done Sun 18 Oct)
-- [ ] Methods: parameters, return values, `ref`, `out`, optional and named parameters, overloading
+- [ ] Methods: parameters, return values, `ref`, `out`, optional and named parameters, overloading (✅ `void`, parameters, return values done Sun 18 Oct)
 - [ ] Built-in helpers: string methods (`Trim`, `ToUpper`, `Contains`, `Split`, `Replace`, `Substring`, `IsNullOrWhiteSpace`), `StringBuilder`, `Math`, `Random`, `DateTime` / `DateOnly` / `TimeSpan` (✅ `Random` done Sun 11 Oct)
 
 **Part 3: Safety nets**

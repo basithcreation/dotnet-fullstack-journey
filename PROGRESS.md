@@ -6,10 +6,10 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **Sun 18 Oct (office PC, duty 10 AM–10 PM).** Start with the **arrays quiz** (5 questions: last index = `Length - 1`, `a[1]`, out of range, why `total` is declared before the loop, `parcelWeight` vs `total`). Then **`List<T>`** (Add, Remove, Count, foreach; compare with Dart's `List`), then **methods** if time is left
-- **Week plan to finish Phase 1** (move faster when a topic ends early: if more than 1 hr is left, start the next one): Sun `List<T>` → methods · Mon methods · Tue methods part 2 (`ref`/`out`, overloading) + Calculator v2 with methods · Wed string helpers (`Trim`, `Split`…) + `DateTime` · Thu nullable `?`/`??` + `try`/`catch` · Fri (home laptop, 1 hr) debugging intro + revision + LinkedIn post 02 · Sat 24 Oct **Project 03 Shipment Tracker**. Phase 2 (OOP) starts Sun 25 Oct
+- **Mon 19 Oct (office PC, duty 10 AM–10 PM).** Start with the **methods quiz** (5 questions: `void` vs a return type, parameter vs argument, what `{city}` prints inside the method vs `{PrintReceipt}`, wrong argument order → CS1503, why calculation and printing are separate methods). Then more **methods practice**: a method with an `if` inside that returns (e.g. `bool IsHeavy(double kg)`), and a method that calls another method. Then **`ref` / `out`** if time is left
+- **Week plan to finish Phase 1** (move faster when a topic ends early: if more than 1 hr is left, start the next one): ✅ Sun `List<T>` + methods part 1 (`void`, parameters, `return`) · Mon methods quiz + practice (+ `ref`/`out`) · Tue overloading, optional/named parameters + Calculator v2 with methods · Wed string helpers (`Trim`, `Split`…) + `DateTime` · Thu nullable `?`/`??` + `try`/`catch` · Fri (home laptop, 1 hr) debugging intro + revision + LinkedIn post 02 · Sat 24 Oct **Project 03 Shipment Tracker**. Phase 2 (OOP) starts Sun 25 Oct
 - **Home laptop setup check is still not done** (do it in the first 15 min of Fri 23 Oct): `git pull`, `dotnet --version` = 10.x, `dotnet run` in `projects/02-console-calculator`, `git config user.name` / `user.email`
-- **Naming:** lessons are `lessons/phase-01/NN-kebab-name`. The next free number is **21**. List the folder before naming anything
+- **Naming:** lessons are `lessons/phase-01/NN-kebab-name`. The next free number is **25**. List the folder before naming anything
 - **Claude writes** READMEs, LinkedIn drafts and book chapters; the student reviews them in 2 min. The student types all code
 - **Work dates:** the student's own resumes and LinkedIn are the source of truth for job dates (confirmed 15 and 17 Oct). The Day 9 "Career" notes below were a rough chat story. Don't use them to question the dates
 - **Career context (told on Day 9):** KPOST's backend is ASP.NET, so from Phase 6 suggest they ask their senior to let them write real endpoints. Phase 14 main project = **KACT** charity app rebuild (see ROADMAP Phase 14). Private career plans are in Claude's local memory only, never in this public repo
@@ -29,6 +29,55 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - "done" without output: ask for the output **every** time. Read the file yourself before accepting
   - ONE step per message, fill-in templates with blanks (worked well for the flag fix)
   - Day 8: started 11:00 AM, stopped around 9:30 PM
+  - **Method parameters are new and hard** (Day 11): they put the **method name** in `{ }` instead of the parameter name, twice. Before an exercise with parameters, ask "which words on line 1 are the parameter names?"
+  - When they copy a line, they forget to change the part inside `{ }` (Day 11, twice). Ask them to read the **label** next to the code
+
+---
+
+## Day 11: Sun 18 Oct 2026 · Phase 1: `List<T>`, methods part 1 (`void`, parameters, `return`)
+
+(Office PC, duty day. Started 12:29 PM, studied in free gaps, focused from about 8 PM, stopped around 10 PM.)
+
+**Learned**
+
+- **Arrays revision:** the last index is **`Length - 1`** (arrays are **zero-based**). An accumulator inside the loop resets every round **and** is out of **scope** after `}`
+- **`List<T>`:** a list that can grow. `new List<string>()`, `.Add`, `.Remove`, **`.Count`** (arrays use `.Length`), index `[0]`, `foreach`. `<T>` is the **type parameter**, so it's a **generic** type. Use a list when the number of items changes while the program runs
+- **Methods:** a named block of code. **Define** it once, **call** it many times. Every call runs the **whole method body** (3 calls × 2 lines = 6 lines)
+- **`void`** = does a job, gives nothing back. A **return type** (`double`) + `return value;` sends a value back to the caller, and the method stops there
+- **Parameters** (`string city, double cost`) are filled by the **arguments** in the call, in the **same order**. Inside the method you use the **parameter name**: `{city}`, not `{PrintReceipt}`
+- **One method, one job:** `CalculateShipping` calculates, `PrintReceipt` prints. Store the return value, then pass it on
+- `*` is the multiply operator (`+ - * /`)
+
+**Built**
+
+- `21-list` (drivers list), `22-delivery-queue` (Add/Remove/Count/[0]/foreach, nothing hard-coded). Commit `Add List and delivery queue lessons`, 4 files ✅
+- `23-methods` (`PrintLabel`, `AddDeliveryFee`), `24-shipping-cost` (`CalculateShipping` + `PrintReceipt`, 2 parcels). Commit `Add methods and shipping cost lessons`, 5 files ✅
+- Day 10 files committed: `Add Day 10 progress and book chapters`, 11 files ✅
+
+**Quiz scores**
+
+- Arrays quiz: **3.5/5** (Q1 rule `Length - 1` ½, Q2 ✅, Q3 ✅, Q4 scope only ½, Q5 loop variable vs accumulator ½)
+- `List<T>` quiz: **4.5/5** (Q4 "when to use a list" ½)
+- Methods quick checks: **2/2** (4 calls × 3 lines = 12 ✅, `Ravi → stop 12` ✅)
+- Methods quiz: first thing tomorrow
+
+**Mistakes to remember (review these)**
+
+- Knew the last index was 3 but not the rule `Length - 1`
+- Arrays Q4: only said "can't use it after `}`", missed that it **resets to 0 every round**
+- `First driver: {drivers.Count}`: copied the line above and didn't change the `{ }` part; then fixed the **wrong line** (both lines swapped). Read the label next to the code
+- Ran the delivery queue before saving (6 lines instead of 7); wrote `Still waiting: 3: {parcels.Count}` (a hand-typed `3`)
+- Predicted 4 lines for 3 `PrintLabel` calls: thought the dashes print once. Every call runs the whole body
+- Typo `Totol`
+- Shipping cost: `weightKg + fee` for "0.5 KD per kg" (should be `*`); then wrote `,`: didn't know `*` is multiply
+- Put the **method name** inside `{ }` (`{CalculateShipping}`, then `{PrintReceipt}` → printed `System.Action...`) instead of the parameter names `city` / `cost`. Needed the answer
+- Passed the weight (`4`) straight in as the cost, so `CalculateShipping` was never called (warning CS8321)
+- No prediction before running the shipping cost exercise
+- ✅ Wins: predictions right for the drivers list, the delivery queue and `AddDeliveryFee` (with the sums written out); read `parcels[1]` **before** `Remove` (smart); asked "then what is the use of CalculateShipping?" (exactly the right question)
+
+**Career**
+
+- Nothing new today (code day)
 
 ---
 

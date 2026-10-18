@@ -554,6 +554,8 @@ const WIDGETS = {
   "1.11": [sweetShare, guardCorridor],
   "1.12": [divisionLab, operatorGuard],
   "1.13": [parcelShelf, postmanLoop],
+  "1.14": [deliveryBag],
+  "1.15": [callCounter, argumentFlow],
 };
 
 function lapCounter(stage) {
@@ -1948,6 +1950,144 @@ function postmanLoop(stage) {
     if (btn.dataset.a === "reset") reset();
   });
   reset();
+}
+
+function deliveryBag(stage) {
+  let parcels, next, log;
+  stage.innerHTML =
+    '<div class="btn-row"><button class="btn primary" data-a="add">Add parcel</button><button class="btn" data-a="kp102">Deliver KP102</button><button class="btn" data-a="first">Deliver first</button><button class="btn" data-a="reset">Reset</button></div>' +
+    '<div class="cookies"></div><div class="term"></div><div class="verdict"></div>';
+  const bag = $(".cookies", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  function draw() {
+    bag.innerHTML = parcels.length
+      ? parcels.map((p, n) => "<div><small>index " + n + (n === parcels.length - 1 ? " (Count - 1)" : "") + "</small><span>📦 " + p + "</span></div>").join("")
+      : '<div style="opacity:.6"><small>empty</small><span>👜</span></div>';
+    term.innerHTML = '<span class="dim">List&lt;string&gt; parcels = new List&lt;string&gt;();</span>\n' + log.slice(-4).join("\n") +
+      '\n\n<span class="good">parcels.Count → ' + parcels.length + (parcels.length ? "\nparcels[1] → " + (parcels[1] || '<span class="bad">ArgumentOutOfRangeException</span>') : "") + "</span>";
+  }
+  function reset() {
+    parcels = ["KP101", "KP102", "KP103", "KP104"]; next = 105;
+    log = parcels.map((p) => 'parcels.Add("' + p + '");');
+    draw(); say("", "Watch the index numbers and parcels[1] when a parcel is removed.");
+  }
+  stage.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    const a = btn.dataset.a;
+    if (a === "reset") return reset();
+    if (a === "add") {
+      if (parcels.length >= 7) return say("bad", "The bag is full for this demo. A real List can keep growing.");
+      const p = "KP" + next++; parcels.push(p); log.push('parcels.Add("' + p + '");');
+      say("good", p + " goes at the END: index " + (parcels.length - 1) + ". Count is now " + parcels.length + ".");
+    } else if (a === "kp102") {
+      const i = parcels.indexOf("KP102");
+      if (i < 0) return say("bad", "KP102 isn't in the bag any more. Remove finds nothing, so nothing changes.");
+      parcels.splice(i, 1); log.push('parcels.Remove("KP102");');
+      say("good", "KP102 is gone and every parcel after it moved up one place. parcels[1] is now " + (parcels[1] || "nothing") + ".");
+    } else if (a === "first") {
+      if (!parcels.length) return say("bad", "The bag is empty: parcels[0] would crash.");
+      const p = parcels.shift(); log.push('parcels.Remove("' + p + '");   // was parcels[0]');
+      say("good", p + " was at index 0. The next parcel is now at index 0.");
+    }
+    draw();
+  });
+  reset();
+}
+
+function callCounter(stage) {
+  const CITIES = ["Salmiya", "Jahra", "Fahaheel", "Hawalli", "Mangaf"];
+  const BODY = ['Console.WriteLine("----------");', 'Console.WriteLine($"To: {city}");', 'Console.WriteLine("Fragile");', 'Console.WriteLine("Handle with care");'];
+  const OUT = [() => "----------", (c) => "To: " + c, () => "Fragile", () => "Handle with care"];
+  let timer = null;
+  stage.innerHTML =
+    '<div class="control"><label for="cc-c">Calls</label><input id="cc-c" type="range" min="1" max="5" value="3"><output></output></div>' +
+    '<div class="control"><label for="cc-l">Lines in body</label><input id="cc-l" type="range" min="1" max="4" value="2"><output></output></div>' +
+    '<div class="codebox"></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="run">Run</button></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const c = $("#cc-c", stage), l = $("#cc-l", stage), code = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  function drawCode(call, line) {
+    const calls = +c.value, lines = +l.value;
+    let html = "";
+    for (let i = 0; i < calls; i++) html += '<span class="' + (i === call ? "hit" : "") + '">PrintLabel("' + CITIES[i] + '");</span>\n';
+    html += "\nvoid PrintLabel(string city)\n{\n";
+    for (let j = 0; j < lines; j++) html += '<span class="' + (call >= 0 && j === line ? "hit" : "") + '">    ' + BODY[j] + "</span>\n";
+    code.innerHTML = html + "}";
+  }
+  function setup() {
+    clearInterval(timer);
+    c.nextElementSibling.textContent = c.value; l.nextElementSibling.textContent = l.value;
+    drawCode(-1, -1); term.textContent = "";
+    verdict.className = "verdict"; verdict.textContent = "Predict first: how many lines will be printed?";
+  }
+  function run() {
+    setup();
+    const calls = +c.value, lines = +l.value;
+    let call = 0, line = 0, out = [];
+    timer = setInterval(() => {
+      drawCode(call, line);
+      out.push(OUT[line](CITIES[call]));
+      term.textContent = out.join("\n");
+      line++;
+      if (line === lines) { line = 0; call++; }
+      if (call === calls) {
+        clearInterval(timer);
+        setTimeout(() => drawCode(-1, -1), 400);
+        verdict.className = "verdict good";
+        verdict.textContent = calls + " calls × " + lines + " lines = " + calls * lines + " lines. Every call runs the WHOLE method body.";
+      }
+    }, 380);
+  }
+  c.addEventListener("input", setup); l.addEventListener("input", setup);
+  stage.addEventListener("click", (e) => { const btn = e.target.closest("button"); if (btn && btn.dataset.a === "run") run(); });
+  setup();
+}
+
+function argumentFlow(stage) {
+  const CHOICES = {
+    params: { label: "{city} / {cost}", ok: true },
+    method: { label: "{PrintReceipt}", ok: false },
+    swap: { label: 'PrintReceipt(2, "Salmiya")', ok: false },
+  };
+  let pick = "params";
+  stage.innerHTML =
+    '<div class="control">What do you write?</div>' +
+    '<div class="pick">' + Object.keys(CHOICES).map((k) => '<button class="btn" data-k="' + k + '" aria-pressed="' + (k === pick) + '">' + esc(CHOICES[k].label) + "</button>").join("") + "</div>" +
+    '<div class="codebox"></div><div class="term"></div><div class="verdict"></div>';
+  const code = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  function draw() {
+    const swap = pick === "swap", inner = pick === "method" ? ["PrintReceipt", "PrintReceipt"] : ["city", "cost"];
+    code.innerHTML =
+      '<span class="hit">PrintReceipt(' + (swap ? '2, "Salmiya"' : '"Salmiya", 2') + ");</span>   <span class=\"dim\">// arguments</span>\n" +
+      (swap ? '             ✗        ✗' : "                ↓       ↓") + "\n" +
+      'void PrintReceipt(string <span class="hit">city</span>, double <span class="hit">cost</span>)   <span class="dim">// parameters</span>\n{\n' +
+      '    Console.WriteLine($"City: {' + inner[0] + '}");\n' +
+      '    Console.WriteLine($"Shipping: {' + inner[1] + '} KD");\n}';
+    verdict.classList.remove("shake");
+    if (pick === "params") {
+      term.innerHTML = '<span class="good">City: Salmiya\nShipping: 2 KD</span>';
+      verdict.className = "verdict good";
+      verdict.textContent = '"Salmiya" fills city, 2 fills cost. Inside the method you use the PARAMETER names.';
+    } else if (pick === "method") {
+      term.innerHTML = '<span class="bad">City: System.Action`2[System.String,System.Double]\nShipping: System.Action`2[System.String,System.Double] KD</span>';
+      verdict.className = "verdict bad";
+      verdict.textContent = "That's the method's NAME, not a value. C# prints \"this is a method\". Use city and cost.";
+      void verdict.offsetWidth; verdict.classList.add("shake");
+    } else {
+      term.innerHTML = '<span class="bad">error CS1503: Argument 1: cannot convert from \'int\' to \'string\'</span>';
+      verdict.className = "verdict bad";
+      verdict.textContent = "Arguments go in the SAME order as the parameters: first the string, then the double.";
+      void verdict.offsetWidth; verdict.classList.add("shake");
+    }
+  }
+  stage.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn || !btn.dataset.k) return;
+    stage.querySelectorAll(".pick .btn").forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
+    pick = btn.dataset.k; draw();
+  });
+  draw();
 }
 
 /* ---------------- start ---------------- */

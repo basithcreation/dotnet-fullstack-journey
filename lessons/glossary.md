@@ -177,6 +177,35 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | running total | **accumulator** | "Declare the accumulator before the loop." |
 | tally | **counter** | "Increment the counter for each heavy parcel." |
 | fake fixed answer | **hard-coded value** | "Don't hard-code the count, compute it." |
+| the box that holds one item each round | **loop variable** | "`code` is the loop variable, `total` is the accumulator." |
+| a box only lives inside its `{ }` | **scope** (CS0103 outside it) | "`total` is out of scope after the loop." |
+| counting starts at 0 | **zero-based** | "Arrays are zero-based, so the last element is at `Length - 1`." |
+
+## Phase 1: `List<T>`
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| shopping bag (can grow) | **`List<T>`** | "Use a `List<T>` when items get added or removed at runtime." |
+| egg tray (fixed size) | **array** | "The size is fixed, so an array is fine here." |
+| the `<string>` part | **type parameter** / **generic** type | "It's a generic list of strings." |
+| put in / take out | **`Add`** / **`Remove`** | "Remove the parcel from the queue once it's delivered." |
+| how many in the bag | **count** (`.Count`) | "Lists use `.Count`, arrays use `.Length`." |
+
+## Phase 1: Methods
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| "make tea" (a name for steps) | **method** | "Extract that repeated code into a method." |
+| write the steps once | **define** / **declare** a method | "Define the method at the bottom of Program.cs." |
+| say the name | **call** / **invoke** | "Call `PrintReceipt` once per parcel." |
+| the steps inside `{ }` | **method body** | "Every call executes the whole method body." |
+| does a job, brings nothing back | **`void`** method | "It's a void method, it only prints." |
+| the brother comes back with juice | **return value** / **return type** | "The method returns a `double`, store the return value." |
+| input box in `( )` | **parameter** | "The method takes two parameters: `city` and `cost`." |
+| the value you send in | **argument** | "Pass the arguments in the right order." |
+| the first line of a method | **method signature** | "The signature is `double CalculateShipping(double weightKg)`." |
+| one method, one job | **single responsibility** | "Keep calculation and printing in separate methods." |
+| a method inside Program.cs | **local function** (CS8321: declared but never used) | "The local function is never called, that's why we get CS8321." |
 
 ## Errors and testing
 

@@ -131,6 +131,20 @@
         { "name": "Revision quiz", "score": 3, "max": 4 },
         { "name": "Calculator quiz", "score": 3.5, "max": 5 }
       ]
+    },
+    {
+      "day": 11,
+      "date": "2026-10-18",
+      "weekday": "Sun",
+      "phase": "Phase 1",
+      "title": "List<T> and methods part 1",
+      "learned": ["The last index is Length - 1 (zero-based)", "List<T>: Add, Remove, Count, [0], foreach; it can grow", "A method is defined once and called many times; each call runs the whole body", "void gives nothing back; a return type + return sends a value back", "Parameters are filled by arguments in the same order; use the parameter name inside", "One method, one job: calculate in one, print in another"],
+      "built": ["Drivers list + Delivery Queue exercise", "Methods examples (PrintLabel, AddDeliveryFee)", "Shipping Cost exercise (CalculateShipping + PrintReceipt)"],
+      "quizzes": [
+        { "name": "Arrays quiz", "score": 3.5, "max": 5 },
+        { "name": "List<T> quiz", "score": 4.5, "max": 5 },
+        { "name": "Methods quick checks", "score": 2, "max": 2 }
+      ]
     }
   ]
 }

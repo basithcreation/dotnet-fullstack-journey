@@ -38,6 +38,8 @@ At the end of the course, this text becomes a real illustrated / animated book.
 - [Chapter 1.11: Remainder, OR, guard clauses and loop exits (Guessing Game v1.1)](phase-01/11-guard-clauses-loop-exits.md)
 - [Chapter 1.12: double, Infinity and the && guard (Console Calculator v1)](phase-01/12-calculator-double-guards.md)
 - [Chapter 1.13: Arrays and foreach](phase-01/13-arrays-foreach.md)
+- [Chapter 1.14: Lists, an array that can grow](phase-01/14-list.md)
+- [Chapter 1.15: Methods, part 1 (void, parameters, return)](phase-01/15-methods-void-return.md)
 
 *(More chapters are added as I finish each topic.)*
 
