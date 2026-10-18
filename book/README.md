@@ -36,6 +36,8 @@ At the end of the course, this text becomes a real illustrated / animated book.
 - [Chapter 1.9: do-while, the loop that runs at least once](phase-01/09-do-while.md)
 - [Chapter 1.10: break and continue](phase-01/10-break-continue.md)
 - [Chapter 1.11: Remainder, OR, guard clauses and loop exits (Guessing Game v1.1)](phase-01/11-guard-clauses-loop-exits.md)
+- [Chapter 1.12: double, Infinity and the && guard (Console Calculator v1)](phase-01/12-calculator-double-guards.md)
+- [Chapter 1.13: Arrays and foreach](phase-01/13-arrays-foreach.md)
 
 *(More chapters are added as I finish each topic.)*
 

@@ -60,3 +60,6 @@ _Frontend Developer_ · 2020 – 2021
 **Number Guessing Game** · C#, .NET console · [GitHub](https://github.com/basithcreation/dotnet-fullstack-journey/tree/main/projects/01-number-guessing-game)
 
 - Built a C# console game that picks a random number (1–100) and gives "too high / too low" hints, using a `while` loop, `Random.Shared` and `int.TryParse` input validation so invalid input is rejected and not counted as an attempt
+
+**Console Calculator** · C#, .NET console · [GitHub](https://github.com/basithcreation/dotnet-fullstack-journey/tree/main/projects/02-console-calculator)
+- Built a C# console calculator (+ − × ÷) that validates every input with `double.TryParse` and guard clauses, rejects unknown operators before asking for the next number, and blocks division by zero

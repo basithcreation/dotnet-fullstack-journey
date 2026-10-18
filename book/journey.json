@@ -118,6 +118,19 @@
         { "name": "|| temperatures", "score": 3, "max": 4 },
         { "name": "Guessing Game v1.1 quiz", "score": 3.5, "max": 5 }
       ]
+    },
+    {
+      "day": 10,
+      "date": "2026-10-17",
+      "weekday": "Sat",
+      "phase": "Phase 1",
+      "title": "Calculator v1, arrays and foreach",
+      "learned": ["int ÷ int cuts off decimals; double keeps them", "double.TryParse, and double / 0 gives ∞ instead of crashing", "switch on a string: exact match, one case runs", "Operator guard: != joined with && (|| rejects everything)", "Arrays: index 0 to Length - 1, IndexOutOfRangeException", "foreach + accumulator + counter, results printed after the loop"],
+      "built": ["LinkedIn post 01 (live) + resume Experience + new headline", "Project 02: Console Calculator v1 (pushed)", "Parcel weights exercise (arrays + foreach)"],
+      "quizzes": [
+        { "name": "Revision quiz", "score": 3, "max": 4 },
+        { "name": "Calculator quiz", "score": 3.5, "max": 5 }
+      ]
     }
   ]
 }

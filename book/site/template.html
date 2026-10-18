@@ -552,6 +552,8 @@ const WIDGETS = {
   "1.9": [twoWaiters, askUntilValid],
   "1.10": [breakBelt],
   "1.11": [sweetShare, guardCorridor],
+  "1.12": [divisionLab, operatorGuard],
+  "1.13": [parcelShelf, postmanLoop],
 };
 
 function lapCounter(stage) {
@@ -1741,6 +1743,211 @@ function guardCorridor(stage) {
   });
   inp.addEventListener("keydown", (e) => { if (e.key === "Enter") guess(); });
   start();
+}
+
+function divisionLab(stage) {
+  let type = "double", guard = false;
+  stage.innerHTML =
+    '<div class="pick"><button class="btn" data-t="int" aria-pressed="false">int</button><button class="btn" data-t="double" aria-pressed="true">double</button></div>' +
+    '<div class="control"><label for="dl-a">a</label><input id="dl-a" type="range" min="0" max="20" value="7"><output></output></div>' +
+    '<div class="control"><label for="dl-b">b</label><input id="dl-b" type="range" min="0" max="6" value="2"><output></output></div>' +
+    '<div class="btn-row"><button class="btn" data-a="guard" aria-pressed="false">Zero guard: off</button></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const a = $("#dl-a", stage), b = $("#dl-b", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const gbtn = stage.querySelector('[data-a="guard"]');
+  function draw() {
+    const x = +a.value, y = +b.value;
+    a.nextElementSibling.textContent = x; b.nextElementSibling.textContent = y;
+    const lit = type === "double" ? x + ".0" : String(x);
+    let html = '<span class="dim">' + type + " a = " + lit + "; " + type + " b = " + y + ";</span>\n";
+    if (guard) html += '<span class="dim">if (b == 0) Console.WriteLine("Cannot divide by zero.");\nelse </span>';
+    html += "Console.WriteLine(a / b);\n\n";
+    verdict.classList.remove("shake");
+    if (y === 0 && guard) {
+      html += '<span class="good">Cannot divide by zero.</span>';
+      verdict.className = "verdict good";
+      verdict.textContent = "The guard checks the divisor first, so the user gets a clear message instead of a crash or ∞.";
+    } else if (y === 0 && type === "int") {
+      html += '<span class="bad">Unhandled exception. System.DivideByZeroException</span>';
+      verdict.className = "verdict bad";
+      verdict.textContent = "int refuses to divide by 0: the program crashes. Turn on the zero guard.";
+      void verdict.offsetWidth; verdict.classList.add("shake");
+    } else if (y === 0) {
+      html += '<span class="bad">' + (x === 0 ? "NaN" : "∞") + "</span>";
+      verdict.className = "verdict warn";
+      verdict.textContent = (x === 0 ? "0.0 / 0 is NaN (Not a Number)." : "double doesn't crash, it quietly returns ∞ (Infinity).") + " It looks like an answer but it's useless to the user. Turn on the zero guard.";
+    } else if (type === "int") {
+      const q = Math.trunc(x / y);
+      html += '<span class="good">' + q + "</span>";
+      verdict.className = x % y === 0 ? "verdict good" : "verdict warn";
+      verdict.textContent = x % y === 0 ? "It shares exactly, so nothing is lost." : "int ÷ int cuts off the decimals: " + x + " / " + y + " is really " + +(x / y).toFixed(4) + ", but int keeps only " + q + ".";
+    } else {
+      html += '<span class="good">' + +(x / y).toFixed(4) + "</span>";
+      verdict.className = "verdict good";
+      verdict.textContent = "double keeps the decimals.";
+    }
+    term.innerHTML = html;
+  }
+  stage.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.dataset.t) {
+      stage.querySelectorAll(".pick .btn").forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
+      type = btn.dataset.t;
+    }
+    if (btn.dataset.a === "guard") {
+      guard = !guard;
+      gbtn.setAttribute("aria-pressed", String(guard));
+      gbtn.textContent = "Zero guard: " + (guard ? "on" : "off");
+    }
+    draw();
+  });
+  a.addEventListener("input", draw);
+  b.addEventListener("input", draw);
+  draw();
+}
+
+function operatorGuard(stage) {
+  let join = "&&";
+  stage.innerHTML =
+    '<div class="pick"><button class="btn" data-j="&&" aria-pressed="true">&amp;&amp; (and)</button><button class="btn" data-j="||" aria-pressed="false">|| (or)</button></div>' +
+    '<div class="control"><label for="og-op">Operator</label><input id="og-op" type="text" value="+" maxlength="3" autocomplete="off"></div>' +
+    '<div class="btn-row"><button class="btn" data-k="+">+</button><button class="btn" data-k="-">-</button><button class="btn" data-k="*">*</button><button class="btn" data-k="/">/</button><button class="btn" data-k="%">%</button></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const inp = $("#og-op", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const OPS = ["+", "-", "*", "/"];
+  function draw() {
+    const op = inp.value;
+    const parts = OPS.map((o) => op !== o);
+    const result = join === "&&" ? parts.every(Boolean) : parts.some(Boolean);
+    const valid = OPS.includes(op);
+    term.innerHTML =
+      'if (op != "+" ' + esc(join) + ' op != "-" ' + esc(join) + ' op != "*" ' + esc(join) + ' op != "/")\n\n' +
+      OPS.map((o, n) => '"' + esc(op) + '" != "' + o + '"   <span class="' + (parts[n] ? "good" : "bad") + '">' + parts[n] + "</span>").join("\n") +
+      "\n\n" + parts.join(" " + esc(join) + " ") + "  →  <strong>" + result + "</strong>\n" +
+      (result ? '<span class="bad">Unknown operator. Try again.</span>' : '<span class="good">Accepted, ask for the second number</span>');
+    const right = result !== valid;
+    verdict.className = right ? "verdict good" : "verdict bad";
+    verdict.classList.remove("shake");
+    if (join === "&&") {
+      verdict.textContent = valid
+        ? "One side is false (op is equal to " + op + "), and && needs ALL true, so the guard lets it in."
+        : '"' + op + '" is different from all four, so every side is true and the guard rejects it.';
+    } else {
+      verdict.textContent = valid
+        ? "❌ " + op + " is a real operator, but it's different from the other three, so at least one side is true, and || needs only one. With ||, every key is rejected."
+        : "Rejected, but only by luck: with || even + is rejected. Try +.";
+      if (valid) { void verdict.offsetWidth; verdict.classList.add("shake"); }
+    }
+  }
+  stage.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.dataset.j) {
+      stage.querySelectorAll(".pick .btn").forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
+      join = btn.dataset.j;
+    }
+    if (btn.dataset.k) inp.value = btn.dataset.k;
+    draw();
+  });
+  inp.addEventListener("input", draw);
+  draw();
+}
+
+function parcelShelf(stage) {
+  const weights = [12, 7, 30];
+  stage.innerHTML =
+    '<div class="control"><label for="ps-i">Index</label><input id="ps-i" type="number" value="0" style="width:5em"></div>' +
+    '<div class="btn-row"><button class="btn" data-i="0">0</button><button class="btn" data-i="2">2</button><button class="btn" data-i="3">3</button><button class="btn" data-i="-1">-1</button></div>' +
+    '<div class="cookies"></div><div class="term"></div><div class="verdict"></div>';
+  const inp = $("#ps-i", stage), shelf = $(".cookies", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  function draw() {
+    const i = Math.trunc(+inp.value);
+    const ok = i >= 0 && i < weights.length;
+    shelf.innerHTML = weights.map((w, n) =>
+      '<div style="' + (n === i ? "color:var(--ok)" : "opacity:.6") + '"><small>index ' + n + (n === weights.length - 1 ? " (Length - 1)" : "") + "</small><span>📦 " + w + " kg</span></div>").join("");
+    term.innerHTML = '<span class="dim">int[] weights = { 12, 7, 30 };   // Length = 3</span>\nConsole.WriteLine(weights[' + i + "]);\n\n" +
+      (ok ? '<span class="good">' + weights[i] + "</span>" : '<span class="bad">Unhandled exception. System.IndexOutOfRangeException:\nIndex was outside the bounds of the array.</span>');
+    verdict.classList.remove("shake");
+    if (ok) {
+      verdict.className = "verdict good";
+      verdict.textContent = "Slot " + i + " exists, so you get " + weights[i] + "." + (i === 0 ? " Index 0 is the FIRST element." : i === 2 ? " 2 is the last index: Length - 1 = 3 - 1." : "");
+    } else {
+      verdict.className = "verdict bad";
+      verdict.textContent = "There is no slot " + i + ". The slots go from 0 to Length - 1 = 2, so the program crashes.";
+      void verdict.offsetWidth; verdict.classList.add("shake");
+    }
+  }
+  stage.addEventListener("click", (e) => { const btn = e.target.closest("button"); if (btn && btn.dataset.i) { inp.value = btn.dataset.i; draw(); } });
+  inp.addEventListener("input", draw);
+  draw();
+}
+
+function postmanLoop(stage) {
+  const W = [2.5, 12, 0.8, 15.5, 7];
+  let check = "parcelWeight", round, total, heavy, marks;
+  stage.innerHTML =
+    '<div class="control">The <code>if</code> checks:</div>' +
+    '<div class="pick"><button class="btn" data-c="parcelWeight" aria-pressed="true">parcelWeight &gt; 10</button><button class="btn" data-c="total" aria-pressed="false">total &gt; 10 (the bug)</button></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="step">Next parcel</button><button class="btn" data-a="all">Run all</button><button class="btn" data-a="reset">Reset</button></div>' +
+    '<div class="cookies"></div><div class="term"></div><div class="verdict"></div>';
+  const shelf = $(".cookies", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const r1 = (x) => Math.round(x * 10) / 10;
+  function draw() {
+    shelf.innerHTML = W.map((w, n) => {
+      const style = n === round - 1 ? "color:var(--ok)" : n < round ? "" : "opacity:.45";
+      return '<div style="' + style + '"><small>' + (n === round - 1 ? "🚶 here" : n < round ? (marks[n] ? "✔ heavy" : "done") : "waiting") + "</small><span>📦 " + w + "</span></div>";
+    }).join("");
+    let html = '<span class="dim">double total = 0;  int heavyCount = 0;</span>\n';
+    if (round > 0) {
+      const w = W[round - 1], val = check === "total" ? total : w;
+      html += "parcelWeight = " + w + "\ntotal = total + parcelWeight → " + r1(total) + "\n" +
+        "if (" + check + " > 10) → " + r1(val) + ' > 10 → <span class="' + (val > 10 ? "good" : "dim") + '">' + (val > 10) + "</span>\nheavyCount = " + heavy;
+    }
+    if (round === W.length) {
+      html += '\n\n<span class="good">Total weight: ' + r1(total) + " kg\nHeavy parcels (over 10 kg): " + heavy + "</span>";
+    }
+    term.innerHTML = html;
+  }
+  function reset() {
+    round = 0; total = 0; heavy = 0; marks = [];
+    draw();
+    verdict.className = "verdict"; verdict.textContent = "Predict first: how many parcels are over 10 kg?";
+  }
+  function step() {
+    if (round >= W.length) return;
+    const w = W[round];
+    total += w;
+    const isHeavy = (check === "total" ? total : w) > 10;
+    marks[round] = isHeavy;
+    if (isHeavy) heavy++;
+    round++;
+    draw();
+    verdict.classList.remove("shake");
+    if (check === "total" && isHeavy && w <= 10) {
+      verdict.className = "verdict bad";
+      verdict.textContent = "❌ " + w + " kg is not heavy, but the running total (" + r1(total) + ") is over 10, so it's counted anyway.";
+      void verdict.offsetWidth; verdict.classList.add("shake");
+    } else if (round === W.length) {
+      verdict.className = heavy === 2 ? "verdict good" : "verdict bad";
+      verdict.textContent = heavy === 2 ? "Both prints run once, after the loop: 37.8 kg and 2 heavy parcels." : "4 heavy parcels is wrong: only 12 and 15.5 are over 10. Check parcelWeight, not total.";
+    } else {
+      verdict.className = "verdict";
+      verdict.textContent = "The postman adds " + w + " to the total" + (isHeavy ? " and makes a tally mark." : ".");
+    }
+  }
+  stage.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.dataset.c) {
+      stage.querySelectorAll(".pick .btn").forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
+      check = btn.dataset.c; reset();
+    }
+    if (btn.dataset.a === "step") step();
+    if (btn.dataset.a === "all") { while (round < W.length) step(); }
+    if (btn.dataset.a === "reset") reset();
+  });
+  reset();
 }
 
 /* ---------------- start ---------------- */

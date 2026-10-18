@@ -6,13 +6,11 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **Fri 16 Oct (day off, on the HOME LAPTOP for the first time).** First 15 min: check the setup (`git pull` or `git clone`, `dotnet --version` = 10.x, `dotnet run` in `projects/01-number-guessing-game`, `git config user.name` / `user.email` set). The Claude memory folder lives on the office PC only, so everything important must be in this file and in CLAUDE.md
-- **Fri 16 Oct, career block (the priority, it's overdue):**
-  1. **LinkedIn "Week 1" post** in `career/linkedin/01-week-1.md`: Phase 0 + data types, TryParse, if/else, switch, Git undo, all the loops, and **Project 01 v1.1** (link: https://github.com/basithcreation/dotnet-fullstack-journey/tree/main/projects/01-number-guessing-game, a screenshot of a real game with `abc`, `500`, a win). Only Day 0 was ever posted, so from now on: **one post every Friday**
-  2. **Resume:** add an honest **Experience** section to `career/RESUME.md`: *IT Support Engineer & In-house App Developer, KPOST Couriers, Kuwait (May 2023 to now)*, KPOST-HR (Flutter app used by staff, ASP.NET REST API, JWT, EN/AR), IT support (servers, AD, CCTV, antivirus). Plus Syrma SGS Bengaluru (IT Support, Jan–May 2023), web developer 2021 (2 months). BSc IT 2020. **Never invent experience**
-  3. **LinkedIn profile** (`career/LINKEDIN_PROFILE.md`): headline like *"IT Support & Flutter Developer (KPOST-HR) | Learning .NET Backend"*
-- **Fri revision quiz:** `%` (they confused it with divide/percent), `||` with `>` vs `>=` edges, `break` vs `continue` inside a while, "why can't we always print Correct after the loop?" (exit reason, Q5 today was 0)
-- **Sun 18 Oct: next Phase 1 topic: arrays + `foreach`** (finishes the loops line in ROADMAP), then methods. Projects 02 Console Calculator and 03 Shipment Tracker are still to come in Phase 1 (planned until 24 Oct)
+- **Sun 18 Oct (office PC, duty 10 AM–10 PM).** Start with the **arrays quiz** (5 questions: last index = `Length - 1`, `a[1]`, out of range, why `total` is declared before the loop, `parcelWeight` vs `total`). Then **`List<T>`** (Add, Remove, Count, foreach; compare with Dart's `List`), then **methods** if time is left
+- **Week plan to finish Phase 1** (move faster when a topic ends early: if more than 1 hr is left, start the next one): Sun `List<T>` → methods · Mon methods · Tue methods part 2 (`ref`/`out`, overloading) + Calculator v2 with methods · Wed string helpers (`Trim`, `Split`…) + `DateTime` · Thu nullable `?`/`??` + `try`/`catch` · Fri (home laptop, 1 hr) debugging intro + revision + LinkedIn post 02 · Sat 24 Oct **Project 03 Shipment Tracker**. Phase 2 (OOP) starts Sun 25 Oct
+- **Home laptop setup check is still not done** (do it in the first 15 min of Fri 23 Oct): `git pull`, `dotnet --version` = 10.x, `dotnet run` in `projects/02-console-calculator`, `git config user.name` / `user.email`
+- **Naming:** lessons are `lessons/phase-01/NN-kebab-name`. The next free number is **21**. List the folder before naming anything
+- **Claude writes** READMEs, LinkedIn drafts and book chapters; the student reviews them in 2 min. The student types all code
 - **Work dates:** the student's own resumes and LinkedIn are the source of truth for job dates (confirmed 15 and 17 Oct). The Day 9 "Career" notes below were a rough chat story. Don't use them to question the dates
 - **Career context (told on Day 9):** KPOST's backend is ASP.NET, so from Phase 6 suggest they ask their senior to let them write real endpoints. Phase 14 main project = **KACT** charity app rebuild (see ROADMAP Phase 14). Private career plans are in Claude's local memory only, never in this public repo
 - **How to teach this student:**
@@ -22,7 +20,8 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - **Be exact when listing "ideas for later":** they read "What I'd add next: Play again" as an instruction and started coding it. Say "only write this in the README, don't code it"
   - **Keep Git short** (they asked on Day 8 if Git is worth the time; they want to finish .NET fast). Commit **right after each exercise** (1 minute). No long fix-up sessions. A typo in a message: point it out, amend only if not pushed and it takes 10 seconds. No new Git until Phase 2 (branches)
   - **They forget a folder in `git add`** (Day 4 and Day 8, the same mistake). Always check the "N files changed" number against the expected one
-  - **Check the clock before saying "morning" / "tonight"**. They study in free hours during a full-day duty that ends ~9:30 PM, with a prayer break
+  - **Check the clock before saying "morning" / "tonight"**. Schedule: Sun–Thu duty 10 AM–10 PM (free gaps from 10 AM, fully focused 7–10 PM), Fri off (1 hr review on the home laptop), Sat duty 1–9 PM (~6 hrs study). On Saturday they are at the OFFICE PC, not home
+  - **Predict the whole line**, not just the variable (Day 10: predicted "Hawalli" for `$"Delivering to {city}"`). And write out both sides of `||` / `&&` before answering
   - They predict from the **English meaning** of a keyword (`continue` = "carry on normally"). For new keywords, give the C# meaning in one line before asking for a prediction
   - The prediction habit is working: they predict in chat **before** running now ✅. Keep asking
   - Tracing: half-filled trace tables work. Their remaining mistake is the **final answer**: it doesn't come from the last row (Day 8: table said 6, answered 10). Ask "which row is the last true one?"
@@ -30,6 +29,56 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - "done" without output: ask for the output **every** time. Read the file yourself before accepting
   - ONE step per message, fill-in templates with blanks (worked well for the flag fix)
   - Day 8: started 11:00 AM, stopped around 9:30 PM
+
+---
+
+## Day 10: Sat 17 Oct 2026 · Phase 1: career catch-up, Calculator v1, arrays + `foreach`
+
+(Office PC. Started 12:43 PM, stopped around 8:50 PM. Friday's home-laptop plan didn't happen: .NET was installed at home on Fri night, but it was 10 PM, so the work moved to today.)
+
+**Learned**
+
+- **`int ÷ int` cuts off the decimals** (`7 / 2` = 3, `7.0 / 2` = 3.5). `double` keeps them
+- **`double.TryParse(input, out double x)`**: like `int.TryParse`. The `out` box must be plain `double`, not `double?` (CS1503)
+- **`double / 0` gives `∞`** (Infinity) instead of crashing (`0.0 / 0` = NaN), so add a guard: `if (secondNumber == 0)`. Only the divisor matters
+- **`switch` on a string**: `case "+":`, exact match, one case runs
+- **Operator guard** right after reading it: `op != "+" && op != "-" && ...` (with `||` every operator is rejected). Keep `default` as a safety net
+- **`while (true)` + `break`** = an infinite loop with a break exit
+- **Arrays**: `int[] weights = { 12, 7, 30 }`, index `0` to `Length - 1`, fixed size, `IndexOutOfRangeException`
+- **`foreach (double parcelWeight in weights)`** + accumulator + counter declared before the loop, results printed after it
+
+**Built**
+
+- **Career:** LinkedIn post 01 (Number Guessing Game) **posted** ✅, resume **Experience** + Education rewritten from the KPOST-HR and KPOST IT code (dev-only bullets), new LinkedIn headline (with .NET keywords). Commits: `Add LinkedIn post 01 and resume experience` (only PROGRESS.md, `career` was forgotten) + `Add LinkedIn post 01, resume experience and screenshots` (5 files ✅)
+- **Project 02: Console Calculator v1**: `while (true)`, `q` to quit, `double.TryParse` guards for both numbers, operator guard with `&&`, zero guard, switch on a string. All 5 tests pass. README (Claude will draft future ones). Commit `Add console calculator v1`, 5 files ✅
+- `18-double-tryparse` (renamed from `DoubleTryParse`), `19-arrays`, `20-parcel-weights`. Commit `Add arrays and parcel weights lessons`, 8 files ✅
+
+**Quiz scores**
+
+- Revision quiz (`%`, `||` edges, `break`/`continue`, exit reason): **3/4 + bonus** (the exit reason went from 0 on Thursday to correct today)
+- Calculator quiz: **3.5/5** (Q1 `7 / 2` ½, Q2 ✅, Q3 `"+ "` ½, Q4 `||` trap ½, Q5 ✅)
+- Arrays: the exercise was done; the quiz is first thing tomorrow
+
+**Mistakes to remember (review these)**
+
+- Said `5 % 7` is "false" (`%` always gives a number: 5)
+- Wrote `18 < 17` for `age < 18` with age 17 (keep the order, swap only the value)
+- Added up the values in a `WriteLine(i)` trace (1, 3, 7, 12). No `sum` in the code → nothing adds up
+- `while (firstNumber == secoundNumber)` as the loop condition; then suggested `!=` and `firstNumber == 'q'`. The loop should be `while (true)` with the `q` break
+- `double? firstNumber` with `out` → CS1503
+- `break` instead of `continue` in the operator guard (the same mix-up as Day 9)
+- Predicted that a switch prints 2 cases; said `7 / 2` = 3.5
+- Answered the `||` question from the rule without writing out the sides
+- README: saved in the wrong folder, no code block (the formatter turned `*` into `_`), placeholders left, "returns cannot divide by zero" instead of ∞
+- Arrays exercise: hard-coded `"Heavy parcels: 2"` inside the loop, named the loop box `totalWeight`, `weight[0 + 1 + 2 + 3 + 4]` → crash, `if (total > 10)` → 4 instead of 2
+- Forgot the `career` folder in `git add` again (4th time). Always compare the "N files changed" number
+- ✅ Win: in the arrays exercise both results were printed **after** the loop on the first try
+
+**Career**
+
+- Shared the LinkedIn PDF. KPOST real dates: joined **24 Jun 2023 as IT Support Specialist**, Flutter apps since **Jan 2024**, still doing both. The developer resume has no IT-support bullets (their choice) and no videography. The 1-month course after 10th standard is **not** a postgraduate degree: removed from the resume; they will remove it from LinkedIn too, plus the duplicate BSc entry
+- Second app found: **KPOST IT** (assets by department, barcode PC lookup, network wall-box/patch-panel mapping). They also add features and upgrade packages in 2–3 of their senior's apps
+- Told Claude firmly: be careful with everything (naming, facts, commands). It's their next 10 years
 
 ---
 

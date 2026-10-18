@@ -149,6 +149,35 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | why did the loop stop? (won or quit) | **exit reason** / **exit condition** | "The loop has two exits, so check the exit reason before printing the result." |
 | loop checks 6 but works with 7 | **off-by-one** (update **before** the work) | "Because the increment comes first, the loop processes 7 even though the condition is `i < 7`." |
 
+## Phase 1: Calculator v1 (`double`, ∞, string switch)
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| whole-sweet division | **integer division** / **truncation** | "`7 / 2` is integer division, it truncates to 3." |
+| convert text to a decimal number | **parse as a double** | "Parse the input as a double with `double.TryParse`." |
+| the number you divide by | **divisor** (the other one is the **dividend**) | "The divisor must not be zero." |
+| ∞ | **Infinity** | "Double doesn't throw on `/ 0`, it returns Infinity." |
+| not a number (`0.0 / 0`) | **NaN** | "Check for NaN before showing the result." |
+| loop forever until q | **infinite loop with a break exit** | "It's a `while (true)` loop with a break on q." |
+| the case for everything else | **default case** / **safety net** | "Keep the default case as a safety net." |
+| old code left in comments | **dead code** | "Remove the dead code, Git remembers the old version." |
+| auto-fixer on save | **formatter** | "The Markdown formatter escaped the asterisks." |
+
+## Phase 1: Arrays and `foreach`
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| shelf | **array** | "Store the weights in a `double[]` array." |
+| slot number | **index** (zero-based) | "Index 0 is the first element." |
+| one parcel on the shelf | **element** | "The array has 5 elements." |
+| how many slots | **length** (`.Length`) | "The last index is `Length - 1`." |
+| asking for a slot that isn't there | **index out of range** / **out of bounds** | "That throws an IndexOutOfRangeException." |
+| runtime crash | **exception** | "The exception is unhandled, so the app stops." |
+| postman walk | **iterate** / **loop over** (`foreach`) | "Iterate over the parcels with a foreach." |
+| running total | **accumulator** | "Declare the accumulator before the loop." |
+| tally | **counter** | "Increment the counter for each heavy parcel." |
+| fake fixed answer | **hard-coded value** | "Don't hard-code the count, compute it." |
+
 ## Errors and testing
 
 | Easy word | Real term | Team sentence |
