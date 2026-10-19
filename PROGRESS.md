@@ -6,10 +6,10 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **Mon 19 Oct (office PC, duty 10 AM–10 PM).** Start with the **methods quiz** (5 questions: `void` vs a return type, parameter vs argument, what `{city}` prints inside the method vs `{PrintReceipt}`, wrong argument order → CS1503, why calculation and printing are separate methods). Then more **methods practice**: a method with an `if` inside that returns (e.g. `bool IsHeavy(double kg)`), and a method that calls another method. Then **`ref` / `out`** if time is left
-- **Week plan to finish Phase 1** (move faster when a topic ends early: if more than 1 hr is left, start the next one): ✅ Sun `List<T>` + methods part 1 (`void`, parameters, `return`) · Mon methods quiz + practice (+ `ref`/`out`) · Tue overloading, optional/named parameters + Calculator v2 with methods · Wed string helpers (`Trim`, `Split`…) + `DateTime` · Thu nullable `?`/`??` + `try`/`catch` · Fri (home laptop, 1 hr) debugging intro + revision + LinkedIn post 02 · Sat 24 Oct **Project 03 Shipment Tracker**. Phase 2 (OOP) starts Sun 25 Oct
+- **Tue 20 Oct (office PC, duty 10 AM–10 PM).** Start with the **`ref` / `out` quiz** (5 questions: does the caller's `int` change without `ref`, where `ref` goes (both places), which one needs a value first, what CS0177 means, what the `bool` means in the Try pattern). Quick warm-up first (1 question): label line 1 of `double AddDeliveryFee(double price)` (return type / name / parameter). Then **method overloading** → **optional and named parameters** → **Calculator v2 with methods** (`projects/02-console-calculator`)
+- **Week plan to finish Phase 1** (move faster when a topic ends early: if more than 1 hr is left, start the next one): ✅ Sun `List<T>` + methods part 1 (`void`, parameters, `return`) · ✅ Mon methods quiz + `bool` methods + method calling method + `ref`/`out` · Tue overloading, optional/named parameters + Calculator v2 with methods · Wed string helpers (`Trim`, `Split`…) + `DateTime` · Thu nullable `?`/`??` + `try`/`catch` · Fri (home laptop, 1 hr) debugging intro + revision + LinkedIn post 02 · Sat 24 Oct **Project 03 Shipment Tracker**. Phase 2 (OOP) starts Sun 25 Oct
 - **Home laptop setup check is still not done** (do it in the first 15 min of Fri 23 Oct): `git pull`, `dotnet --version` = 10.x, `dotnet run` in `projects/02-console-calculator`, `git config user.name` / `user.email`
-- **Naming:** lessons are `lessons/phase-01/NN-kebab-name`. The next free number is **25**. List the folder before naming anything
+- **Naming:** lessons are `lessons/phase-01/NN-kebab-name`. The next free number is **28**. Book chapters: the next is **1.18**. List the folder before naming anything
 - **Claude writes** READMEs, LinkedIn drafts and book chapters; the student reviews them in 2 min. The student types all code
 - **Work dates:** the student's own resumes and LinkedIn are the source of truth for job dates (confirmed 15 and 17 Oct). The Day 9 "Career" notes below were a rough chat story. Don't use them to question the dates
 - **Career context (told on Day 9):** KPOST's backend is ASP.NET, so from Phase 6 suggest they ask their senior to let them write real endpoints. Phase 14 main project = **KACT** charity app rebuild (see ROADMAP Phase 14). Private career plans are in Claude's local memory only, never in this public repo
@@ -31,8 +31,57 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - Day 8: started 11:00 AM, stopped around 9:30 PM
   - **Method parameters are new and hard** (Day 11): they put the **method name** in `{ }` instead of the parameter name, twice. Before an exercise with parameters, ask "which words on line 1 are the parameter names?"
   - When they copy a line, they forget to change the part inside `{ }` (Day 11, twice). Ask them to read the **label** next to the code
+  - **They delete correct code when unsure** (Day 12: wrote `else`, then removed it). Tell them: "keep it and run it, the output tells you"
+  - **Output can hide bugs** (Day 12: `fee = 0.5` on the bad path, output still looked right). Always read the file, especially the paths the output doesn't show
+  - Fill-in templates with 4 blanks still work well (TryGetFee fix ✅). The hint ladder (trace one call → template) solved both bugs on Day 12
 
 ---
+
+## Day 12: Mon 19 Oct 2026 · Phase 1: methods part 2 (`bool` methods, a method calling a method), `ref` / `out`
+
+(Office PC, duty day. Started 10:15 AM, studied in free gaps, focused from about 7:30 PM, stopped around 10 PM.)
+
+**Learned**
+
+- **Line 1 of a method:** the type **before the name** is the **return type** (what it gives back). Inside `( )` comes the **parameter**: type + **name** (`price`)
+- **`bool` methods:** return `true` / `false`; `return` **stops the method** right away. Call them straight inside `if (IsHeavy(12))`. C# prints `True` / `False` with a capital letter
+- **`else` has no condition and no `;`.** `else IsHeavy(4.5);` ends the `else`, so the `{ }` after it is a standalone block that **always** runs
+- **Threshold** (the limit, 10 kg, lives in one method) and **boundary value** (`10 > 10` is false → bike)
+- **A method that calls a method:** `PrintBill` → `AddTax`, `PrintVehicle` → `IsHeavy`. Three big `if` / `else` blocks became three one-line calls. Two methods can each have their own `weight` parameter (separate **scope**)
+- **Pass by value** (a copy, the default) vs **`ref`** (the original; `ref` in both places; needs a value first)
+- **`out`:** an extra result; the method must fill it before **every** `return` (**CS0177**). The **Try pattern** = `bool` "did it work?" + the result through `out`, like `int.TryParse`
+
+**Built**
+
+- `23-methods`: `IsAdult` + `if`, `AddTax`/`PrintBill`, `AddBonus` by value and `ref`, `SplitPrice` with `out`. Commits `Add bool method practice` (1 file), part of `Add method calling method practice and delivery vehicle`, `Add ref and out practice` (1 file) ✅
+- `25-heavy-parcel` (`IsHeavy` + 3 `if` / `else`). Commit `Add heavy parcel bool method exercise`, 2 files ✅ (typo `exerise` amended before the push)
+- `26-delivery-vehicle` (`PrintVehicle` calls `IsHeavy`). Perfect on the first try. Commit with `23-methods`, 3 files ✅
+- `27-parcel-fee` (`TryGetFee` with `out`). Commit `Add parcel fee out parameter exercise`, 2 files ✅
+
+**Quiz scores**
+
+- Methods quiz: **3.5/5** (Q1 return type ½, Q2 parameter = name ½, Q3 ✅, Q4 CS1503 ½, Q5 ✅)
+- Quick checks / predictions: **8.5/10** (`IsAdult` ✅, `if (IsAdult(15))` ✅, IsHeavy line 1 + boundary ✅, `AddTax` numbers only ½, `PrintVehicle` full lines ✅, by value ✅, `ref` ✅, `SplitPrice` line ½, CS0177 return count ✅, TryGetFee line 1 missing comma ½)
+- `ref` / `out` quiz: first thing tomorrow
+
+**Mistakes to remember (review these)**
+
+- Said `double` in `double AddDeliveryFee(...)` means "accepts only double": mixed up the **return type** and the **parameter type**
+- Said the parameter is `double`: the parameter is the **name** (`price`)
+- Knew the "same order" rule, but not the result: a **compile error CS1503**
+- Exercise 25: no `else`, so only 1 line printed. Had written `else`, then **deleted it** because unsure. Then `else IsHeavy(4.5);` + a standalone block: the output was right **by accident**
+- `AddTxt` typo; left ` KD` out of the string; predicted only the numbers, not the whole line
+- `SplitPrice`: worked out `5` and `true` correctly, then predicted `50 5` (the line prints `{ok}`, not the total). The answer didn't come from the working (same as Day 8)
+- `TryGetFee` line 1 without the comma between parameters
+- `TryGetFee` v1: `return weight <= 0;` (backwards: `true` for a bad weight) and no bad-weight path (−2 → `Fee: -1 KD`)
+- **Hidden bug:** `fee = 0.5;` on the bad path (the rule said 0). The output looked right because the `else` never prints the fee
+- Pasted code in chat that didn't match the file (`true` / `false` swapped)
+- No prediction before running exercise 25 and the first run of exercise 27
+- ✅ Wins: boundary 10 → bike with the right reason (`>` not `>=`); asked "what is the base weight?" (→ **threshold**); exercise 26 perfect with full-line predictions; pass by value and `ref` predicted right; **experimented on their own** (`total > 51` → `False 5`) and understood that the `out` value is filled either way
+
+**Career**
+
+- Nothing new today (code day). LinkedIn post 02 is planned for Fri 23 Oct
 
 ## Day 11: Sun 18 Oct 2026 · Phase 1: `List<T>`, methods part 1 (`void`, parameters, `return`)
 

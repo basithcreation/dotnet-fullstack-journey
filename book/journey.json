@@ -145,6 +145,19 @@
         { "name": "List<T> quiz", "score": 4.5, "max": 5 },
         { "name": "Methods quick checks", "score": 2, "max": 2 }
       ]
+    },
+    {
+      "day": 12,
+      "date": "2026-10-19",
+      "weekday": "Mon",
+      "phase": "Phase 1",
+      "title": "bool methods, method calling method, ref and out",
+      "learned": ["Line 1: the type before the name is the RETURN type; the parameter is the NAME (price)", "A bool method: return stops the method; call it straight inside if (...)", "else has no condition and no ; (else X; makes the block always run)", "Threshold and boundary value: 10 > 10 is false", "A method can call another method (PrintVehicle → IsHeavy) to remove repetition", "Pass by value (copy) vs ref (original), out + the Try pattern, CS0177"],
+      "built": ["Heavy Parcel exercise (bool method)", "Delivery Vehicle exercise (method calls method)", "Parcel Fee exercise (TryGetFee with out)"],
+      "quizzes": [
+        { "name": "Methods quiz", "score": 3.5, "max": 5 },
+        { "name": "Quick checks (predictions)", "score": 8.5, "max": 10 }
+      ]
     }
   ]
 }

@@ -40,6 +40,8 @@ At the end of the course, this text becomes a real illustrated / animated book.
 - [Chapter 1.13: Arrays and foreach](phase-01/13-arrays-foreach.md)
 - [Chapter 1.14: Lists, an array that can grow](phase-01/14-list.md)
 - [Chapter 1.15: Methods, part 1 (void, parameters, return)](phase-01/15-methods-void-return.md)
+- [Chapter 1.16: Methods, part 2 (bool methods, else, a method that calls a method)](phase-01/16-methods-bool-calling.md)
+- [Chapter 1.17: ref and out (and the Try pattern)](phase-01/17-ref-out.md)
 
 *(More chapters are added as I finish each topic.)*
 

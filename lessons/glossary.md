@@ -206,6 +206,23 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | the first line of a method | **method signature** | "The signature is `double CalculateShipping(double weightKg)`." |
 | one method, one job | **single responsibility** | "Keep calculation and printing in separate methods." |
 | a method inside Program.cs | **local function** (CS8321: declared but never used) | "The local function is never called, that's why we get CS8321." |
+| the `double` before the name | **return type** (what it gives back) | "AddDeliveryFee returns a double." |
+| the `double` inside `( )` | **parameter type** (what it accepts) | "It takes the price as a double parameter." |
+| a yes/no method | **`bool` method** / **predicate** | "`IsHeavy` is a predicate, call it in the `if` condition." |
+| the limit (10 kg) | **threshold** | "The heavy threshold is 10 kg, it's defined in `IsHeavy`." |
+| the exact edge (10) | **boundary value** | "Test the boundary value: is exactly 10 heavy?" |
+| a method that uses another method | **calling a method from a method** / **composition** | "`PrintVehicle` calls `IsHeavy` and uses its return value." |
+| looks right, value is wrong | **hidden bug** / **silent bug** | "The output looks fine but `fee` is 0.5, that's a silent bug." |
+
+## Phase 1: `ref` and `out`
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| a photocopy | **pass by value** (the default) | "`int` is passed by value, so the method only changes its copy." |
+| the original homework | **pass by reference** (`ref`) | "Pass `myPoints` by `ref` so the method changes the original." |
+| an empty box to fill | **`out` parameter** | "`TryParse` gives the number back through an out parameter." |
+| every exit must fill the box | **definite assignment** (CS0177) | "CS0177: the out parameter isn't assigned on every path." |
+| `Try...` + `bool` + `out` | **Try pattern** (`TryParse`, `TryGetFee`) | "Use the Try pattern instead of throwing for bad input." |
 
 ## Errors and testing
 

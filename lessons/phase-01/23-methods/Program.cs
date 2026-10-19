@@ -76,12 +76,12 @@
 // Console.WriteLine($"Outside: {myPoints}");
 
 
-bool SplitPrice(double total, out double tax)
-{
-    tax = total * 0.1;
-    return total > 51;
-}
+// bool SplitPrice(double total, out double tax)
+// {
+//     tax = total * 0.1;
+//     return total > 51;
+// }
 
-bool ok = SplitPrice(50, out double myTax);
-Console.WriteLine($"{ok} {myTax}");
+// bool ok = SplitPrice(50, out double myTax);
+// Console.WriteLine($"{ok} {myTax}");
 

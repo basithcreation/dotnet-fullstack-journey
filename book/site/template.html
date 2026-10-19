@@ -556,6 +556,8 @@ const WIDGETS = {
   "1.13": [parcelShelf, postmanLoop],
   "1.14": [deliveryBag],
   "1.15": [callCounter, argumentFlow],
+  "1.16": [weightGate, elseTrap],
+  "1.17": [photocopyRef, outBox],
 };
 
 function lapCounter(stage) {
@@ -2087,6 +2089,159 @@ function argumentFlow(stage) {
     stage.querySelectorAll(".pick .btn").forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
     pick = btn.dataset.k; draw();
   });
+  draw();
+}
+
+function weightGate(stage) {
+  let op = ">";
+  stage.innerHTML =
+    '<div class="control"><label for="wg-w">Parcel weight</label><input id="wg-w" type="range" min="0" max="20" step="0.5" value="12"><output></output></div>' +
+    '<div class="control">Rule:</div><div class="pick"><button class="btn" data-op=">" aria-pressed="true">weight &gt; 10</button><button class="btn" data-op=">=" aria-pressed="false">weight &gt;= 10</button></div>' +
+    '<div class="codebox"></div><div class="term"></div><div class="verdict"></div>';
+  const w = $("#wg-w", stage), code = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  function draw() {
+    const kg = +w.value, heavy = op === ">" ? kg > 10 : kg >= 10;
+    w.nextElementSibling.textContent = kg + " kg";
+    code.innerHTML =
+      "bool IsHeavy(double weight)\n{\n" +
+      '    <span class="hit">if (' + kg + " " + esc(op) + " 10)</span>   <span class=\"dim\">// " + (heavy ? "true" : "false") + "</span>\n    {\n" +
+      '        <span class="' + (heavy ? "hit" : "miss") + '">return true;</span>\n    }\n' +
+      '    <span class="' + (heavy ? "miss" : "hit") + '">return false;</span>\n}';
+    term.innerHTML = '<span class="good">' + kg + " kg: " + (heavy ? "van 🚐" : "bike 🛵") + "</span>";
+    verdict.className = "verdict" + (kg === 10 ? " warn" : "");
+    verdict.textContent = kg === 10
+      ? "Boundary value! 10 " + op + " 10 is " + heavy + ". Flip the rule and watch the answer change."
+      : "return stops the method: only one of the two return lines runs.";
+  }
+  w.addEventListener("input", draw);
+  stage.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn || !btn.dataset.op) return;
+    stage.querySelectorAll(".pick .btn").forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
+    op = btn.dataset.op; draw();
+  });
+  draw();
+}
+
+function elseTrap(stage) {
+  let broken = false;
+  stage.innerHTML =
+    '<div class="control"><label for="et-w">Parcel weight</label><input id="et-w" type="range" min="1" max="50" step="0.5" value="4.5"><output></output></div>' +
+    '<div class="pick"><button class="btn" data-b="0" aria-pressed="true">else { ... }</button><button class="btn" data-b="1" aria-pressed="false">else IsHeavy(...); { ... }</button></div>' +
+    '<div class="codebox"></div><div class="term"></div><div class="verdict"></div>';
+  const w = $("#et-w", stage), code = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  function draw() {
+    const kg = +w.value, heavy = kg > 10;
+    w.nextElementSibling.textContent = kg + " kg";
+    const vanRuns = heavy, bikeRuns = broken ? true : !heavy;
+    code.innerHTML =
+      "if (IsHeavy(" + kg + "))   <span class=\"dim\">// " + heavy + "</span>\n{\n" +
+      '    <span class="' + (vanRuns ? "hit" : "miss") + '">Console.WriteLine("' + kg + ' kg: van");</span>\n}\n' +
+      (broken ? 'else IsHeavy(' + kg + ');   <span class="dim">// ; ends the else here</span>\n' : "else\n") +
+      "{\n" + '    <span class="' + (bikeRuns ? "hit" : "miss") + '">Console.WriteLine("' + kg + ' kg: bike");</span>\n}';
+    const lines = [];
+    if (vanRuns) lines.push(kg + " kg: van");
+    if (bikeRuns) lines.push(kg + " kg: bike");
+    const wrong = broken && heavy;
+    term.innerHTML = '<span class="' + (wrong ? "bad" : "good") + '">' + lines.join("\n") + "</span>";
+    verdict.classList.remove("shake");
+    if (!broken) {
+      verdict.className = "verdict good";
+      verdict.textContent = "Exactly one block runs: van if true, bike if false.";
+    } else if (!heavy) {
+      verdict.className = "verdict warn";
+      verdict.textContent = "Looks right… by accident. Slide the weight above 10 kg.";
+    } else {
+      verdict.className = "verdict bad";
+      verdict.textContent = "The { } block is standalone and ALWAYS runs. else takes no condition and no ;";
+      void verdict.offsetWidth; verdict.classList.add("shake");
+    }
+  }
+  w.addEventListener("input", draw);
+  stage.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn || !btn.dataset.b) return;
+    stage.querySelectorAll(".pick .btn").forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
+    broken = btn.dataset.b === "1"; draw();
+  });
+  draw();
+}
+
+function photocopyRef(stage) {
+  let useRef = false;
+  stage.innerHTML =
+    '<div class="pick"><button class="btn" data-r="0" aria-pressed="true">photocopy (no ref)</button><button class="btn" data-r="1" aria-pressed="false">original (ref)</button></div>' +
+    '<div class="codebox"></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="run">Call AddBonus</button></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const code = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const r = () => (useRef ? '<span class="hit">ref </span>' : "");
+  function setup() {
+    code.innerHTML =
+      "void AddBonus(" + r() + "int points)\n{\n    points = points + 10;\n}\n\n" +
+      "int myPoints = 5;\nAddBonus(" + r() + "myPoints);\n" +
+      'Console.WriteLine($"Outside: {myPoints}");';
+    term.textContent = "";
+    verdict.className = "verdict";
+    verdict.textContent = "Predict first: what does Outside print?";
+  }
+  function run() {
+    setup();
+    term.innerHTML = '<span class="dim">' + (useRef ? "→ the ORIGINAL myPoints goes in\n" : "→ a COPY of 5 goes in\n") +
+      (useRef ? "→ myPoints becomes 15" : "→ the copy becomes 15, then is thrown away") + "</span>";
+    setTimeout(() => {
+      term.innerHTML += '\n<span class="good">Outside: ' + (useRef ? 15 : 5) + "</span>";
+      verdict.className = "verdict good";
+      verdict.textContent = useRef
+        ? "ref (in BOTH places) passes by reference: the method changed the caller's variable."
+        : "Pass by value: the method only changed its own copy.";
+    }, 700);
+  }
+  stage.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    if (btn.dataset.a === "run") return run();
+    if (btn.dataset.r === undefined) return;
+    stage.querySelectorAll(".pick .btn").forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
+    useRef = btn.dataset.r === "1"; setup();
+  });
+  setup();
+}
+
+function outBox(stage) {
+  let forget = false;
+  stage.innerHTML =
+    '<div class="control"><label for="ob-w">Weight</label><input id="ob-w" type="range" min="-5" max="20" step="0.5" value="4"><output></output></div>' +
+    '<div class="control"><label><input id="ob-f" type="checkbox"> forget <code>fee = 0;</code> on the bad path</label></div>' +
+    '<div class="codebox"></div><div class="term"></div><div class="verdict"></div>';
+  const w = $("#ob-w", stage), f = $("#ob-f", stage), code = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  function draw() {
+    const kg = +w.value, bad = kg <= 0;
+    forget = f.checked;
+    w.nextElementSibling.textContent = kg + " kg";
+    const cls = (onBad) => (bad === onBad ? "hit" : "miss");
+    code.innerHTML =
+      "bool TryGetFee(double weight, out double fee)\n{\n" +
+      "    if (" + kg + " &lt;= 0)   <span class=\"dim\">// " + bad + "</span>\n    {\n" +
+      (forget ? '        <span class="dim">// fee = 0;   ← forgotten</span>\n' : '        <span class="' + cls(true) + '">fee = 0;</span>\n') +
+      '        <span class="' + cls(true) + '">return false;</span>\n    }\n' +
+      '    <span class="' + cls(false) + '">fee = weight * 0.5;</span>\n' +
+      '    <span class="' + cls(false) + '">return true;</span>\n}';
+    verdict.classList.remove("shake");
+    if (forget) {
+      term.innerHTML = '<span class="bad">error CS0177: The out parameter \'fee\' must be assigned before control leaves the current method</span>';
+      verdict.className = "verdict bad";
+      verdict.textContent = "Build failed for EVERY weight: the compiler checks every path, not just the one you run.";
+      void verdict.offsetWidth; verdict.classList.add("shake");
+      return;
+    }
+    term.innerHTML = '<span class="good">' + (bad ? "Invalid weight" : "Fee: " + kg * 0.5 + " KD") + "</span>";
+    verdict.className = "verdict good";
+    verdict.textContent = bad
+      ? "Returned false (bad input), and the out box still holds fee = 0."
+      : "Returned true (it worked), and the out box holds " + kg + " × 0.5 = " + kg * 0.5 + ".";
+  }
+  w.addEventListener("input", draw); f.addEventListener("change", draw);
   draw();
 }
 
