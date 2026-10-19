@@ -27,23 +27,38 @@
 // PrintStop("Ali", 3);
 // PrintStop("Omar", 7);
 
-bool IsAdult(int age)
+// bool IsAdult(int age)
+// {
+//     if (age >= 18)
+//     {
+//         return true;
+//     }
+//     return false;
+// }
+
+// Console.WriteLine(IsAdult(25));
+// Console.WriteLine(IsAdult(12));
+
+// if (IsAdult(15))
+// {
+//     Console.WriteLine("Can drive");
+// }
+// else
+// {
+//     Console.WriteLine("Too young");
+// }
+
+
+double AddTxt(double price)
 {
-    if (age >= 18)
-    {
-        return true;
-    }
-    return false;
+    return price + 2;
 }
 
-Console.WriteLine(IsAdult(25));
-Console.WriteLine(IsAdult(12));
+void PrintBill(string item, double price)
+{
+    double total = AddTxt(price);
+    Console.WriteLine($"{item}: {total} KD");
+}
 
-if (IsAdult(15))
-{
-    Console.WriteLine("Can drive");
-}
-else
-{
-    Console.WriteLine("Too young");
-}
+PrintBill("Shoes", 10);
+PrintBill("bag", 5);
