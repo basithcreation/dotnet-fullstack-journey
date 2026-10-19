@@ -49,16 +49,39 @@
 // }
 
 
-double AddTxt(double price)
+// double AddTxt(double price)
+// {
+//     return price + 2;
+// }
+
+// void PrintBill(string item, double price)
+// {
+//     double total = AddTxt(price);
+//     Console.WriteLine($"{item}: {total} KD");
+// }
+
+// PrintBill("Shoes", 10);
+// PrintBill("bag", 5);
+
+
+// void AddButton(ref int points)
+// {
+//     points = points + 10;
+//     Console.WriteLine($"Inside: {points}");
+// }
+
+// int myPoints = 5;
+// // AddButton(myPoints);
+// AddButton(ref myPoints);
+// Console.WriteLine($"Outside: {myPoints}");
+
+
+bool SplitPrice(double total, out double tax)
 {
-    return price + 2;
+    tax = total * 0.1;
+    return total > 51;
 }
 
-void PrintBill(string item, double price)
-{
-    double total = AddTxt(price);
-    Console.WriteLine($"{item}: {total} KD");
-}
+bool ok = SplitPrice(50, out double myTax);
+Console.WriteLine($"{ok} {myTax}");
 
-PrintBill("Shoes", 10);
-PrintBill("bag", 5);
