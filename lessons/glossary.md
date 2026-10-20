@@ -224,6 +224,20 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | every exit must fill the box | **definite assignment** (CS0177) | "CS0177: the out parameter isn't assigned on every path." |
 | `Try...` + `bool` + `out` | **Try pattern** (`TryParse`, `TryGetFee`) | "Use the Try pattern instead of throwing for bad input." |
 
+## Phase 1: Overloading
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| same button, different jobs | **method overloading** | "`GetFee` has two overloads: one takes boxes, one takes boxes and a city." |
+| name + parameter list | **method signature** | "Two overloads can't have the same signature." |
+| C# picks the matching one | **overload resolution** | "Overload resolution picked `Show(double)` because `2.75` is a double." |
+| only return type differs | **CS0111** (same parameter types) | "Return type doesn't count, so that's CS0111." |
+| methods with no class | **local functions** (top-level statements) | "Local functions can't be overloaded, move them into a static class." |
+| container for methods | **`static class`** + `public static` methods | "Put the helpers in a static class and call `Fees.GetFee(4)`." |
+| changing the parameter box | **reassigning a parameter** | "Don't reassign `boxes`; use a local `fee` variable." |
+| same code in 2 places | **duplicated logic** / **DRY** | "That's duplicated logic, call the other overload instead." |
+| didn't build | **compile-time error** (vs **runtime error**) | "It's a compile-time error, the program never started." |
+
 ## Errors and testing
 
 | Easy word | Real term | Team sentence |

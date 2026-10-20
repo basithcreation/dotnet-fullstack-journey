@@ -158,6 +158,19 @@
         { "name": "Methods quiz", "score": 3.5, "max": 5 },
         { "name": "Quick checks (predictions)", "score": 8.5, "max": 10 }
       ]
+    },
+    {
+      "day": 13,
+      "date": "2026-10-20",
+      "weekday": "Tue",
+      "phase": "Phase 1",
+      "title": "ref/out quiz and method overloading",
+      "learned": ["The parameter has a TYPE and a NAME: double price", "ref = value in AND out (needs a value first); out = the method fills it", "TryParse is all-or-nothing: \"12a\" gives false and 0", "Overloading: one name, different parameters (count or types); C# picks by matching the arguments", "The return type doesn't count (CS0111); local functions can't be overloaded, so use a static class", "Don't reassign a parameter; DRY: one overload calls the other"],
+      "built": ["Print Label overloading example (by count)", "Price overloading example (by type)", "Box Fee exercise (GetFee overloads, DRY)"],
+      "quizzes": [
+        { "name": "ref / out quiz", "score": 4, "max": 5 },
+        { "name": "Overloading quiz", "score": 3, "max": 5 }
+      ]
     }
   ]
 }

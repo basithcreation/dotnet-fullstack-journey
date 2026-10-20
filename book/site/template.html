@@ -558,6 +558,7 @@ const WIDGETS = {
   "1.15": [callCounter, argumentFlow],
   "1.16": [weightGate, elseTrap],
   "1.17": [photocopyRef, outBox],
+  "1.18": [overloadDoors],
 };
 
 function lapCounter(stage) {
@@ -2243,6 +2244,66 @@ function outBox(stage) {
   }
   w.addEventListener("input", draw); f.addEventListener("change", draw);
   draw();
+}
+
+function overloadDoors(stage) {
+  const calls = [
+    { label: 'GetFee(4)', args: 1, city: null },
+    { label: 'GetFee(4, "Jahra")', args: 2, city: "Jahra" },
+    { label: 'GetFee(4, "Hawalli")', args: 2, city: "Hawalli" },
+  ];
+  let pick = 0;
+  stage.innerHTML =
+    '<div class="pick">' + calls.map((c, i) => '<button class="btn" data-c="' + i + '" aria-pressed="' + (i === 0) + '"><code>' + esc(c.label) + "</code></button>").join("") + "</div>" +
+    '<div class="codebox"></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="run">Call</button></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const code = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  function draw(lit1, lit2) {
+    const c1 = lit1 ? "hit" : "dim", c2 = lit2 ? "hit" : "dim";
+    code.innerHTML =
+      '<span class="' + c1 + '">// Door 1: (int boxes)\npublic static int GetFee(int boxes)\n{\n    int fee = boxes * 2;\n    return fee;\n}</span>\n\n' +
+      '<span class="' + c2 + '">// Door 2: (int boxes, string city)\npublic static int GetFee(int boxes, string city)\n{\n    int fee = GetFee(boxes);\n    if (city == "Jahra") return fee + 3;\n    else return fee;\n}</span>';
+  }
+  function reset() {
+    draw(false, false);
+    term.textContent = "";
+    verdict.className = "verdict";
+    verdict.textContent = "Predict first: which door matches " + calls[pick].label + ", and what does it return?";
+  }
+  function run() {
+    const c = calls[pick];
+    reset();
+    if (c.args === 1) {
+      draw(true, false);
+      term.innerHTML = '<span class="dim">1 int argument → Door 1 matches\n4 * 2 = 8</span>\n<span class="good">8</span>';
+      verdict.className = "verdict good";
+      verdict.textContent = "One int argument, so overload resolution picks Door 1.";
+      return;
+    }
+    draw(false, true);
+    term.innerHTML = '<span class="dim">int + string → Door 2 matches</span>';
+    setTimeout(() => {
+      draw(true, true);
+      term.innerHTML += '<span class="dim">\nDoor 2 calls GetFee(boxes) → 1 argument → Door 1\n4 * 2 = 8</span>';
+    }, 700);
+    setTimeout(() => {
+      const fee = c.city === "Jahra" ? 11 : 8;
+      term.innerHTML += '<span class="dim">\nBack in Door 2: city is ' + c.city + (c.city === "Jahra" ? " → 8 + 3 = 11" : " → keep 8") + '</span>\n<span class="good">' + fee + "</span>";
+      verdict.className = "verdict good";
+      verdict.textContent = "Door 2 ran first (2 arguments), then asked Door 1 for the box fee. * 2 lives in one place only.";
+    }, 1400);
+  }
+  stage.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.c) {
+      pick = +b.dataset.c;
+      stage.querySelectorAll("[data-c]").forEach((x) => x.setAttribute("aria-pressed", x === b));
+      reset();
+    } else if (b.dataset.a === "run") run();
+  });
+  reset();
 }
 
 /* ---------------- start ---------------- */

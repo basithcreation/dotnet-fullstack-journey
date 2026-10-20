@@ -6,14 +6,15 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **Tue 20 Oct (office PC, duty 10 AM–10 PM).** Start with the **`ref` / `out` quiz** (5 questions: does the caller's `int` change without `ref`, where `ref` goes (both places), which one needs a value first, what CS0177 means, what the `bool` means in the Try pattern). Quick warm-up first (1 question): label line 1 of `double AddDeliveryFee(double price)` (return type / name / parameter). Then **method overloading** → **optional and named parameters** → **Calculator v2 with methods** (`projects/02-console-calculator`)
-- **Week plan to finish Phase 1** (move faster when a topic ends early: if more than 1 hr is left, start the next one): ✅ Sun `List<T>` + methods part 1 (`void`, parameters, `return`) · ✅ Mon methods quiz + `bool` methods + method calling method + `ref`/`out` · Tue overloading, optional/named parameters + Calculator v2 with methods · Wed string helpers (`Trim`, `Split`…) + `DateTime` · Thu nullable `?`/`??` + `try`/`catch` · Fri (home laptop, 1 hr) debugging intro + revision + LinkedIn post 02 · Sat 24 Oct **Project 03 Shipment Tracker**. Phase 2 (OOP) starts Sun 25 Oct
+- **Wed 21 Oct (office PC, NEW shift 6:30 AM–6:30 PM, focused study in the morning; personal work after 10).** Warm-up (1 question): "does the return type count for overloading?" (no, only parameters). Then **optional and named parameters** (the student already read a short intro in chat on Tue evening; recap it in 2 lines, then the example, exercise and quiz) → **Calculator v2 with methods** (`projects/02-console-calculator`) → string helpers (`Trim`, `Split`…) if time is left
+- **Week plan to finish Phase 1** (move faster when a topic ends early: if more than 1 hr is left, start the next one): ✅ Sun `List<T>` + methods part 1 · ✅ Mon `bool` methods + method calling method + `ref`/`out` · ✅ Tue `ref`/`out` quiz + overloading (lost the middle of the day to work) · Wed optional/named parameters + Calculator v2 with methods + string helpers · Thu `DateTime` + nullable `?`/`??` + `try`/`catch` · Fri (home laptop, 1 hr) debugging intro + revision + LinkedIn post 02 · Sat 24 Oct **Project 03 Shipment Tracker**. Phase 2 (OOP) starts Sun 25 Oct
 - **Home laptop setup check is still not done** (do it in the first 15 min of Fri 23 Oct): `git pull`, `dotnet --version` = 10.x, `dotnet run` in `projects/02-console-calculator`, `git config user.name` / `user.email`
-- **Naming:** lessons are `lessons/phase-01/NN-kebab-name`. The next free number is **28**. Book chapters: the next is **1.18**. List the folder before naming anything
+- **Naming:** lessons are `lessons/phase-01/NN-kebab-name`. The next free number is **30**. Book chapters: the next is **1.19**. List the folder before naming anything
 - **Claude writes** READMEs, LinkedIn drafts and book chapters; the student reviews them in 2 min. The student types all code
 - **Work dates:** the student's own resumes and LinkedIn are the source of truth for job dates (confirmed 15 and 17 Oct). The Day 9 "Career" notes below were a rough chat story. Don't use them to question the dates
 - **Career context (told on Day 9):** KPOST's backend is ASP.NET, so from Phase 6 suggest they ask their senior to let them write real endpoints. Phase 14 main project = **KACT** charity app rebuild (see ROADMAP Phase 14). Private career plans are in Claude's local memory only, never in this public repo
 - **How to teach this student:**
+  - **Run EVERY example in the scratchpad before sending it** (Day 13: Claude gave two overloaded `PrintLabel` local functions in top-level statements → CS0128. The student was rightly upset: "this is my life, take full responsibility"). Overloads need a `static class` + `public static`
   - **Dart/Flutter level is intermediate, not expert** (Day 9). Compare only with basic Dart
   - **Weak at mental maths** (they said so). In traces, ask them to write each sum out (`12 + 7 =`) and check the answer a second way. They didn't know `%` = remainder (thought percent/divide), and Windows Calculator's `%` is percent
   - **Keep messages SHORT.** On Day 9 a 3-part message (string `==` + placement + `break`) made them say "I'm not understanding". One idea, one blank, one test
@@ -34,6 +35,50 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - **They delete correct code when unsure** (Day 12: wrote `else`, then removed it). Tell them: "keep it and run it, the output tells you"
   - **Output can hide bugs** (Day 12: `fee = 0.5` on the bad path, output still looked right). Always read the file, especially the paths the output doesn't show
   - Fill-in templates with 4 blanks still work well (TryGetFee fix ✅). The hint ladder (trace one call → template) solved both bugs on Day 12
+
+---
+
+## Day 13: Tue 20 Oct 2026 · Phase 1: `ref` / `out` quiz, method overloading
+
+(Office PC, first day of the new shift 6:30 AM–6:30 PM. Started 7:04 AM, focused until about 8:15 AM, busy at work until 5:36 PM, stopped at about 6:30 PM.)
+
+**Learned**
+
+- **Parameter = type + name:** in `double AddDeliveryFee(double price)` the second `double` is the **parameter type** and `price` is the **parameter name**
+- **`ref` vs `out` recap:** `ref` needs a value **before** the call (two-way); `out` is filled **by the method** (one-way out). Using an empty variable with `ref` gives **CS0165**
+- **`TryParse` is all-or-nothing:** `"12a"` → `false` and `number = 0` (the default), not `12`
+- **Overloading:** the same name with different parameters (**count** or **types**). C# picks the overload that **matches the arguments** (overload resolution), not by order in the file
+- The **return type doesn't count** (CS0111). **Local functions** in top-level statements **can't be overloaded** (CS0128 + CS1501), so overloads go in a `static class` with `public static`
+- **Compile-time error** (doesn't build) vs **runtime error** (crashes while running)
+- **Don't reassign a parameter** (`boxes = boxes * 2` makes the name lie); **DRY**: overload 2 calls `GetFee(boxes)`
+
+**Built**
+
+- `28-print-label`: `PrintLabel` overloads by count in `static class Labels`, then `Prices.Show(int)` / `Show(double)`. Commits `Add print label overloading example` (2 files) and `Add price overloading by type` (2 files, with the `ref` practice in `23-methods`) ✅
+- `29-box-fee`: `Fees.GetFee(int)` and `GetFee(int, string)` (+3 KD for Jahra). All paths right on the first try; review fixes: local `fee` variable, then overload 2 calls overload 1. Commit `Add box fee overloading exercise`, 2 files ✅
+
+**Quiz scores**
+
+- Warm-up (label line 1): 2/3 (parameter name ❌)
+- `ref` / `out` quiz: **4/5** (Q3 swapped ½, Q5 `number = 12` ½)
+- Quick check `Prices.Show(10)`: ✅ with the reason
+- Overloading quiz: **3/5** (Q2 reason ½, Q4 reason ½, Q5 ❌)
+
+**Mistakes to remember (review these)**
+
+- Said the parameter name is `double` (again, same as Day 12): it's `price`. Type, then name
+- Swapped `ref` / `out`: put the empty `a` with `ref` and `b = 10` with `out`
+- Thought `TryParse("12a")` keeps `12`: it gives `0`
+- Called a compile error a "runtime error"
+- `Lables` typo (3 places, still ran). Use F2 rename
+- `boxes = boxes * 2;` (reassigned the parameter) and `boxes * 2` in both overloads (duplicated logic)
+- Quiz: "overloads must have the same return type" (backwards: the return type is ignored)
+- Quiz: "it runs from top to bottom" (C# picks by matching arguments)
+- ✅ Wins: predicted both `PrintLabel` lines and `Whole price: 10 KD` with the reason; exercise 29 correct on every path first time with the `else` kept; commented out old code by themself to keep it (taught: Git keeps the history, so delete it); ran the check themself before saying done
+
+**Career**
+
+- Nothing today (busy shift)
 
 ---
 

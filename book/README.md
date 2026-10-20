@@ -42,6 +42,7 @@ At the end of the course, this text becomes a real illustrated / animated book.
 - [Chapter 1.15: Methods, part 1 (void, parameters, return)](phase-01/15-methods-void-return.md)
 - [Chapter 1.16: Methods, part 2 (bool methods, else, a method that calls a method)](phase-01/16-methods-bool-calling.md)
 - [Chapter 1.17: ref and out (and the Try pattern)](phase-01/17-ref-out.md)
+- [Chapter 1.18: Method overloading (one name, many parameter lists)](phase-01/18-overloading.md)
 
 *(More chapters are added as I finish each topic.)*
 
