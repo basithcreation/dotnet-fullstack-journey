@@ -85,3 +85,19 @@
 // bool ok = SplitPrice(50, out double myTax);
 // Console.WriteLine($"{ok} {myTax}");
 
+
+
+// void AddOne(ref int n)
+// {
+//     n = n + 1;
+// }
+
+// int count = 5;
+// AddOne(ref count);
+// Console.WriteLine(count);
+
+
+
+
+
+
