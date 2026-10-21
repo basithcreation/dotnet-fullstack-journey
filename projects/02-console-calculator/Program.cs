@@ -18,7 +18,7 @@ while (true)
     Console.Write("Operator (+ - * /): ");
     string? op = Console.ReadLine();
 
-    if (op != "+" && op != "-" && op != "*" && op != "/")
+    if (!Calc.IsValidOperator(op))
     {
         Console.WriteLine("Unknown operator. Try again.");
         continue;
@@ -55,4 +55,10 @@ while (true)
     }
 }
 
-
+static class Calc
+{
+    public static bool IsValidOperator(string? op)
+    {
+        return op == "+" || op == "-" || op == "*" || op == "/";
+    }
+}
