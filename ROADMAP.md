@@ -89,7 +89,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 **Part 2: Merry-go-rounds and helpers**
 - [x] Loops: `for`, `while`, `do-while`, `foreach`, `break`, `continue` (✅ `while` done Sun 11 Oct, ✅ `for` done Tue 13 Oct, ✅ `do-while`, `break`, `continue` done Wed 14 Oct, ✅ `foreach` done Sat 17 Oct)
 - [x] Arrays and `List<T>` (✅ arrays done Sat 17 Oct, ✅ `List<T>` done Sun 18 Oct)
-- [ ] Methods: parameters, return values, `ref`, `out`, optional and named parameters, overloading (✅ `void`, parameters, return values done Sun 18 Oct; ✅ `bool` methods, a method calling a method, `ref`, `out` done Mon 19 Oct; ✅ overloading done Tue 20 Oct; optional/named next)
+- [x] Methods: parameters, return values, `ref`, `out`, optional and named parameters, overloading (✅ `void`, parameters, return values done Sun 18 Oct; ✅ `bool` methods, a method calling a method, `ref`, `out` done Mon 19 Oct; ✅ overloading done Tue 20 Oct; ✅ optional/named done Wed 21 Oct, quiz 3.5/5)
 - [ ] Built-in helpers: string methods (`Trim`, `ToUpper`, `Contains`, `Split`, `Replace`, `Substring`, `IsNullOrWhiteSpace`), `StringBuilder`, `Math`, `Random`, `DateTime` / `DateOnly` / `TimeSpan` (✅ `Random` done Sun 11 Oct)
 
 **Part 3: Safety nets**
@@ -102,7 +102,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [x] `git log --oneline`, `git diff`, `git status`: read what changed before you commit
 - [x] Undo mistakes: `git restore` (throw away edits), `git restore --staged` (un-add), `git revert` (undo a commit safely)
 
-**Projects:** 01 Number Guessing Game (Part 1) (✅ built Mon 12 Oct, ✅ v1.1 Thu 15 Oct: range check, guard clauses, `q` to quit) → 02 Console Calculator (Part 2) (✅ v1 Sat 17 Oct: double, zero guard, && operator guard; v2 with methods later) → 03 Shipment Tracker: add, list, mark delivered, search by tracking number (Part 3)
+**Projects:** 01 Number Guessing Game (Part 1) (✅ built Mon 12 Oct, ✅ v1.1 Thu 15 Oct: range check, guard clauses, `q` to quit) → 02 Console Calculator (Part 2) (✅ v1 Sat 17 Oct: double, zero guard, && operator guard; ✅ v2 Wed 21 Oct: `IsValidOperator` + `TryCalculate` methods) → 03 Shipment Tracker: add, list, mark delivered, search by tracking number (Part 3)
 ✅ **Done when:** you can write a 100-line console app with loops, methods and error handling from scratch.
 📣 **LinkedIn:** "3 things in C# that surprised me as a Dart developer"
 📄 **Resume:** project bullet for the Shipment Tracker.

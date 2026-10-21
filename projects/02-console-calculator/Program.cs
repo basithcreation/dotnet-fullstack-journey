@@ -32,27 +32,13 @@ while (true)
         continue;
     }
 
-    switch (op)
+    if (!Calc.TryCalculate(firstNumber, op, secondNumber, out double result))
     {
-        case "+":
-            Console.WriteLine($"{firstNumber} + {secondNumber} = {firstNumber + secondNumber}");
-            break;
-        case "-":
-            Console.WriteLine($"{firstNumber} - {secondNumber} = {firstNumber - secondNumber}");
-            break;
-        case "*":
-            Console.WriteLine($"{firstNumber} x {secondNumber} = {firstNumber * secondNumber}");
-            break;
-        case "/":
-            if (secondNumber == 0)
-                Console.WriteLine("Cannot divide by zero");
-            else
-                Console.WriteLine($"{firstNumber} / {secondNumber} = {firstNumber / secondNumber}");
-            break;
-        default:
-            Console.WriteLine("Something went wrong");
-            break;
+        Console.WriteLine("Cannot divide by zero");
+        continue;
     }
+    Console.WriteLine($"{firstNumber} {op} {secondNumber} = {result}");
+
 }
 
 static class Calc
@@ -61,4 +47,23 @@ static class Calc
     {
         return op == "+" || op == "-" || op == "*" || op == "/";
     }
+
+    public static bool TryCalculate(double a, string? op, double b, out double result)
+    {
+        if (op == "/" && b == 0)
+        {
+            result = 0;
+            return false;
+        }
+        result = op switch
+        {
+            "+" => a + b,
+            "-" => a - b,
+            "*" => a * b,
+            _ => a / b,
+
+        };
+        return true;
+    }
 }
+
