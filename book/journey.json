@@ -171,6 +171,18 @@
         { "name": "ref / out quiz", "score": 4, "max": 5 },
         { "name": "Overloading quiz", "score": 3, "max": 5 }
       ]
+    },
+    {
+      "day": 14,
+      "date": "2026-10-21",
+      "weekday": "Wed",
+      "phase": "Phase 1",
+      "title": "Optional/named parameters and Calculator v2 with methods",
+      "learned": ["Optional parameter = a default value in the method header (int days = 2)", "Named arguments (days: 5) are matched by name, so the order doesn't matter", "Optional parameters go last (CS1737); required ones must be passed (CS7036)", "My own Try pattern: false + result = 0 on failure, true + the answer on success", "A switch expression needs a _ discard arm to be exhaustive (CS8509)", "git restore brings a file back; git add -A stages everything"],
+      "built": ["Delivery Days exercise (optional + named parameters)", "Console Calculator v2: IsValidOperator + TryCalculate methods"],
+      "quizzes": [
+        { "name": "Optional / named parameters quiz", "score": 3.5, "max": 5 }
+      ]
     }
   ]
 }

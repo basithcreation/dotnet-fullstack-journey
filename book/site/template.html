@@ -559,6 +559,8 @@ const WIDGETS = {
   "1.16": [weightGate, elseTrap],
   "1.17": [photocopyRef, outBox],
   "1.18": [overloadDoors],
+  "1.19": [argumentSlots],
+  "1.20": [calcPipeline],
 };
 
 function lapCounter(stage) {
@@ -2303,6 +2305,121 @@ function overloadDoors(stage) {
       reset();
     } else if (b.dataset.a === "run") run();
   });
+  reset();
+}
+
+function argumentSlots(stage) {
+  const calls = [
+    { label: 'PrintDelivery("Jahra")', city: ["Jahra", "position 1"], days: null },
+    { label: 'PrintDelivery("Salmiya", 1)', city: ["Salmiya", "position 1"], days: ["1", "position 2"] },
+    { label: 'PrintDelivery(days: 5, city: "Hawalli")', city: ["Hawalli", "by name city:"], days: ["5", "by name days:"], named: true },
+    { label: "PrintDelivery(days: 5)", city: null, days: ["5", "by name days:"], named: true },
+  ];
+  let pick = 0, timers = [];
+  stage.innerHTML =
+    '<div class="pick">' + calls.map((c, i) => '<button class="btn" data-c="' + i + '" aria-pressed="' + (i === 0) + '"><code>' + esc(c.label) + "</code></button>").join("") + "</div>" +
+    '<div class="codebox">public static void PrintDelivery(string city, int days = 2)\n{\n    Console.WriteLine($"Delivery to {city} in {days} days");\n}</div>' +
+    '<div class="chain"><div class="door false" data-s="city"><span>string city</span><span class="tag">empty</span></div>' +
+    '<div class="door false" data-s="days"><span>int days = 2</span><span class="tag">empty</span></div></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="run">Call</button></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const slot = (k) => $('[data-s="' + k + '"]', stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const fill = (k, text, on) => { slot(k).className = "door " + (on ? "open" : "false"); $(".tag", slot(k)).textContent = text; };
+  function reset() {
+    timers.forEach(clearTimeout); timers = [];
+    fill("city", "empty", false); fill("days", "empty", false);
+    term.textContent = "";
+    verdict.className = "verdict";
+    verdict.textContent = "Predict first: what goes into each slot for " + calls[pick].label + "?";
+  }
+  function run() {
+    const c = calls[pick];
+    reset();
+    const order = c.named ? ["days", "city"] : ["city", "days"];
+    order.forEach((k, i) => timers.push(setTimeout(() => {
+      if (c[k]) fill(k, c[k][0] + "  ← " + c[k][1], true);
+      else if (k === "days") fill("days", "2  ← default value", false);
+      else fill("city", "missing!", false);
+    }, 600 * (i + 1))));
+    timers.push(setTimeout(() => {
+      if (!c.city) {
+        term.innerHTML = '<span class="bad">error CS7036: There is no argument given that corresponds to the required parameter \'city\'</span>';
+        verdict.className = "verdict bad";
+        verdict.textContent = "city has no default, so it is a required parameter. A default only helps optional parameters.";
+        return;
+      }
+      const days = c.days ? c.days[0] : "2";
+      term.innerHTML = '<span class="good">Delivery to ' + esc(c.city[0]) + " in " + days + " days</span>";
+      verdict.className = "verdict good";
+      verdict.textContent = c.named ? "Named arguments are matched by name, so the order at the call site doesn't matter."
+        : c.days ? "Positional arguments: first value to the first slot, second to the second. 1 replaces the default."
+        : "Nothing was passed for days, so the default value 2 from the method header was used.";
+    }, 1500));
+  }
+  stage.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.c) {
+      pick = +b.dataset.c;
+      stage.querySelectorAll("[data-c]").forEach((x) => x.setAttribute("aria-pressed", x === b));
+      reset();
+    } else if (b.dataset.a === "run") run();
+  });
+  reset();
+}
+
+function calcPipeline(stage) {
+  let timers = [];
+  stage.innerHTML =
+    '<div class="control"><label for="cp-a">First</label><input id="cp-a" type="text" value="10" autocomplete="off">' +
+    '<label for="cp-o">Operator</label><input id="cp-o" type="text" value="/" autocomplete="off" style="width:4em">' +
+    '<label for="cp-b">Second</label><input id="cp-b" type="text" value="0" autocomplete="off"></div>' +
+    '<div class="chain">' +
+    '<div class="door false" data-s="valid"><span>Calc.IsValidOperator(op)</span><span class="tag">waiting</span></div>' +
+    '<div class="door false" data-s="zero"><span>if (op == "/" &amp;&amp; b == 0)</span><span class="tag">waiting</span></div>' +
+    '<div class="door false" data-s="arm"><span>result = op switch { ... }</span><span class="tag">waiting</span></div>' +
+    '<div class="door false" data-s="ret"><span>return ? · out double result</span><span class="tag">waiting</span></div></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="run">Calculate</button></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const slot = (k) => $('[data-s="' + k + '"]', stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const set = (k, text, on) => { slot(k).className = "door " + (on ? "open" : "false"); $(".tag", slot(k)).textContent = text; };
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  function reset() {
+    timers.forEach(clearTimeout); timers = [];
+    ["valid", "zero", "arm", "ret"].forEach((k) => set(k, "waiting", false));
+    term.textContent = "";
+    say("", "Pick the numbers and the operator. Predict the full line, then press Calculate.");
+  }
+  function run() {
+    reset();
+    const aText = $("#cp-a", stage).value.trim(), op = $("#cp-o", stage).value.trim(), bText = $("#cp-b", stage).value.trim();
+    const num = /^-?\d+(\.\d+)?$/;
+    if (!num.test(aText) || !num.test(bText)) {
+      term.innerHTML = '<span class="bad">That\'s not a number. Try again.</span>';
+      say("warn", "double.TryParse returned false, so the loop hit continue before any method was called.");
+      return;
+    }
+    const a = +aText, b = +bText;
+    const steps = [];
+    const valid = ["+", "-", "*", "/"].includes(op);
+    steps.push(() => set("valid", valid ? "true ✓" : "false ✗", valid));
+    if (!valid) {
+      steps.push(() => { term.innerHTML = '<span class="bad">Unknown operator. Try again.</span>'; say("warn", "IsValidOperator returned false, so !false is true: the guard runs and the loop continues."); });
+    } else if (op === "/" && b === 0) {
+      steps.push(() => set("zero", "true → stop here", true));
+      steps.push(() => set("ret", "false · result = 0", false));
+      steps.push(() => { term.innerHTML = '<span class="bad">Cannot divide by zero</span>'; say("good", "Try pattern failure: return false and give out its default value 0, like TryParse."); });
+    } else {
+      const r = op === "+" ? a + b : op === "-" ? a - b : op === "*" ? a * b : a / b;
+      steps.push(() => set("zero", "false → carry on", false));
+      steps.push(() => set("arm", op === "/" ? "_ => a / b" : '"' + op + '" => a ' + op + " b", true));
+      steps.push(() => set("ret", "true · result = " + r, true));
+      steps.push(() => { term.innerHTML = '<span class="good">' + esc(a) + " " + esc(op) + " " + esc(b) + " = " + r + "</span>"; say("good", "Try pattern success: return true and the answer comes back through out double result."); });
+    }
+    steps.forEach((f, i) => timers.push(setTimeout(f, 550 * (i + 1))));
+  }
+  stage.addEventListener("click", (e) => { if (e.target.closest('[data-a="run"]')) run(); });
+  stage.addEventListener("keydown", (e) => { if (e.key === "Enter" && e.target.matches("input")) run(); });
   reset();
 }
 

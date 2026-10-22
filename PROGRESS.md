@@ -6,10 +6,10 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **Wed 21 Oct (office PC, NEW shift 6:30 AM–6:30 PM, focused study in the morning; personal work after 10).** Warm-up (1 question): "does the return type count for overloading?" (no, only parameters). Then **optional and named parameters** (the student already read a short intro in chat on Tue evening; recap it in 2 lines, then the example, exercise and quiz) → **Calculator v2 with methods** (`projects/02-console-calculator`) → string helpers (`Trim`, `Split`…) if time is left
-- **Week plan to finish Phase 1** (move faster when a topic ends early: if more than 1 hr is left, start the next one): ✅ Sun `List<T>` + methods part 1 · ✅ Mon `bool` methods + method calling method + `ref`/`out` · ✅ Tue `ref`/`out` quiz + overloading (lost the middle of the day to work) · Wed optional/named parameters + Calculator v2 with methods + string helpers · Thu `DateTime` + nullable `?`/`??` + `try`/`catch` · Fri (home laptop, 1 hr) debugging intro + revision + LinkedIn post 02 · Sat 24 Oct **Project 03 Shipment Tracker**. Phase 2 (OOP) starts Sun 25 Oct
+- **Thu 22 Oct (office PC, shift 6:30 AM–6:30 PM).** Warm-up (1 question): "where does a default value go: the method header or the call?" (header). Then **string helpers** (`Trim`, `ToUpper`, `Contains`, `Split`, `Replace`, `IsNullOrWhiteSpace`) → **nullable `?` / `??`** if time is left. Run every example in the scratchpad first
+- **Week plan to finish Phase 1** (updated Wed 21 Oct; if more than 1 hr is left, start the next topic): ✅ Sun `List<T>` + methods part 1 · ✅ Mon `bool` methods + method calling method + `ref`/`out` · ✅ Tue `ref`/`out` quiz + overloading · ✅ Wed optional/named parameters + Calculator v2 with methods (string helpers moved to Thu) · Thu string helpers + nullable `?`/`??` · Fri (home laptop, 1 hr) setup check + revision + LinkedIn post 02 (Calculator v2) · Sat 24 Oct `try`/`catch` + `DateTime` (first ~1.5 hrs), then **Project 03 Shipment Tracker**. Phase 2 (OOP) starts Sun 25 Oct. Still on plan
 - **Home laptop setup check is still not done** (do it in the first 15 min of Fri 23 Oct): `git pull`, `dotnet --version` = 10.x, `dotnet run` in `projects/02-console-calculator`, `git config user.name` / `user.email`
-- **Naming:** lessons are `lessons/phase-01/NN-kebab-name`. The next free number is **30**. Book chapters: the next is **1.19**. List the folder before naming anything
+- **Naming:** lessons are `lessons/phase-01/NN-kebab-name`. The next free number is **31**. Book chapters: the next is **1.21**. List the folder before naming anything
 - **Claude writes** READMEs, LinkedIn drafts and book chapters; the student reviews them in 2 min. The student types all code
 - **Work dates:** the student's own resumes and LinkedIn are the source of truth for job dates (confirmed 15 and 17 Oct). The Day 9 "Career" notes below were a rough chat story. Don't use them to question the dates
 - **Career context (told on Day 9):** KPOST's backend is ASP.NET, so from Phase 6 suggest they ask their senior to let them write real endpoints. Phase 14 main project = **KACT** charity app rebuild (see ROADMAP Phase 14). Private career plans are in Claude's local memory only, never in this public repo
@@ -21,7 +21,7 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - **Be exact when listing "ideas for later":** they read "What I'd add next: Play again" as an instruction and started coding it. Say "only write this in the README, don't code it"
   - **Keep Git short** (they asked on Day 8 if Git is worth the time; they want to finish .NET fast). Commit **right after each exercise** (1 minute). No long fix-up sessions. A typo in a message: point it out, amend only if not pushed and it takes 10 seconds. No new Git until Phase 2 (branches)
   - **They forget a folder in `git add`** (Day 4 and Day 8, the same mistake). Always check the "N files changed" number against the expected one
-  - **Check the clock before saying "morning" / "tonight"**. Schedule: Sun–Thu duty 10 AM–10 PM (free gaps from 10 AM, fully focused 7–10 PM), Fri off (1 hr review on the home laptop), Sat duty 1–9 PM (~6 hrs study). On Saturday they are at the OFFICE PC, not home
+  - **Check the clock before saying "morning" / "tonight"**. Schedule (since 20 Oct): Sun–Thu duty 6:30 AM–6:30 PM (study in free gaps, focused after 6:30 PM, hours not confirmed; on Wed 21 Oct they had no time after duty), Fri off (1 hr review on the home laptop), Sat duty 1–9 PM (~6 hrs study). On Saturday they are at the OFFICE PC, not home
   - **Predict the whole line**, not just the variable (Day 10: predicted "Hawalli" for `$"Delivering to {city}"`). And write out both sides of `||` / `&&` before answering
   - They predict from the **English meaning** of a keyword (`continue` = "carry on normally"). For new keywords, give the C# meaning in one line before asking for a prediction
   - The prediction habit is working: they predict in chat **before** running now ✅. Keep asking
@@ -35,6 +35,53 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - **They delete correct code when unsure** (Day 12: wrote `else`, then removed it). Tell them: "keep it and run it, the output tells you"
   - **Output can hide bugs** (Day 12: `fee = 0.5` on the bad path, output still looked right). Always read the file, especially the paths the output doesn't show
   - Fill-in templates with 4 blanks still work well (TryGetFee fix ✅). The hint ladder (trace one call → template) solved both bugs on Day 12
+
+---
+
+## Day 14: Wed 21 Oct 2026 · Phase 1: optional and named parameters, Calculator v2 with methods
+
+(Office PC, duty 6:30 AM–6:30 PM. Started 7:57 AM, studied in gaps through the day, stopped at about 6:15 PM; no time after duty.)
+
+**Learned**
+
+- **Warm-up:** `int GetFee(int)` + `double GetFee(int)` is not a valid overload: same parameter list, return type ignored ✅
+- **Optional parameter:** a **default value** in the **method header** (`int days = 2`); leave it out at the call and the default is used
+- **Named arguments** (`days: 5, city: "Hawalli"`) are matched by name, so the order doesn't matter; **positional arguments** follow the order (they worked this out by themself)
+- **Optional parameters go last** (**CS1737**); a required parameter must be passed (**CS7036**)
+- **Method header** vs **call site**
+- **Calculator v2:** `IsValidOperator` (`==` with `||`) replaced the long `&&` check; **my own Try pattern** `TryCalculate(a, op, b, out double result)`: `false` + `result = 0` on divide by zero, `true` + the answer otherwise
+- **CS8509:** a switch expression without `_` is not exhaustive → add the **discard arm**
+- **Git:** `git restore <file>` throws away scratch edits; `git add -A` stages everything (check `git status` and the "N files changed" number)
+- VS Code vs Visual Studio: stay on VS Code now; try Visual Studio Community in Phase 6 (ASP.NET Core)
+
+**Built**
+
+- `30-delivery-days`: `Courier.PrintDelivery(string city, int days = 2)` with a default, positional and named call. Correct on all 3 calls first time. Commit `Add optional and named parameters exercise`, 2 files ✅
+- `projects/02-console-calculator` **v2**: commit `Extract operator check into IsValidOperator method` (1 file) ✅, then `TryCalculate` + loop rewrite + README "Versions" section (Claude drafted) + ROADMAP ticks. Commit `Calculator v2: move logic into IsValidOperator and TryCalculate`, 4 files ✅
+
+**Quiz scores**
+
+- Warm-up (overload by return type): ✅
+- Quick check (`SendSms` header valid?): ✅ with the reason
+- Optional / named parameters quiz: **3.5/5** (Q1 ½: missed the optional part, Q4 ❌: header vs call; re-check ✅)
+- Predictions: `1 copy` default ✅, `Omar: 2 copy` ✅ (ran before writing it), exercise 30 logic ✅ (text `Deliver` vs `Delivery` ½), `5 + 3 = 8` ✅, `10 * 4 = 40` ✅
+
+**Mistakes to remember (review these)**
+
+- Typed the first example into `29-box-fee` and commented the old code out (fixed with `git restore`). Use a scratch place, or don't commit it
+- Answered a question instead of writing the prediction; added a line instead of replacing it. Write the prediction first
+- Predicted `Deliver to...` but their code printed `Delivery to...`: predict from **your own code**, read the text in quotes
+- Quiz Q1: answered only half (required, but not optional + default)
+- Quiz Q4: didn't know **method header** vs **call site**
+- Tested only the bad path of `IsValidOperator` first; asked to test the good path too
+- `TryCalculate`: last arm `"/"` instead of `_` (CS8509), `true` / `false` swapped, `result = a` instead of `0` on failure. Fixed one at a time from hints
+- Commented out the old `switch` again (Day 13 lesson): delete dead code, Git keeps it
+- Typo `dicide`
+- ✅ Wins: worked out by themself that named arguments don't need the order; exercise 30 perfect first time; `IsValidOperator` blanks right first time; fixed `true`/`false` from a small hint; tested both paths in one run; checked "N files changed" every commit
+
+**Career**
+
+- Nothing today. Next: LinkedIn post 02 (Calculator v2 with methods) on Fri 23 Oct; Claude drafts it
 
 ---
 

@@ -43,6 +43,8 @@ At the end of the course, this text becomes a real illustrated / animated book.
 - [Chapter 1.16: Methods, part 2 (bool methods, else, a method that calls a method)](phase-01/16-methods-bool-calling.md)
 - [Chapter 1.17: ref and out (and the Try pattern)](phase-01/17-ref-out.md)
 - [Chapter 1.18: Method overloading (one name, many parameter lists)](phase-01/18-overloading.md)
+- [Chapter 1.19: Optional and named parameters](phase-01/19-optional-named-parameters.md)
+- [Chapter 1.20: Calculator v2, moving logic into methods (my own Try pattern)](phase-01/20-calculator-v2-methods.md)
 
 *(More chapters are added as I finish each topic.)*
 

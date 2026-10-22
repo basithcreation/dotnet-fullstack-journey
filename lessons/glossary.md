@@ -238,6 +238,22 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | same code in 2 places | **duplicated logic** / **DRY** | "That's duplicated logic, call the other overload instead." |
 | didn't build | **compile-time error** (vs **runtime error**) | "It's a compile-time error, the program never started." |
 
+## Phase 1: Optional and named parameters, Calculator v2
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| "1 sugar unless you ask" | **optional parameter** with a **default value** (`int days = 2`) | "Make `days` an optional parameter with a default value of 2." |
+| must always be passed | **required parameter** | "`city` is required, so it comes first." |
+| optional before required | **CS1737** | "Move the optional parameters after the required ones, that's CS1737." |
+| forgot a required one | **CS7036** (no argument for the required parameter) | "`Pack()` gives CS7036, `item` is required." |
+| matched by its place | **positional argument** | "Positional arguments must follow the parameter order." |
+| "sugar: 2" with a label | **named argument** (`days: 5`) | "Pass `days` as a named argument so the call reads clearly." |
+| line 1 of the method | **method header** (signature) | "The default value lives in the method header." |
+| the line that uses the method | **call site** | "At the call site we pass `city: \"Hawalli\"`." |
+| my own TryParse | **Try pattern** (returns `bool` + `out` result, `out` = default on failure) | "On failure, `TryCalculate` returns false and sets `result` to 0." |
+| moved code into a method | **extract method** (a **refactoring**) | "I extracted the operator check into `IsValidOperator`." |
+| pack everything | **`git add -A`** (stage all changes) | "Run `git status` before `git add -A`, so you don't stage files by accident." |
+
 ## Errors and testing
 
 | Easy word | Real term | Team sentence |
