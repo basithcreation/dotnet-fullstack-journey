@@ -183,6 +183,18 @@
       "quizzes": [
         { "name": "Optional / named parameters quiz", "score": 3.5, "max": 5 }
       ]
+    },
+    {
+      "day": 15,
+      "date": "2026-10-22",
+      "weekday": "Thu",
+      "phase": "Phase 1",
+      "title": "String helpers",
+      "learned": ["Method header (where the default lives) vs call site (where you pass values)", "Trim, ToUpper, ToLower; method chaining", "Strings are immutable: methods return a new string, so assign it back (name = name.Trim())", "Contains returns a bool and is case-sensitive; ToLower first", "Replace(\"-\", \"\") deletes with an empty string; Split(\",\") returns a string[]", "string.IsNullOrWhiteSpace is a static method: True for null, \"\" or spaces", "CS0136: a name can't be reused in the scope around a loop variable"],
+      "built": ["String helpers examples (Trim, Contains, Replace, Split, IsNullOrWhiteSpace)"],
+      "quizzes": [
+        { "name": "String helpers quiz", "score": 4.5, "max": 5 }
+      ]
     }
   ]
 }

@@ -6,14 +6,16 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **Thu 22 Oct (office PC, shift 6:30 AM–6:30 PM).** Warm-up (1 question): "where does a default value go: the method header or the call?" (header). Then **string helpers** (`Trim`, `ToUpper`, `Contains`, `Split`, `Replace`, `IsNullOrWhiteSpace`) → **nullable `?` / `??`** if time is left. Run every example in the scratchpad first
-- **Week plan to finish Phase 1** (updated Wed 21 Oct; if more than 1 hr is left, start the next topic): ✅ Sun `List<T>` + methods part 1 · ✅ Mon `bool` methods + method calling method + `ref`/`out` · ✅ Tue `ref`/`out` quiz + overloading · ✅ Wed optional/named parameters + Calculator v2 with methods (string helpers moved to Thu) · Thu string helpers + nullable `?`/`??` · Fri (home laptop, 1 hr) setup check + revision + LinkedIn post 02 (Calculator v2) · Sat 24 Oct `try`/`catch` + `DateTime` (first ~1.5 hrs), then **Project 03 Shipment Tracker**. Phase 2 (OOP) starts Sun 25 Oct. Still on plan
+- **Fri 23 Oct (home laptop, 1 hr).** First 15 min: home laptop setup check (below). Then the **string helpers exercise** in `lessons/phase-01/31-string-helpers` (teach nothing new first; all 5 helpers were taught on Thu). Warm-up (1 question): "`name.Trim();` alone doesn't clean `name`. Why, and what's the fix?" (immutable → `name = name.Trim();`). Then the 5-question quiz is already done (4.5/5), so tick string methods in ROADMAP after the exercise. LinkedIn post 02 if time is left. **Nullable `?` / `??` moves to Sat 24 Oct**, before `try`/`catch`. Run every example in the scratchpad first, and check the student's WHOLE file for name clashes (Day 15 CS0136)
+- **Week plan to finish Phase 1** (updated Wed 21 Oct; if more than 1 hr is left, start the next topic): ✅ Sun `List<T>` + methods part 1 · ✅ Mon `bool` methods + method calling method + `ref`/`out` · ✅ Tue `ref`/`out` quiz + overloading · ✅ Wed optional/named parameters + Calculator v2 with methods (string helpers moved to Thu) · ✅ Thu string helpers taught + quiz (exercise moved to Fri; busy at work most of the day) · Fri (home laptop, 1 hr) setup check + string helpers exercise + LinkedIn post 02 (Calculator v2) · Sat 24 Oct nullable `?`/`??` + `try`/`catch` + `DateTime` (first ~2 hrs), then **Project 03 Shipment Tracker**. Phase 2 (OOP) starts Sun 25 Oct. Tight but still on plan; if Sat runs late, Project 03 finishes Sun
 - **Home laptop setup check is still not done** (do it in the first 15 min of Fri 23 Oct): `git pull`, `dotnet --version` = 10.x, `dotnet run` in `projects/02-console-calculator`, `git config user.name` / `user.email`
-- **Naming:** lessons are `lessons/phase-01/NN-kebab-name`. The next free number is **31**. Book chapters: the next is **1.21**. List the folder before naming anything
+- **Naming:** lessons are `lessons/phase-01/NN-kebab-name`. The next free number is **32** (`31-string-helpers` exists; the exercise goes in it). Book chapters: the next is **1.22**. List the folder before naming anything
 - **Claude writes** READMEs, LinkedIn drafts and book chapters; the student reviews them in 2 min. The student types all code
 - **Work dates:** the student's own resumes and LinkedIn are the source of truth for job dates (confirmed 15 and 17 Oct). The Day 9 "Career" notes below were a rough chat story. Don't use them to question the dates
 - **Career context (told on Day 9):** KPOST's backend is ASP.NET, so from Phase 6 suggest they ask their senior to let them write real endpoints. Phase 14 main project = **KACT** charity app rebuild (see ROADMAP Phase 14). Private career plans are in Claude's local memory only, never in this public repo
 - **How to teach this student:**
+  - **Give EXACT steps for where to type code** (Day 15: "type it in a new scratch project" without a folder or command made them upset: "teach me as a good professor"). Always give: the folder, the `dotnet new console -o ...` command, the file to open, `cd` + `dotnet run`
+  - **Explain "predict" in plain words** when using it: "guess the output before you run it" (Day 15 they didn't know the word)
   - **Run EVERY example in the scratchpad before sending it** (Day 13: Claude gave two overloaded `PrintLabel` local functions in top-level statements → CS0128. The student was rightly upset: "this is my life, take full responsibility"). Overloads need a `static class` + `public static`
   - **Dart/Flutter level is intermediate, not expert** (Day 9). Compare only with basic Dart
   - **Weak at mental maths** (they said so). In traces, ask them to write each sum out (`12 + 7 =`) and check the answer a second way. They didn't know `%` = remainder (thought percent/divide), and Windows Calculator's `%` is percent
@@ -35,6 +37,51 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - **They delete correct code when unsure** (Day 12: wrote `else`, then removed it). Tell them: "keep it and run it, the output tells you"
   - **Output can hide bugs** (Day 12: `fee = 0.5` on the bad path, output still looked right). Always read the file, especially the paths the output doesn't show
   - Fill-in templates with 4 blanks still work well (TryGetFee fix ✅). The hint ladder (trace one call → template) solved both bugs on Day 12
+
+---
+
+## Day 15: Thu 22 Oct 2026 · Phase 1: string helpers
+
+(Office PC, duty 6:30 AM–6:30 PM. Started 7:10 AM with the warm-up, then busy at work most of the day; the string helpers lesson ran in the late afternoon, stopped at about 6:15 PM.)
+
+**Learned**
+
+- **Warm-up:** where does the default `= 2` go? Said "call site" ❌ → **method header** ✅ after the explanation (same mistake as Day 14 Q4). `PrintDelivery(5)` → CS1503, `city` is required and first
+- **String methods:** `Trim`, `ToUpper`, `ToLower`, **method chaining** (`city.Trim().ToUpper()`)
+- **Immutable:** a string method returns a **new** string; the original doesn't change. Keep it with `name = name.Trim();`
+- `Contains` returns a `bool` and is **case-sensitive** (`ToLower()` first). C# prints `True` / `False`
+- `Replace("-", "")` deletes with an **empty string**; `Split(",")` returns a `string[]`, the **separator** is removed
+- `string.IsNullOrWhiteSpace(x)` is a **static method**: `True` for `null`, `""` or only spaces
+- **CS0136:** declared `c` again after `foreach (string c in parts)` → the name is used in the enclosing scope. Fixed by renaming
+
+**Built**
+
+- `31-string-helpers`: all 5 examples in one file. Commit `Add string helpers examples`, 2 files ✅ (the exercise is still to do, in the same folder)
+
+**Quiz scores**
+
+- Warm-up (header vs call site): ❌ → ✅ on re-check
+- Predictions: `Trim` 4 lines (immutable line 4 ✅, missed the `[ ]` and an `L`), `Contains` new example 2/2 ✅, `Replace` idea ✅ (one 5 missing, `195` slip), `Split` 5 lines ✅ (wrote `length = 3`), `IsNullOrWhiteSpace` 3/3 ✅
+- String helpers quiz: **4.5/5** (Q3 ½: said "immutable" but called `name.Trim();` a typo; the fix is to assign it back)
+
+**Mistakes to remember (review these)**
+
+- Header vs call site, the 2nd day in a row. Ask it again in a warm-up next week
+- Didn't know the word "predict" → it means "guess the output before you run it"
+- Predicted without the `[ ]` brackets and wrote `length = 3`: predict the **whole line**, only what is in the quotes
+- Copying slips: `HAWALI`, `9655551234`, `195`. Join the parts one by one and compare digit by digit
+- Commented out all the old code when CS0136 appeared (the 3rd time commenting out). Read the error code first; delete dead code, Git keeps it
+- Quiz Q3: `name.Trim();` alone is not a typo, the new string is just thrown away → `name = name.Trim();`
+- ✅ Wins: understood **immutable** straight away; fixed CS0136 by renaming by themself; checked "2 files changed" on the commit; quiz 4.5/5
+
+**Claude's mistakes (so they don't happen again)**
+
+- Said "type it in a new scratch project" with no folder or command → gave exact steps after
+- Named the example variable `c` without checking that their file already had `foreach (string c ...)` → CS0136
+
+**Career**
+
+- Nothing today. LinkedIn post 02 (Calculator v2) is still planned for Fri 23 Oct
 
 ---
 

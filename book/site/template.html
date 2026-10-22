@@ -561,6 +561,7 @@ const WIDGETS = {
   "1.18": [overloadDoors],
   "1.19": [argumentSlots],
   "1.20": [calcPipeline],
+  "1.21": [stringWorkbench],
 };
 
 function lapCounter(stage) {
@@ -2305,6 +2306,73 @@ function overloadDoors(stage) {
       reset();
     } else if (b.dataset.a === "run") run();
   });
+  reset();
+}
+
+function stringWorkbench(stage) {
+  const tools = [
+    { label: "Trim()", code: "text.Trim()", run: (t) => t.trim() },
+    { label: "ToUpper()", code: "text.ToUpper()", run: (t) => t.toUpperCase() },
+    { label: 'Contains("salmiya")', code: 'text.Contains("salmiya")', run: (t) => t.includes("salmiya") },
+    { label: 'Replace("-", "")', code: 'text.Replace("-", "")', run: (t) => t.split("-").join("") },
+    { label: 'Split(",")', code: 'text.Split(",")', run: (t) => t.split(",") },
+    { label: "IsNullOrWhiteSpace", code: "string.IsNullOrWhiteSpace(text)", run: (t) => t.trim() === "" },
+  ];
+  let pick = 0, assign = false;
+  stage.innerHTML =
+    '<div class="control"><label for="sw-t">text =</label><input id="sw-t" type="text" value="  Hawalli,Salmiya-Jahra  " autocomplete="off"></div>' +
+    '<div class="pick">' + tools.map((t, i) => '<button class="btn" data-t="' + i + '" aria-pressed="' + (i === 0) + '"><code>' + esc(t.label) + "</code></button>").join("") + "</div>" +
+    '<div class="pick"><button class="btn" data-a="assign" aria-pressed="false">Assign it back: <code>text = ...</code></button></div>' +
+    '<div class="codebox"></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="run">Run</button></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const input = $("#sw-t", stage), box = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const show = (s) => "[" + s + "]";
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  function reset() {
+    const t = tools[pick];
+    const returnsString = typeof t.run("") === "string";
+    box.textContent = (assign && returnsString ? "text = " + t.code + ";" : "Console.WriteLine(" + t.code + ");") +
+      '\nConsole.WriteLine($"[{text}]");';
+    term.textContent = "";
+    say("", "Predict both lines first. Does the second line (the original text) change?");
+  }
+  function run() {
+    reset();
+    const text = input.value, t = tools[pick], out = t.run(text);
+    if (Array.isArray(out)) {
+      term.innerHTML = '<span class="good">string[] with ' + out.length + " parts: " + out.map((p) => esc(show(p))).join(" ") + "</span>\n" + esc(show(text));
+      say("good", "Split returns an array (string[]). The separator is gone from the parts, and text itself did not change.");
+      return;
+    }
+    if (typeof out === "boolean") {
+      term.innerHTML = '<span class="good">' + (out ? "True" : "False") + "</span>\n" + esc(show(text));
+      say("good", pick === 2 ? "Contains is case-sensitive: try typing Salmiya with a capital S." : "True for null, \"\" or only spaces. Clear the box or type spaces to see True.");
+      return;
+    }
+    if (assign) {
+      input.value = out;
+      term.innerHTML = esc(show(out));
+      say("good", "You assigned the new string back, so text now holds the cleaned copy.");
+    } else {
+      term.innerHTML = '<span class="good">' + esc(show(out)) + "</span>\n" + esc(show(text));
+      say("warn", "Strings are immutable: the method made a new string, and text is still the same. Turn on \"Assign it back\" to keep it.");
+    }
+  }
+  stage.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.t) {
+      pick = +b.dataset.t;
+      stage.querySelectorAll("[data-t]").forEach((x) => x.setAttribute("aria-pressed", x === b));
+      reset();
+    } else if (b.dataset.a === "assign") {
+      assign = !assign;
+      b.setAttribute("aria-pressed", assign);
+      reset();
+    } else if (b.dataset.a === "run") run();
+  });
+  input.addEventListener("input", reset);
   reset();
 }
 

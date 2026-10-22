@@ -45,6 +45,7 @@ At the end of the course, this text becomes a real illustrated / animated book.
 - [Chapter 1.18: Method overloading (one name, many parameter lists)](phase-01/18-overloading.md)
 - [Chapter 1.19: Optional and named parameters](phase-01/19-optional-named-parameters.md)
 - [Chapter 1.20: Calculator v2, moving logic into methods (my own Try pattern)](phase-01/20-calculator-v2-methods.md)
+- [Chapter 1.21: String helpers (Trim, ToUpper, Contains, Replace, Split, IsNullOrWhiteSpace)](phase-01/21-string-helpers.md)
 
 *(More chapters are added as I finish each topic.)*
 

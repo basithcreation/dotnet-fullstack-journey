@@ -254,6 +254,19 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | moved code into a method | **extract method** (a **refactoring**) | "I extracted the operator check into `IsValidOperator`." |
 | pack everything | **`git add -A`** (stage all changes) | "Run `git status` before `git add -A`, so you don't stage files by accident." |
 
+## Phase 1: String helpers
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| small tools on a string | **string methods** (`Trim`, `ToUpper`, `Contains`, `Replace`, `Split`) | "Use the built-in string methods, don't write your own loop." |
+| the photocopy rule | **immutable** (a method returns a **new** string) | "Strings are immutable, so assign it back: `name = name.Trim()`." |
+| method after method | **method chaining** (`text.Trim().ToUpper()`) | "The chain reads left to right: trim first, then upper." |
+| two quotes with nothing | **empty string** (`""`) | "Replace the dashes with an empty string." |
+| where `Split` cuts | **separator** / **delimiter** | "Split the line on the comma separator, you get a `string[]`." |
+| only spaces | **whitespace** | "Reject names that are null, empty or whitespace with `string.IsNullOrWhiteSpace`." |
+| `string.` first, text inside `( )` | **static method** (called on the type, not on the value) | "`IsNullOrWhiteSpace` is static, so call it on `string`." |
+| same name as the loop variable | **CS0136** (name already used in an enclosing scope) | "CS0136, `c` clashes with the `foreach` variable, rename it." |
+
 ## Errors and testing
 
 | Easy word | Real term | Team sentence |

@@ -90,7 +90,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [x] Loops: `for`, `while`, `do-while`, `foreach`, `break`, `continue` (✅ `while` done Sun 11 Oct, ✅ `for` done Tue 13 Oct, ✅ `do-while`, `break`, `continue` done Wed 14 Oct, ✅ `foreach` done Sat 17 Oct)
 - [x] Arrays and `List<T>` (✅ arrays done Sat 17 Oct, ✅ `List<T>` done Sun 18 Oct)
 - [x] Methods: parameters, return values, `ref`, `out`, optional and named parameters, overloading (✅ `void`, parameters, return values done Sun 18 Oct; ✅ `bool` methods, a method calling a method, `ref`, `out` done Mon 19 Oct; ✅ overloading done Tue 20 Oct; ✅ optional/named done Wed 21 Oct, quiz 3.5/5)
-- [ ] Built-in helpers: string methods (`Trim`, `ToUpper`, `Contains`, `Split`, `Replace`, `Substring`, `IsNullOrWhiteSpace`), `StringBuilder`, `Math`, `Random`, `DateTime` / `DateOnly` / `TimeSpan` (✅ `Random` done Sun 11 Oct)
+- [ ] Built-in helpers: string methods (`Trim`, `ToUpper`, `Contains`, `Split`, `Replace`, `Substring`, `IsNullOrWhiteSpace`), `StringBuilder`, `Math`, `Random`, `DateTime` / `DateOnly` / `TimeSpan` (✅ `Random` done Sun 11 Oct; ✅ string methods except `Substring` Thu 22 Oct, exercise still to do)
 
 **Part 3: Safety nets**
 - [ ] Nullable types `int?` and null operators `?.` `??` `??=` (just like Dart!)
