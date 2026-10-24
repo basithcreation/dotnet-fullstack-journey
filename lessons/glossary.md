@@ -267,6 +267,60 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | `string.` first, text inside `( )` | **static method** (called on the type, not on the value) | "`IsNullOrWhiteSpace` is static, so call it on `string`." |
 | same name as the loop variable | **CS0136** (name already used in an enclosing scope) | "CS0136, `c` clashes with the `foreach` variable, rename it." |
 
+## Phase 1: Nullable types
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| empty box | **null** | "The weight is null until the parcel is scanned." |
+| a box that may be empty | **nullable type** (`int?`, `string?`) | "Make `Weight` nullable, new parcels aren't weighed yet." |
+| "use this instead" | **null-coalescing operator** (`??`) + **fallback** value | "Use `??` to give it a default value." |
+| "don't even try" | **null-conditional operator** (`?.`) | "Use `?.` here or it throws when the sender is null." |
+| "fill only if empty" | **null-coalescing assignment** (`??=`) | "`??=` sets the default only if it's still null." |
+| the null crash | **`NullReferenceException`** / warning **CS8602** | "Fix the CS8602 warnings before they become crashes." |
+| changes the variable | **mutates** / **side effect** | "`??=` mutates the variable, `??` doesn't." |
+
+## Phase 1: Exceptions
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| a problem while running | **exception** (a **runtime** error) | "`int.Parse` throws a `FormatException` on bad input." |
+| the backup plan | **catch** / **handle** | "We handle that exception, so the app doesn't crash." |
+| the crash | **unhandled exception** | "It crashed with an unhandled exception." |
+| always return the keys | **`finally`** | "Put the cleanup in a `finally` block." |
+| raise a hand | **throw** | "The method throws an `ArgumentException` on invalid input." |
+| stop early, loudly | **fail fast** / **validate** | "Validate the weight and fail fast, don't return 0." |
+| the "at ... line" list | **stack trace** | "Log the stack trace, show the user only the message." |
+| wrong catch order | **CS0160** | "CS0160, the `Exception` catch has to go last." |
+
+## Phase 1: DateTime
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| the date stamp | **timestamp** | "Save a timestamp when the shipment is created." |
+| how long between | **`TimeSpan`** | "Subtract the dates to get a TimeSpan." |
+| `dd MMM yyyy` | **format string** | "Use a format string so it looks the same on every PC." |
+| region settings | **culture** (`en-US`) | "The PC culture is en-US, so it printed the month first." |
+
+## Phase 1: Project 03 Shipment Tracker
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| 4 notebooks, same line | **parallel lists** | "Parallel lists are fragile, let's make a class." |
+| KP1001, KP1002 | **auto-generated ID** | "The tracking number is auto-generated from the count." |
+| name only, no list | **declared but not initialized** (CS0165) | "Initialize it with `new List<string>()`." |
+| `-1` = not there | **sentinel value** | "`IndexOf` returns -1 when it isn't found." |
+| wrong by one at the edge | **off-by-one error** | "Classic off-by-one, index 0 is valid." |
+| test the first and last | **edge cases** / **boundary values** | "Test the edge cases: the first and the last item." |
+
+## Phase 2 Git (theory): branches
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| a photocopy of the notebook | **branch** | "I'll do it on a feature branch." |
+| copy the pages back | **merge** | "Merge the branch into main and delete it." |
+| the official notebook | **`main`** (often **protected**) | "Never push straight to main, open a PR." |
+| ask someone to check it | **pull request (PR)** | "I opened a PR for the delete feature." |
+
 ## Errors and testing
 
 | Easy word | Real term | Team sentence |

@@ -195,6 +195,20 @@
       "quizzes": [
         { "name": "String helpers quiz", "score": 4.5, "max": 5 }
       ]
+    },
+    {
+      "day": 16,
+      "date": "2026-10-24",
+      "weekday": "Sat",
+      "phase": "Phase 1",
+      "title": "Nullable, exceptions, DateTime + Project 03 Shipment Tracker",
+      "learned": ["Strings are immutable: name.Trim(); alone does nothing, so assign it back", "int? can hold null; null prints as nothing in $\"...\" (Dart prints null)", "?? gives a fallback, ?. skips a call on null, ??= fills only an empty box", "?? reads, ??= writes (it changes the variable too)", "try / catch: after an exception the rest of try is skipped; catch blocks run top to bottom, specific first (CS0160)", "finally always runs; throw new ArgumentException(...) to fail fast instead of returning 0", "ex.Message for users, the full ex (with the stack trace) only for developers", "DateTime.Now, AddDays (immutable), format strings (MM = month, mm = minutes), due - sent = TimeSpan", "IndexOf returns -1 when not found; index 0 is valid (off-by-one)", "Git branches (theory): feature/ and fix/ branches, merge into main"],
+      "built": ["String helpers exercise (clean a messy customer)", "Nullable exercise (parcel details)", "try/catch exercise (split boxes between drivers)", "Project 03 Shipment Tracker: add, list, search, mark delivered (93 lines)"],
+      "quizzes": [
+        { "name": "Nullable quiz", "score": 4.5, "max": 5 },
+        { "name": "Exceptions quiz", "score": 4.5, "max": 5 },
+        { "name": "DateTime quiz", "score": 4, "max": 5 }
+      ]
     }
   ]
 }

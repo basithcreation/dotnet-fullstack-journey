@@ -21,7 +21,7 @@ Open to .NET / full-stack opportunities in Kuwait and the Gulf.
 - Best project demo video (after Phase 10 / 13)
 
 ## Skills to add (only when learned)
-- [ ] C# (Phase 1)
+- [x] C# (Phase 1)
 - [ ] Object-Oriented Programming (Phase 2)
 - [ ] LINQ (Phase 3)
 - [ ] Microsoft SQL Server, T-SQL (Phase 4)

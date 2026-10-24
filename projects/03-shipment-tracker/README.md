@@ -10,27 +10,27 @@ A console app for a courier office in C#. You can add shipments, list them, sear
 
 ```
 === KPOST Shipment Tracker ===
+ 1) Add 2) List 3) Search 4) Mark delivered q) Quit
 
-1) Add 2) List 3) Search 4) Mark delivered q) Quit
 Choose: 1
 Receiver name: Omar
 Added KP1001
+ 1) Add 2) List 3) Search 4) Mark delivered q) Quit
 
-1) Add 2) List 3) Search 4) Mark delivered q) Quit
 Choose: 4
 Tracking number: kp1001
 KP1001 marked as delivered
+ 1) Add 2) List 3) Search 4) Mark delivered q) Quit
 
-1) Add 2) List 3) Search 4) Mark delivered q) Quit
 Choose: 2
-KP1001 | Omar | Delivered | 24 Oct 2026 19:56
+KP1001 | Omar | Delivered | 24 Oct 2026 20:52
+ 1) Add 2) List 3) Search 4) Mark delivered q) Quit
 
-1) Add 2) List 3) Search 4) Mark delivered q) Quit
 Choose: 4
 Tracking number: kp5555
 Error: Shipment KP5555 not found
+ 1) Add 2) List 3) Search 4) Mark delivered q) Quit
 
-1) Add 2) List 3) Search 4) Mark delivered q) Quit
 Choose: q
 Goodbye!
 ```

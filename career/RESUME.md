@@ -63,3 +63,6 @@ _Frontend Developer_ · 2020 – 2021
 
 **Console Calculator** · C#, .NET console · [GitHub](https://github.com/basithcreation/dotnet-fullstack-journey/tree/main/projects/02-console-calculator)
 - Built a C# console calculator (+ − × ÷) that validates every input with `double.TryParse` and guard clauses, rejects unknown operators before asking for the next number, and blocks division by zero
+
+**Shipment Tracker** · C#, .NET console · [GitHub](https://github.com/basithcreation/dotnet-fullstack-journey/tree/main/projects/03-shipment-tracker)
+- Built a C# console app to add, list, search and mark courier shipments as delivered, with auto-generated tracking numbers, timestamps (`DateTime`) and case-insensitive search; invalid tracking numbers raise an exception that is caught and shown as an error, so the app never crashes

@@ -562,6 +562,10 @@ const WIDGETS = {
   "1.19": [argumentSlots],
   "1.20": [calcPipeline],
   "1.21": [stringWorkbench],
+  "1.22": [nullBoxes],
+  "1.23": [catchJump],
+  "1.24": [calendarStamp],
+  "1.25": [fourNotebooks],
 };
 
 function lapCounter(stage) {
@@ -2489,6 +2493,220 @@ function calcPipeline(stage) {
   stage.addEventListener("click", (e) => { if (e.target.closest('[data-a="run"]')) run(); });
   stage.addEventListener("keydown", (e) => { if (e.key === "Enter" && e.target.matches("input")) run(); });
   reset();
+}
+
+function nullBoxes(stage) {
+  const ops = [
+    { label: 'area ?? "Hawalli"', code: 'string result = area ?? "Hawalli";' },
+    { label: "area?.ToUpper()", code: "string? result = area?.ToUpper();" },
+    { label: "area.ToUpper()", code: "string result = area.ToUpper();   // no ?" },
+    { label: 'area ??= "Hawalli"', code: 'area ??= "Hawalli";' },
+  ];
+  let pick = 0;
+  stage.innerHTML =
+    '<div class="control"><label for="nb-v">area =</label><input id="nb-v" type="text" value="" placeholder="(empty box = null)" autocomplete="off"></div>' +
+    '<div class="pick">' + ops.map((o, i) => '<button class="btn" data-o="' + i + '" aria-pressed="' + (i === 0) + '"><code>' + esc(o.label) + "</code></button>").join("") + "</div>" +
+    '<div class="codebox"></div><div class="btn-row"><button class="btn primary" data-a="run">Run</button></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const input = $("#nb-v", stage), box = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  const value = () => (input.value === "" ? null : input.value);
+  const lit = (v) => (v === null ? "null" : '"' + v + '"');
+  const show = (x) => "[" + (x === null ? "" : x) + "]";
+  function reset() {
+    box.textContent = "string? area = " + lit(value()) + ";\n" + ops[pick].code +
+      (pick === 3 ? '\nConsole.WriteLine($"[{area}]");' : '\nConsole.WriteLine($"[{result}]");\nConsole.WriteLine($"[{area}]");');
+    term.textContent = "";
+    say("", "Predict the output first. Leave the box empty to make area null, or type a city.");
+  }
+  function run() {
+    reset();
+    const v = value();
+    if (pick === 0) {
+      term.textContent = show(v ?? "Hawalli") + "\n" + show(v);
+      say("good", v === null ? "area is null, so ?? used the fallback. area itself is still null: ?? only reads." : "area has a value, so ?? kept it and ignored the fallback.");
+    } else if (pick === 1) {
+      term.textContent = show(v === null ? null : v.toUpperCase()) + "\n" + show(v);
+      say("good", v === null ? "area is null, so ?. skipped ToUpper and gave back null. No crash (null prints as nothing)." : "area has a value, so ?. called ToUpper as normal.");
+    } else if (pick === 2) {
+      if (v === null) {
+        term.textContent = "Unhandled exception. System.NullReferenceException: Object reference not set to an instance of an object.";
+        say("warn", "💥 Without the ?, C# tries to call ToUpper on nothing. The editor warned you first: CS8602.");
+      } else {
+        term.textContent = show(v.toUpperCase()) + "\n" + show(v);
+        say("good", "It works this time, but only because area isn't null. Empty the box and run again.");
+      }
+    } else {
+      const after = v ?? "Hawalli";
+      input.value = after;
+      term.textContent = show(after);
+      say("good", v === null ? "The box was empty, so ??= filled it: area itself changed (??= writes). Run again and it stays Hawalli." : "The box already had " + lit(v) + ", so ??= did nothing.");
+    }
+  }
+  stage.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.o) {
+      pick = +b.dataset.o;
+      stage.querySelectorAll("[data-o]").forEach((x) => x.setAttribute("aria-pressed", x === b));
+      reset();
+    } else if (b.dataset.a === "run") run();
+  });
+  input.addEventListener("input", reset);
+  reset();
+}
+
+function catchJump(stage) {
+  const inputs = ['"12"', '"abc"', '"-3"'];
+  const lines = [
+    ["try", "try\n{"],
+    ["parse", "    int kg = int.Parse(input);"],
+    ["check", '    if (kg <= 0) throw new ArgumentException("Weight must be more than 0");'],
+    ["print", '    Console.WriteLine($"Fee: {kg * 1.5}");'],
+    ["c1", "}\ncatch (FormatException)\n{"],
+    ["c1b", '    Console.WriteLine("Not a number");'],
+    ["c2", "}\ncatch (Exception ex)\n{"],
+    ["c2b", '    Console.WriteLine($"Error: {ex.Message}");'],
+    ["fin", "}\nfinally\n{"],
+    ["finb", '    Console.WriteLine("Shift closed");\n}'],
+  ];
+  const plans = [
+    [["try", "", "Enter try."], ["parse", "", 'int.Parse("12") works: kg = 12.'], ["check", "", "12 <= 0 is false, so no throw."],
+     ["print", "Fee: 18", "Prints the fee: 12 × 1.5 = 18."], ["fin", "", "No exception, so both catch blocks are skipped. finally still runs."], ["finb", "Shift closed", "finally always runs."]],
+    [["try", "", "Enter try."], ["parse", "", '💥 int.Parse("abc") throws a FormatException. The rest of try is SKIPPED.'],
+     ["c1", "", "Check the catch blocks top to bottom: FormatException matches!"], ["c1b", "Not a number", "Only the first matching catch runs. The second catch is skipped."],
+     ["fin", "", "Then finally."], ["finb", "Shift closed", "finally always runs."]],
+    [["try", "", "Enter try."], ["parse", "", 'int.Parse("-3") works: kg = -3. C# thinks -3 is a fine number.'],
+     ["check", "", "💥 -3 <= 0, so YOUR rule throws an ArgumentException (fail fast). The print line is skipped."],
+     ["c1", "", "Is it a FormatException? No, skip this catch."], ["c2", "", "Is it an Exception? Yes, every exception is. Enter."],
+     ["c2b", "Error: Weight must be more than 0", "ex.Message is the text you gave to throw."], ["fin", "", "Then finally."], ["finb", "Shift closed", "finally always runs."]],
+  ];
+  let pick = 0, pos, out;
+  stage.innerHTML =
+    '<div class="pick">' + inputs.map((x, i) => '<button class="btn" data-i="' + i + '" aria-pressed="' + (i === 0) + '">input = <code>' + esc(x) + "</code></button>").join("") + "</div>" +
+    '<div class="codebox"></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="step">Next step</button><button class="btn" data-a="all">Run all</button><button class="btn" data-a="reset">Reset</button></div>' +
+    '<div class="term"></div><div class="verdict"></div>';
+  const box = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  function draw(hl) {
+    box.innerHTML = "string input = " + esc(inputs[pick]) + ";\n" + lines.map(([k, t]) => '<span class="' + (k === hl ? "hit" : "") + '">' + esc(t) + "</span>").join("\n");
+  }
+  function reset() {
+    pos = 0; out = [];
+    draw(); term.innerHTML = '<span class="dim">(output appears here)</span>';
+    say("", "Predict the output, then press Next step. Watch where the highlight jumps.");
+  }
+  function step() {
+    const path = plans[pick];
+    if (pos >= path.length) return;
+    const [k, printed, why] = path[pos++];
+    draw(k);
+    if (printed) out.push(printed);
+    term.textContent = out.join("\n") || "(nothing printed yet)";
+    say(why.startsWith("💥") ? "warn" : "good", why);
+  }
+  stage.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.i) {
+      pick = +b.dataset.i;
+      stage.querySelectorAll("[data-i]").forEach((x) => x.setAttribute("aria-pressed", x === b));
+      reset();
+    }
+    if (b.dataset.a === "step") step();
+    if (b.dataset.a === "all") while (pos < plans[pick].length) step();
+    if (b.dataset.a === "reset") reset();
+  });
+  reset();
+}
+
+function calendarStamp(stage) {
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const sent = new Date(2026, 9, 24, 14, 30, 0);
+  stage.innerHTML =
+    '<div class="control"><label for="cs-n">AddDays</label><input id="cs-n" type="range" min="0" max="75" value="3"><output></output></div>' +
+    '<div class="control"><label for="cs-f">format</label><input id="cs-f" type="text" value="dd MMM yyyy HH:mm" autocomplete="off"></div>' +
+    '<div class="codebox"></div><div class="cookies"></div><div class="term"></div><div class="verdict"></div>';
+  const n = $("#cs-n", stage), f = $("#cs-f", stage), box = $(".codebox", stage), cards = $(".cookies", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const pad = (x) => String(x).padStart(2, "0");
+  const fmt = (d, s) => s.replace(/yyyy|MMM|MM|dd|HH|mm/g, (t) => ({
+    yyyy: d.getFullYear(), MMM: mon[d.getMonth()], MM: pad(d.getMonth() + 1), dd: pad(d.getDate()), HH: pad(d.getHours()), mm: pad(d.getMinutes()),
+  })[t]);
+  function draw() {
+    const k = +n.value, due = new Date(sent);
+    due.setDate(due.getDate() + k);
+    n.nextElementSibling.textContent = k;
+    const fs = f.value;
+    box.textContent = "DateTime sent = new DateTime(2026, 10, 24, 14, 30, 0);\nDateTime due = sent.AddDays(" + k + ");\n" +
+      'Console.WriteLine(due.ToString("' + fs + '"));\nConsole.WriteLine(due.DayOfWeek);\nTimeSpan wait = due - sent;\nConsole.WriteLine(wait.Days);';
+    cards.innerHTML = "<div><small>sent</small><span>📮 " + esc(fmt(sent, "dd MMM")) + "</span></div><div><small>due</small><span>📦 " + esc(fmt(due, "dd MMM yyyy")) + "</span></div><div><small>wait.Days</small><span>" + k + "</span></div>";
+    term.textContent = fmt(due, fs) + "\n" + days[due.getDay()] + "\n" + k;
+    const noMonth = !/MM/.test(fs) && /mm/.test(fs) && !/HH/.test(fs);
+    verdict.className = "verdict " + (noMonth ? "warn" : "good");
+    verdict.textContent = noMonth ? "Careful: small mm is MINUTES, not the month. Use MM for the month." :
+      due.getFullYear() > 2026 ? "The year rolled over by itself: AddDays knows the calendar." :
+      "sent never changes: AddDays returns a NEW date (immutable). wait.Days is just a number.";
+  }
+  n.addEventListener("input", draw);
+  f.addEventListener("input", draw);
+  draw();
+}
+
+function fourNotebooks(stage) {
+  const names = ["Omar", "Sara", "Ali", "Mona", "Yousef"];
+  let numbers = [], receivers = [], statuses = [], buggy = false;
+  stage.innerHTML =
+    '<div class="btn-row"><button class="btn primary" data-a="add">Add shipment</button><button class="btn" data-a="clear">Clear</button></div>' +
+    '<div class="control"><label for="fn-s">Search</label><input id="fn-s" type="text" value="kp1001" autocomplete="off"><button class="btn" data-a="find">Find</button></div>' +
+    '<div class="pick"><button class="btn" data-a="bug" aria-pressed="false">Use the buggy check: <code>index &lt;= 0</code></button></div>' +
+    '<div class="codebox"></div><div class="term"></div><div class="verdict"></div>';
+  const box = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage), s = $("#fn-s", stage);
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  function draw(hit) {
+    let h = "index | numbers | receivers | statuses\n";
+    if (!numbers.length) h += "(the lists are empty)";
+    numbers.forEach((x, i) => {
+      h += '<span class="' + (i === hit ? "hit" : "") + '">  ' + i + "   | " + x + "  | " + esc(receivers[i].padEnd(9)) + " | " + statuses[i] + "</span>\n";
+    });
+    box.innerHTML = h;
+  }
+  function add() {
+    if (numbers.length >= names.length) { say("warn", "That's enough for the demo. Press Clear to start again."); return; }
+    const count = numbers.length, number = "KP" + (1001 + count);
+    numbers.push(number); receivers.push(names[count]); statuses.push("In transit");
+    draw(count);
+    term.textContent = 'string number = $"KP{1001 + numbers.Count}";   // Count = ' + count + "\nAdded " + number;
+    say("good", "One shipment = the SAME index in every list. Each list got exactly one Add.");
+  }
+  function find() {
+    const wanted = s.value.trim().toUpperCase();
+    const index = numbers.indexOf(wanted);
+    const notFound = buggy ? index <= 0 : index === -1;
+    term.textContent = 'int index = numbers.IndexOf("' + wanted + '");   // ' + index + "\nif (index " + (buggy ? "<= 0" : "== -1") + ")   // " + (notFound ? "True" : "False");
+    if (!notFound) {
+      draw(index);
+      say("good", "Found at index " + index + ": the same row lights up in every list. (IndexOf is case-sensitive, so the input was cleaned with ToUpper.)");
+    } else if (index === 0) {
+      draw(-1);
+      say("warn", "Off-by-one bug! " + wanted + " IS at index 0, but <= 0 calls it not found. Turn the buggy check off.");
+    } else {
+      draw(-1);
+      say("", "IndexOf gave -1, the sentinel for not found. FindIndex would throw: Shipment " + wanted + " not found.");
+    }
+  }
+  stage.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const a = b.dataset.a;
+    if (a === "add") add();
+    if (a === "find") find();
+    if (a === "bug") { buggy = !buggy; b.setAttribute("aria-pressed", buggy); if (numbers.length) find(); }
+    if (a === "clear") { numbers = []; receivers = []; statuses = []; draw(); term.textContent = ""; say("", "Add a few shipments, then search for one."); }
+  });
+  draw();
+  say("", "Add a few shipments, then search. Try kp1001 with the buggy check on.");
 }
 
 /* ---------------- start ---------------- */

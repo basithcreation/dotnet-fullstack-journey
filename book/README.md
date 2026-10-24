@@ -46,6 +46,10 @@ At the end of the course, this text becomes a real illustrated / animated book.
 - [Chapter 1.19: Optional and named parameters](phase-01/19-optional-named-parameters.md)
 - [Chapter 1.20: Calculator v2, moving logic into methods (my own Try pattern)](phase-01/20-calculator-v2-methods.md)
 - [Chapter 1.21: String helpers (Trim, ToUpper, Contains, Replace, Split, IsNullOrWhiteSpace)](phase-01/21-string-helpers.md)
+- [Chapter 1.22: Nullable types and the null operators (?, ??, ?., ??=)](phase-01/22-nullable.md)
+- [Chapter 1.23: Exceptions (try, catch, finally, throw)](phase-01/23-exceptions.md)
+- [Chapter 1.24: DateTime and TimeSpan](phase-01/24-datetime.md)
+- [Chapter 1.25: Project 03 Shipment Tracker (parallel lists, IndexOf, and a method that throws)](phase-01/25-shipment-tracker.md)
 
 *(More chapters are added as I finish each topic.)*
 

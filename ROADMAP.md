@@ -90,19 +90,19 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [x] Loops: `for`, `while`, `do-while`, `foreach`, `break`, `continue` (✅ `while` done Sun 11 Oct, ✅ `for` done Tue 13 Oct, ✅ `do-while`, `break`, `continue` done Wed 14 Oct, ✅ `foreach` done Sat 17 Oct)
 - [x] Arrays and `List<T>` (✅ arrays done Sat 17 Oct, ✅ `List<T>` done Sun 18 Oct)
 - [x] Methods: parameters, return values, `ref`, `out`, optional and named parameters, overloading (✅ `void`, parameters, return values done Sun 18 Oct; ✅ `bool` methods, a method calling a method, `ref`, `out` done Mon 19 Oct; ✅ overloading done Tue 20 Oct; ✅ optional/named done Wed 21 Oct, quiz 3.5/5)
-- [ ] Built-in helpers: string methods (`Trim`, `ToUpper`, `Contains`, `Split`, `Replace`, `Substring`, `IsNullOrWhiteSpace`), `StringBuilder`, `Math`, `Random`, `DateTime` / `DateOnly` / `TimeSpan` (✅ `Random` done Sun 11 Oct; ✅ string methods except `Substring` Thu 22 Oct, exercise still to do)
+- [ ] Built-in helpers: string methods (`Trim`, `ToUpper`, `Contains`, `Split`, `Replace`, `Substring`, `IsNullOrWhiteSpace`), `StringBuilder`, `Math`, `Random`, `DateTime` / `DateOnly` / `TimeSpan` (✅ `Random` done Sun 11 Oct; ✅ string methods except `Substring` Thu 22 Oct, exercise done Sat 24 Oct; ✅ `DateTime` / `TimeSpan` Sat 24 Oct. Not taught yet: `Substring`, `StringBuilder`, `Math`, `DateOnly`: pick them up in Phase 3)
 
 **Part 3: Safety nets**
-- [ ] Nullable types `int?` and null operators `?.` `??` `??=` (just like Dart!)
-- [ ] Exceptions: `try` / `catch` / `finally`, throwing your own
-- [ ] Debugging: breakpoints, step over/into, watch window. Learn this properly; it saves hundreds of hours
+- [x] Nullable types `int?` and null operators `?.` `??` `??=` (just like Dart!) (✅ Sat 24 Oct, quiz 4.5/5)
+- [x] Exceptions: `try` / `catch` / `finally`, throwing your own (✅ Sat 24 Oct, quiz 4.5/5)
+- [ ] Debugging: breakpoints, step over/into, watch window. Learn this properly; it saves hundreds of hours (planned Sun 25 Oct, on the Shipment Tracker)
 
 **🌿 Git skill (Phase 1): clean history + undo**
 - [x] Good commit messages (short, present tense: "Add parking meter v2"); commit small and often
 - [x] `git log --oneline`, `git diff`, `git status`: read what changed before you commit
 - [x] Undo mistakes: `git restore` (throw away edits), `git restore --staged` (un-add), `git revert` (undo a commit safely)
 
-**Projects:** 01 Number Guessing Game (Part 1) (✅ built Mon 12 Oct, ✅ v1.1 Thu 15 Oct: range check, guard clauses, `q` to quit) → 02 Console Calculator (Part 2) (✅ v1 Sat 17 Oct: double, zero guard, && operator guard; ✅ v2 Wed 21 Oct: `IsValidOperator` + `TryCalculate` methods) → 03 Shipment Tracker: add, list, mark delivered, search by tracking number (Part 3)
+**Projects:** 01 Number Guessing Game (Part 1) (✅ built Mon 12 Oct, ✅ v1.1 Thu 15 Oct: range check, guard clauses, `q` to quit) → 02 Console Calculator (Part 2) (✅ v1 Sat 17 Oct: double, zero guard, && operator guard; ✅ v2 Wed 21 Oct: `IsValidOperator` + `TryCalculate` methods) → 03 Shipment Tracker: add, list, mark delivered, search by tracking number (Part 3) (✅ built Sat 24 Oct: 93 lines, parallel lists, `IndexOf`, `FindIndex` throws + `try`/`catch`)
 ✅ **Done when:** you can write a 100-line console app with loops, methods and error handling from scratch.
 📣 **LinkedIn:** "3 things in C# that surprised me as a Dart developer"
 📄 **Resume:** project bullet for the Shipment Tracker.
@@ -528,7 +528,7 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done
 | Phase | Planned | Project(s) | Status | LinkedIn posted | Finished on |
 |---|---|---|---|---|---|
 | 0: Meet .NET + Git | W1 · Oct 4–10 | 00 | ✅ | ✅ | 6 Oct 2026 |
-| 1: C# Bricks | W2–3 · Oct 11–24 | 01, 02, 03 | ⬜ | ⬜ |  |
+| 1: C# Bricks | W2–3 · Oct 11–24 | 01, 02, 03 | 🟨 (only debugging left) | ⬜ (post 02 drafted) |  |
 | 2: OOP | W4 · Oct 25–31 | 04 | ⬜ | ⬜ |  |
 | 3: C# Superpowers | W5–6 · Nov 1–14 | 05 | ⬜ | ⬜ |  |
 | 3.5: Advanced C# | W7 · Nov 15–21 | 06 | ⬜ | ⬜ |  |

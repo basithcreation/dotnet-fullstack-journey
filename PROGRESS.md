@@ -6,10 +6,12 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **Fri 23 Oct (home laptop, 1 hr).** First 15 min: home laptop setup check (below). Then the **string helpers exercise** in `lessons/phase-01/31-string-helpers` (teach nothing new first; all 5 helpers were taught on Thu). Warm-up (1 question): "`name.Trim();` alone doesn't clean `name`. Why, and what's the fix?" (immutable → `name = name.Trim();`). Then the 5-question quiz is already done (4.5/5), so tick string methods in ROADMAP after the exercise. LinkedIn post 02 if time is left. **Nullable `?` / `??` moves to Sat 24 Oct**, before `try`/`catch`. Run every example in the scratchpad first, and check the student's WHOLE file for name clashes (Day 15 CS0136)
-- **Week plan to finish Phase 1** (updated Wed 21 Oct; if more than 1 hr is left, start the next topic): ✅ Sun `List<T>` + methods part 1 · ✅ Mon `bool` methods + method calling method + `ref`/`out` · ✅ Tue `ref`/`out` quiz + overloading · ✅ Wed optional/named parameters + Calculator v2 with methods (string helpers moved to Thu) · ✅ Thu string helpers taught + quiz (exercise moved to Fri; busy at work most of the day) · Fri (home laptop, 1 hr) setup check + string helpers exercise + LinkedIn post 02 (Calculator v2) · Sat 24 Oct nullable `?`/`??` + `try`/`catch` + `DateTime` (first ~2 hrs), then **Project 03 Shipment Tracker**. Phase 2 (OOP) starts Sun 25 Oct. Tight but still on plan; if Sat runs late, Project 03 finishes Sun
-- **Home laptop setup check is still not done** (do it in the first 15 min of Fri 23 Oct): `git pull`, `dotnet --version` = 10.x, `dotnet run` in `projects/02-console-calculator`, `git config user.name` / `user.email`
-- **Naming:** lessons are `lessons/phase-01/NN-kebab-name`. The next free number is **32** (`31-string-helpers` exists; the exercise goes in it). Book chapters: the next is **1.22**. List the folder before naming anything
+- **Sun 25 Oct (office PC, duty 6:30 AM–6:30 PM, study in gaps).** Phase 1 is done except **Debugging**: start with it (20 min) on `projects/03-shipment-tracker`. VS Code: F9 breakpoint on the `IndexOf` line in case 3, F5 to start (pick C#), F10 step over, F11 step into `FindIndex`, hover / Watch panel for `index` and `numbers.Count`. Good bug to show: put the `<= 0` back for a minute and watch `index = 0`. Then tick Debugging, set Phase 1 ✅ in the ROADMAP tracker, and do the **Git branches** practice (theory was taught Sat): `git switch -c feature/...`, `git branch`, commit, `git switch main`, `git merge`, `git branch -d`. Then Phase 2 topic 1: **classes + objects + properties** (motivation: the 4 parallel lists in Project 03 → one `Shipment` class)
+- **Phase 2 plan (agreed Sat 24 Oct; if more than 1 hr is left, start the next topic):** Sun 25 debugging + branches + classes/objects/properties · Mon 26 constructors, `init`, `required` + **Shipment Tracker v2** with a `Shipment` class, on a branch · Tue 27 access modifiers + encapsulation · Wed 28 inheritance, `virtual`/`override`, polymorphism · Thu 29 abstraction, `abstract` class vs `interface`, `static`, `sealed` · Fri 30 (home laptop, 1 hr) `enum`, `record`, `struct` vs `class` · Sat 31 SOLID (~45 min) + **Project 04 Library Management** on a branch + the 4 pillars out loud in 2 min. Wed/Thu are the hardest; it's OK if they take 2 days. Project 04 may spill into Sun 1 Nov
+- **Waiting for review:** LinkedIn post `career/linkedin/02-phase-1-done.md` (Phase 1 done: 3 things that surprised me as a Dart developer + Shipment Tracker). The Calculator v2 post was never written; it's folded into this one. Ask them to review it (2 min) on Sun
+- **Home laptop setup check is still not done** (Fri 23 Oct had no study). Do it in the first 15 min of **Fri 30 Oct**: `git pull`, `dotnet --version` = 10.x, `dotnet run` in `projects/03-shipment-tracker`, `git config user.name` / `user.email`
+- **Small leftovers (only if there's a spare minute, don't make a session of it):** `citys` → `areas` in `31-string-helpers`; in the Shipment Tracker the empty line is under the menu instead of above it, and case 3 could use `FindIndex` too (README "add next" lists it)
+- **Naming:** lessons are `lessons/phase-XX/NN-kebab-name`. Phase 1's last lesson folder is `34-datetime`. Phase 2 lessons go in `lessons/phase-02/` (the folder doesn't exist yet: start at `01-...`, but list `lessons/` first). Book: Phase 1 ends at chapter **1.25**; Phase 2 chapters are `book/phase-02/01-...` (chapter **2.1**), and add a `### Phase 2: ...` heading to `book/README.md`. Projects: the next is `projects/04-library-management`. List the folder before naming anything
 - **Claude writes** READMEs, LinkedIn drafts and book chapters; the student reviews them in 2 min. The student types all code
 - **Work dates:** the student's own resumes and LinkedIn are the source of truth for job dates (confirmed 15 and 17 Oct). The Day 9 "Career" notes below were a rough chat story. Don't use them to question the dates
 - **Career context (told on Day 9):** KPOST's backend is ASP.NET, so from Phase 6 suggest they ask their senior to let them write real endpoints. Phase 14 main project = **KACT** charity app rebuild (see ROADMAP Phase 14). Private career plans are in Claude's local memory only, never in this public repo
@@ -37,6 +39,69 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - **They delete correct code when unsure** (Day 12: wrote `else`, then removed it). Tell them: "keep it and run it, the output tells you"
   - **Output can hide bugs** (Day 12: `fee = 0.5` on the bad path, output still looked right). Always read the file, especially the paths the output doesn't show
   - Fill-in templates with 4 blanks still work well (TryGetFee fix ✅). The hint ladder (trace one call → template) solved both bugs on Day 12
+  - **In projects, give the EXPECTED output; don't ask them to guess their own new code** (Day 16: "think like a human, how is the guess possible?"). Their job is to compare expected vs actual line by line. Guessing stays for small examples and quizzes
+  - **They skip parts of a multi-part step and still commit** (Day 16: the `citys` rename, 4 polish fixes asked twice, `Program.cs` left out of a commit). When a step has more than 1 edit, give the **exact replacement lines**, and check the file + `git status` before moving on
+  - **Commenting out old code is a habit** (5 times by Day 16). In examples files: keep old code running. In projects: delete it, Git keeps it
+  - Day 16 pace (a full study day): 4 topics + a 93-line project in ~9.5 hrs (11:25 AM–8:15 PM, plus the day-end). A topic with exercise + quiz takes ~1–1.5 hrs, more than planned
+
+---
+
+## Day 16: Sat 24 Oct 2026 · Phase 1: nullable, exceptions, DateTime + Project 03 Shipment Tracker
+
+(Office PC, a full study day. Fri 23 Oct had no study (too much work at home), so the string helpers exercise moved here. Started 11:25 AM, stopped at about 8:15 PM.)
+
+**Learned**
+
+- **Warm-up:** `name.Trim();` alone → the new string is thrown away (immutable) → `name = name.Trim();` ✅. Predicted `[ Omar ]` (1 space) for `"  Omar  "` (2 spaces) ½
+- **Nullable:** `int?` can be null (`int x = null` → CS0037); null prints as **nothing** in `$"..."`; `.HasValue`; `??` fallback (CS0266 without it); `?.` skips the call on null (no `NullReferenceException`, warning CS8602); `??=` fills only if empty. `??` reads, `??=` writes
+- **Exceptions:** `try` / `catch (FormatException)`: the rest of `try` is skipped; several `catch` blocks top to bottom, specific first (`Exception` first → CS0160); `catch (Exception ex)` + `ex.Message`; `finally` always runs; `throw new ArgumentException(...)` to **fail fast** instead of `return 0`; `{ex}` prints the **stack trace**, `{ex.Message}` only the text
+- **DateTime:** `new DateTime(...)`, `DateTime.Now`, `AddDays` (immutable), format strings (`dd MMM yyyy HH:mm`, `MM` month vs `mm` minutes), `.DayOfWeek`, `due - sent` = `TimeSpan`, `.Days`; this PC's culture is `en-US` (month first)
+- **Project 03:** parallel lists, `new List<string>()` (CS0168 → CS0165), `Console.ReadLine() ?? ""`, auto-generated ID `KP{1001 + numbers.Count}`, `for` with an index (not `foreach`), `IndexOf` → `-1`, off-by-one (`<= 0`), a `static` method with a `List<string>` parameter that throws, `try` / `catch` around the `switch`, shared scope across `case` blocks (CS0128)
+- **Git branches (theory only, practice on Sun):** branch = a photocopy of the official notebook; `git switch -c feature/...`, `git branch`, `git switch main`, `git merge`; `feature/` and `fix/`; protected `main` + PRs
+- Asked when the UI comes: Swagger in Phase 6 (Dec), HTML/CSS in Phase 9 (late Jan), Angular in Phase 10 (Feb). Offered console colours / Spectre.Console in Phase 3 (optional)
+
+**Built**
+
+- `31-string-helpers` exercise (clean a messy customer: Trim/ToUpper, `Replace().Replace()`, `Split` + `Trim` per part, `IsNullOrWhiteSpace` in an `if`). Commits `Add string helpers exercise`, `Restore string helpers examples`
+- `32-nullable` examples + exercise (parcel details: floor, phone, coupon, branch). Commit `Add nullable examples and exercise`
+- `33-try-catch` examples + exercise (`BoxesPerDriver` throws, 2 `catch` blocks + `finally`, 3 test runs). Commit `Add try/catch examples and exercise`
+- `34-datetime` example. Commit `Add DateTime examples` (Project 03 was the DateTime exercise)
+- **Project 03 Shipment Tracker** (93 lines): add, list, search, mark delivered, error handling. 6 commits from `Add Shipment Tracker menu skeleton` to `Polish Shipment Tracker names and messages`, plus the README (Claude drafted it)
+
+**Quiz scores**
+
+- Warm-up: Q2 ✅ Q3 ✅ Q1 ½ (spaces)
+- Nullable predictions: Part 1 `[null]` ❌ (Dart habit), Part 2 values ✅ (not whole lines), Part 3 **4/4** ✅ (incl. `??=` ignoring `Jahra`)
+- **Nullable quiz: 4.5/5** (Q5 ½: `??=` instead of `??`)
+- try/catch predictions: Part 1 ✅ (missed `Start`/`End`), Part 2 **3/3** ✅ with reasons, Part 3 ✅ (missed `Error: `)
+- **Exceptions quiz: 4.5/5** (Q4 ½: the main reason for `throw` is that `0` hides the bug)
+- DateTime: 5/5 lines right; **DateTime quiz: 4/5** (Q4 ❌ said `string`, it's `TimeSpan`)
+
+**Mistakes to remember (review these)**
+
+- **Whole-line predictions slipped again:** `1` / `4` instead of `Boxes: 1`, missed `Start` / `End` and `Error: `, `3 days` instead of `3`
+- Dart habits: `[null]` (C# prints nothing), `false` (C# prints `False`)
+- `branch = "Main";` instead of `??=`: the output looked right because `branch` was null. Test with a value
+- Copy-paste labels: `Driver:` on the phone line; `BOxes`, `more then`, `deliveyNumber`
+- `{ex}` instead of `{ex.Message}` (found it in test run 3 ✅)
+- `List<string> numbers;` with no `new` (the CS0168 warning was the hint) and `new {""}`
+- `for (int i = numbers.Count; i <= 2; i++)` with `[0]` inside: start, stop and row were all fixed values
+- `if (index <= 0)`: off-by-one, index 0 is valid
+- `??` vs `??=` (quiz), `TimeSpan` (quiz)
+- Commented out old code (the 5th time). Skipped parts of steps and committed anyway (rename, polish twice, `Program.cs` left out of a commit)
+- ✅ Wins: found and fixed 3 real bugs with tests (`{ex}`, `<= 0`, the loop crash); `drivers <= 0` (blocked negatives too); explained why the 2nd `catch` ran; `01 Jan 2027` rollover; tested both paths on every exercise; checked "files changed" on most commits; a 93-line app that never crashes
+
+**Claude's mistakes (so they don't happen again)**
+
+- Asked them to guess the output of their own new project code. They pushed back, rightly: in projects, give the expected output to compare
+- The plan at 11:25 AM was too optimistic (string + nullable alone took until 3 PM), so debugging and Phase 2 moved to Sun. Plan ~1–1.5 hrs per topic
+- Drafted the README example before running the app: the empty-line position was wrong. Fixed at day-end from a real run
+- During the day-end, re-saved `journey.json` with a different format (a 418-line diff); restored it and added only the new day
+
+**Career**
+
+- LinkedIn post 02 drafted for review: `career/linkedin/02-phase-1-done.md` (Phase 1 done + 3 things that surprised me as a Dart developer)
+- Resume: Shipment Tracker project bullet added to `career/RESUME.md`
 
 ---
 
