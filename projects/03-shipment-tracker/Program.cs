@@ -36,7 +36,17 @@ while (true)
             createdTimes.Add(DateTime.Now);
             break;
         case "2":
-            Console.WriteLine("Coming soon");
+            if (numbers.Count == 0)
+            {
+                Console.WriteLine("No shipments yet");
+            }
+            else
+            {
+                for (int i = 0; i < numbers.Count; i++)
+                {
+                    Console.WriteLine($"{numbers[i]} | {receivers[i]} | {statuses[i]} | {createdTimes[i].ToString("dd MMM yyyy HH:mm")}");
+                }
+            }
             break;
         case "3":
             Console.WriteLine("Coming soon");
