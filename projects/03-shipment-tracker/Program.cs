@@ -25,7 +25,15 @@ while (true)
     switch (choice)
     {
         case "1":
-            Console.WriteLine("Coming soon");
+            string number = $"KP{1001 + numbers.Count}";
+
+            Console.Write("Receiver name: ");
+            string receiver = (Console.ReadLine() ?? "").Trim();
+            numbers.Add(number);
+            Console.WriteLine($"Added {number}");
+            receivers.Add(receiver);
+            statuses.Add("In transit");
+            createdTimes.Add(DateTime.Now);
             break;
         case "2":
             Console.WriteLine("Coming soon");
