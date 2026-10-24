@@ -49,7 +49,18 @@ while (true)
             }
             break;
         case "3":
-            Console.WriteLine("Coming soon");
+            Console.Write("Tracking number: ");
+            string searchNumber = (Console.ReadLine() ?? "").Trim().ToUpper();
+            int index = numbers.IndexOf(searchNumber);
+            if (index < 0)
+            {
+                Console.WriteLine($"Shipment {searchNumber} not found");
+            }
+            else
+            {
+                Console.WriteLine($"{numbers[index]} | {receivers[index]} | {statuses[index]} | {createdTimes[index].ToString("dd MMM yyyy HH:mm")}");
+
+            }
             break;
         case "4":
             Console.WriteLine("Coming soon");
