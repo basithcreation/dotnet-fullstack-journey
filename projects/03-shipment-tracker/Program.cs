@@ -12,7 +12,7 @@ Console.WriteLine("=== KPOST Shipment Tracker ===");
 while (true)
 {
     Console.WriteLine($" 1) Add 2) List 3) Search 4) Mark delivered q) Quit");
-    Console.Write("");
+    Console.WriteLine();
     Console.Write($"Choose: ");
     string choice = (Console.ReadLine() ?? "").Trim().ToLower();
 
@@ -65,11 +65,10 @@ while (true)
                 break;
             case "4":
                 Console.Write("Tracking number: ");
-                string inputSearchNumber = (Console.ReadLine() ?? "").Trim().ToUpper();
-                string deliveyNumber = inputSearchNumber;
-                int deliveryIndex = FindIndex(numbers, deliveyNumber);
-                statuses[deliveryIndex] = "Delivered";
-                Console.WriteLine($"{deliveyNumber} marked as delivery");
+                string deliverNumber = (Console.ReadLine() ?? "").Trim().ToUpper();
+                int deliverIndex = FindIndex(numbers, deliverNumber);
+                statuses[deliverIndex] = "Delivered";
+                Console.WriteLine($"{deliverNumber} marked as delivered");
                 break;
             default:
                 Console.WriteLine("Unknown choice");
