@@ -95,7 +95,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 **Part 3: Safety nets**
 - [x] Nullable types `int?` and null operators `?.` `??` `??=` (just like Dart!) (✅ Sat 24 Oct, quiz 4.5/5)
 - [x] Exceptions: `try` / `catch` / `finally`, throwing your own (✅ Sat 24 Oct, quiz 4.5/5)
-- [ ] Debugging: breakpoints, step over/into, watch window. Learn this properly; it saves hundreds of hours (planned Sun 25 Oct, on the Shipment Tracker)
+- [x] Debugging: breakpoints, step over/into, watch window. Learn this properly; it saves hundreds of hours (done Sun 25 Oct, on the Shipment Tracker; quiz 3/5)
 
 **🌿 Git skill (Phase 1): clean history + undo**
 - [x] Good commit messages (short, present tense: "Add parking meter v2"); commit small and often
@@ -528,8 +528,8 @@ Legend: ⬜ not started · 🟨 in progress · ✅ done
 | Phase | Planned | Project(s) | Status | LinkedIn posted | Finished on |
 |---|---|---|---|---|---|
 | 0: Meet .NET + Git | W1 · Oct 4–10 | 00 | ✅ | ✅ | 6 Oct 2026 |
-| 1: C# Bricks | W2–3 · Oct 11–24 | 01, 02, 03 | 🟨 (only debugging left) | ⬜ (post 02 drafted) |  |
-| 2: OOP | W4 · Oct 25–31 | 04 | ⬜ | ⬜ |  |
+| 1: C# Bricks | W2–3 · Oct 11–24 | 01, 02, 03 | ✅ | ⬜ (post 02 drafted) | 25 Oct 2026 |
+| 2: OOP | W4 · Oct 25–31 | 04 | 🟨 | ⬜ |  |
 | 3: C# Superpowers | W5–6 · Nov 1–14 | 05 | ⬜ | ⬜ |  |
 | 3.5: Advanced C# | W7 · Nov 15–21 | 06 | ⬜ | ⬜ |  |
 | 4: SQL Server | W8–9 · Nov 22–Dec 5 | 07 | ⬜ | ⬜ |  |
