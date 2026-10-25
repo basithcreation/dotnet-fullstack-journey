@@ -11,9 +11,9 @@ Console.WriteLine("=== KPOST Shipment Tracker ===");
 
 while (true)
 {
-    Console.WriteLine($" 1) Add 2) List 3) Search 4) Mark delivered q) Quit");
     Console.WriteLine();
-    Console.Write($"Choose: ");
+    Console.WriteLine("1) Add 2) List 3) Search 4) Mark delivered q) Quit");
+    Console.Write("Choose: ");
     string choice = (Console.ReadLine() ?? "").Trim().ToLower();
 
     if (choice == "q")
