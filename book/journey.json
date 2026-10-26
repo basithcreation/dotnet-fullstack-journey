@@ -209,6 +209,30 @@
         { "name": "Exceptions quiz", "score": 4.5, "max": 5 },
         { "name": "DateTime quiz", "score": 4, "max": 5 }
       ]
+    },
+    {
+      "day": 17,
+      "date": "2026-10-25",
+      "weekday": "Sun",
+      "phase": "Phase 1 → Phase 2",
+      "title": "Debugging, Phase 1 done, Git branches",
+      "learned": ["Breakpoints (F9), start/continue (F5), step over (F10), step into (F11), stop (Shift+F5)", "The yellow line has NOT run yet: step, then read the value", "Hover, Variables and Watch panels to inspect values", "Git branches in practice: switch -c, branch, switch main, merge (fast-forward), branch -d, push", "First look at classes: a Student class, two objects, a List<Student>"],
+      "built": ["Found a planted off-by-one (<= 0) in the Shipment Tracker with the debugger", "feature/menu-spacing branch: fixed the menu spacing, merged and deleted", "Phase 1 marked done"],
+      "quizzes": [
+        { "name": "Debugging quiz", "score": 3, "max": 5 }
+      ]
+    },
+    {
+      "day": 18,
+      "date": "2026-10-26",
+      "weekday": "Mon",
+      "phase": "Phase 2",
+      "title": "Classes, objects and properties",
+      "learned": ["Class = the blank form, object/instance = a filled form, property = a box, List<T> = the folder", "new Product() makes one object; new List<Product>() makes an empty list", "foreach visits every object; s.Age is the current object's property", "Accumulator over a property: total += p.Price * p.Quantity", "One variable per job: a local lineValue inside the loop, the total before it", "Classes go under the top-level code (CS8803)"],
+      "built": ["Student list with a total age", "Product list exercise (line values + total value)", "LinkedIn post 02 (Phase 1 done) published"],
+      "quizzes": [
+        { "name": "Classes and objects quiz", "score": 2.5, "max": 5 }
+      ]
     }
   ]
 }

@@ -1,4 +1,4 @@
-# Post 02: Phase 1 done, Shipment Tracker (draft, for Sun 25 Oct 2026 or later)
+# Post 02: Phase 1 done, Shipment Tracker (posted Mon 26 Oct 2026)
 
 Copy everything between the lines into LinkedIn as plain text.
 (LinkedIn does not support Markdown, so no [links](...) and no `backticks`.)
@@ -15,7 +15,7 @@ I work at a courier company, so my third project is a Shipment Tracker: add a sh
 • throw is better than return 0. If the weight is -3 kg, returning 0 looks like a real fee and the bug hides. Throwing an exception stops it loudly. I learned the phrase "fail fast".
 • Index 0 is a real index. I wrote "if (index <= 0) not found", and my first shipment, KP1001, was "not found". One test with the first item showed the bug. Now I always test the first and the last item.
 
-Next: object-oriented programming. My 4 separate lists (numbers, names, statuses, dates) are going to become one Shipment class.
+Now: object-oriented programming. I started classes this week, and my 4 separate lists (numbers, names, statuses, dates) are going to become one Shipment class.
 
 Code: https://github.com/basithcreation/dotnet-fullstack-journey/tree/main/projects/03-shipment-tracker
 

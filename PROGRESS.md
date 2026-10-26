@@ -6,12 +6,12 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **Sun 25 Oct evening (partial day, stopped ~7:50 PM, felt cold):** ✅ Debugging done (F9/F5/F10/F11/Shift+F5 on the Shipment Tracker, found the planted `<= 0` off-by-one; quiz 3/5: missed "the yellow line has NOT run yet" and "F5 = continue to the next breakpoint"), ✅ Phase 1 marked done in ROADMAP (25 Oct), ✅ Git branches practice (`feature/menu-spacing` → merge → delete → push; the menu spacing leftover is fixed). Started Phase 2 topic 1 in `lessons/phase-02/01-classes-objects` (`Student` class, two instances, `List<Student>` + `foreach`; predictions correct). **The cookie story confused them** ("is cookie a real term?"); use the **KPOST shipment form** story instead: blank form = class, filled form = object/instance, a box = property, the folder = `List<Shipment>`. **Next (Mon 26):** uncommitted work first: commit `lessons/phase-02/01-classes-objects` + `ROADMAP.md` (1 min). Then re-ask the check question (3rd student Omar → how many `foreach` rounds, what `Total:` prints), a small exercise (e.g. a `Product` class with Name/Price/Quantity, a list of 3, print each + total value), 5-question quiz, then constructors/`init`/`required` + Shipment Tracker v2 on a branch. Sun 25 Oct has no day entry yet: write it on Mon together with Mon's. **Shift changed** (they said "10 to 10", probably 10 AM–10 PM): confirm and update the schedule in CLAUDE.md
-- **Phase 2 plan (agreed Sat 24 Oct; if more than 1 hr is left, start the next topic):** Sun 25 debugging + branches + classes/objects/properties · Mon 26 constructors, `init`, `required` + **Shipment Tracker v2** with a `Shipment` class, on a branch · Tue 27 access modifiers + encapsulation · Wed 28 inheritance, `virtual`/`override`, polymorphism · Thu 29 abstraction, `abstract` class vs `interface`, `static`, `sealed` · Fri 30 (home laptop, 1 hr) `enum`, `record`, `struct` vs `class` · Sat 31 SOLID (~45 min) + **Project 04 Library Management** on a branch + the 4 pillars out loud in 2 min. Wed/Thu are the hardest; it's OK if they take 2 days. Project 04 may spill into Sun 1 Nov
-- **Waiting for review:** LinkedIn post `career/linkedin/02-phase-1-done.md` (Phase 1 done: 3 things that surprised me as a Dart developer + Shipment Tracker). The Calculator v2 post was never written; it's folded into this one. Ask them to review it (2 min) on Sun
-- **Home laptop setup check is still not done** (Fri 23 Oct had no study). Do it in the first 15 min of **Fri 30 Oct**: `git pull`, `dotnet --version` = 10.x, `dotnet run` in `projects/03-shipment-tracker`, `git config user.name` / `user.email`
-- **Small leftovers (only if there's a spare minute, don't make a session of it):** `citys` → `areas` in `31-string-helpers`; in the Shipment Tracker the empty line is under the menu instead of above it, and case 3 could use `FindIndex` too (README "add next" lists it)
-- **Naming:** lessons are `lessons/phase-XX/NN-kebab-name`. Phase 1's last lesson folder is `34-datetime`. Phase 2 lessons go in `lessons/phase-02/` (the folder doesn't exist yet: start at `01-...`, but list `lessons/` first). Book: Phase 1 ends at chapter **1.25**; Phase 2 chapters are `book/phase-02/01-...` (chapter **2.1**), and add a `### Phase 2: ...` heading to `book/README.md`. Projects: the next is `projects/04-library-management`. List the folder before naming anything
+- **Tue 27 Oct (office PC, duty 10 AM–10 PM for 2 weeks, study in free gaps).** Start with a 3-question **warm-up** on Mon's weak spots: (1) class vs object/instance in the shipment form story, (2) what `new Product()` creates vs `new List<Product>()`, (3) a whole-output prediction with a `foreach` over 3 objects (they wrote only the newest line on Mon). Then **constructors, `init`, `required`** (the rest of the ROADMAP box "Classes, objects, constructors, properties"; tick it after this) → then **Shipment Tracker v2** on a branch (`feature/shipment-class`): the 4 parallel lists become one `List<Shipment>`. Give the expected output for the project steps
+- **Phase 2 plan (moved 1 day, 26 Oct; with 10–10 duty only gaps are free, so go by topics, not dates):** constructors/`init`/`required` + Tracker v2 → access modifiers + encapsulation → inheritance, `virtual`/`override`, polymorphism → abstraction, `abstract` class vs `interface`, `static`, `sealed` → `enum`, `record`, `struct` vs `class` → SOLID (~45 min) → **Project 04 Library Management** on a branch + the 4 pillars out loud in 2 min. Inheritance and abstraction are the hardest; 2 sessions each is OK. Phase 2 will spill into the first days of Nov, and that's fine
+- **Home laptop setup check is still not done.** Do it in the first 15 min of **Fri 30 Oct**: `git pull`, `dotnet --version` = 10.x, `dotnet run` in `projects/03-shipment-tracker`, `git config user.name` / `user.email`
+- **Small leftovers (only if there's a spare minute, don't make a session of it):** `citys` → `areas` in `31-string-helpers`; Shipment Tracker case 3 could use `FindIndex` too (README "add next" lists it; it can go into v2)
+- **Uncommitted at day-end (26 Oct):** `CLAUDE.md`, `PROGRESS.md`, `lessons/glossary.md`, `career/linkedin/02-phase-1-done.md`, the book (3 chapters, README, journey, template, index). The student commits them with one day-end commit (commands given in chat). Check `git status` first on Tue
+- **Naming:** lessons are `lessons/phase-XX/NN-kebab-name`. Phase 2 so far: `lessons/phase-02/01-classes-objects` (the Product exercise is inside it too). Next lesson folder: `02-...` (list the folder first). Book: Phase 1 ends at **1.26** (debugging); Phase 2 has **2.1** Git branches and **2.2** classes/objects; the next chapter is `book/phase-02/03-...` (2.3). Projects: Tracker v2 stays in `projects/03-shipment-tracker` (on a branch); the next new project is `projects/04-library-management`. List the folder before naming anything
 - **Claude writes** READMEs, LinkedIn drafts and book chapters; the student reviews them in 2 min. The student types all code
 - **Work dates:** the student's own resumes and LinkedIn are the source of truth for job dates (confirmed 15 and 17 Oct). The Day 9 "Career" notes below were a rough chat story. Don't use them to question the dates
 - **Career context (told on Day 9):** KPOST's backend is ASP.NET, so from Phase 6 suggest they ask their senior to let them write real endpoints. Phase 14 main project = **KACT** charity app rebuild (see ROADMAP Phase 14). Private career plans are in Claude's local memory only, never in this public repo
@@ -25,7 +25,8 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - **Be exact when listing "ideas for later":** they read "What I'd add next: Play again" as an instruction and started coding it. Say "only write this in the README, don't code it"
   - **Keep Git short** (they asked on Day 8 if Git is worth the time; they want to finish .NET fast). Commit **right after each exercise** (1 minute). No long fix-up sessions. A typo in a message: point it out, amend only if not pushed and it takes 10 seconds. No new Git until Phase 2 (branches)
   - **They forget a folder in `git add`** (Day 4 and Day 8, the same mistake). Always check the "N files changed" number against the expected one
-  - **Check the clock before saying "morning" / "tonight"**. Schedule (since 20 Oct): Sun–Thu duty 6:30 AM–6:30 PM (study in free gaps, focused after 6:30 PM, hours not confirmed; on Wed 21 Oct they had no time after duty), Fri off (1 hr review on the home laptop), Sat duty 1–9 PM (~6 hrs study). On Saturday they are at the OFFICE PC, not home
+  - **Check the clock before saying "morning" / "tonight"**. Schedule (26 Oct): duty **10 AM–10 PM for about 2 weeks** (until ~8 Nov), study only in free gaps (on Mon 26 the chat opened at 10 AM, but the real work ran ~6:40–9:30 PM). Fri off (1 hr review on the home laptop). Before this: Sun–Thu 6:30 AM–6:30 PM, Sat 1–9 PM. On Saturday they are at the OFFICE PC, not home
+  - **Analogies must not be real tech words** (25 Oct: the cookie story confused them, "is cookie a real term?"). Use KPOST stories: the **shipment form** works for classes
   - **Predict the whole line**, not just the variable (Day 10: predicted "Hawalli" for `$"Delivering to {city}"`). And write out both sides of `||` / `&&` before answering
   - They predict from the **English meaning** of a keyword (`continue` = "carry on normally"). For new keywords, give the C# meaning in one line before asking for a prediction
   - The prediction habit is working: they predict in chat **before** running now ✅. Keep asking
@@ -43,6 +44,80 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - **They skip parts of a multi-part step and still commit** (Day 16: the `citys` rename, 4 polish fixes asked twice, `Program.cs` left out of a commit). When a step has more than 1 edit, give the **exact replacement lines**, and check the file + `git status` before moving on
   - **Commenting out old code is a habit** (5 times by Day 16). In examples files: keep old code running. In projects: delete it, Git keeps it
   - Day 16 pace (a full study day): 4 topics + a 93-line project in ~9.5 hrs (11:25 AM–8:15 PM, plus the day-end). A topic with exercise + quiz takes ~1–1.5 hrs, more than planned
+
+---
+
+## Day 18: Mon 26 Oct 2026 · Phase 2: classes, objects and properties
+
+(Office PC, new duty 10 AM–10 PM. The chat opened at 10:09 AM, but work kept them busy; the lesson ran from about 6:40 PM to 9:30 PM.)
+
+**Learned**
+
+- **Shipment form story** (replaces the cookie story): blank form = **class**, filled form = **object / instance**, a box = **property**, the folder = `List<T>`
+- A 3rd object (Omar) in the list → `foreach` runs **3 rounds**, one per object; `students.Count` = 3
+- **Accumulator over a property**: `totalAge = totalAge + s.Age;` inside the loop, declared before it
+- **One variable per job**: a local `lineValue` inside the loop (fresh every round) + the `totalPrice` accumulator before the loop (keeps its value)
+- `new Product()` = **one object**; `new List<Product>()` = an **empty list**
+- Classes go **under** the top-level code, or **CS8803**. A build error is a **compile error**, not "thrown" (throw = exceptions at run time)
+
+**Built**
+
+- `01-classes-objects`: a 3rd student + total age. Commits `Add classes and objects example`, `Sum student ages with an accumulator`
+- **Product list exercise** (same folder): `Product` class (Name/`decimal` Price/Quantity), 3 products, line values + total value `15.500 KD`. Commit `Add product list exercise`
+
+**Quiz scores**
+
+- Check question (Omar): rounds ✅, whole output ½ (wrote only the newest line)
+- Total age prediction ✅ (`20 + 22 = 42`, `42 + 25 = 67`, written out)
+- **Classes and objects quiz: 2.5/5** (Q1 ❌: the question was unclear, Claude's fault; Q2 ❌: said `new Product()` creates an empty list; Q3 ✅; Q4 ½: right reason, but added an unneeded local variable and didn't write the line; Q5 ✅). Re-check "which line makes the list, which makes the object" ✅
+
+**Mistakes to remember (review these)**
+
+- **Whole output again:** wrote only `Omar | 25` and put `Total: 3` on the same line. `foreach` prints **every** object, and every `WriteLine` is its own line
+- `totalPrice = p.Price * p.Quantity;` → **overwrote** the accumulator (total = the last product, 7.000)
+- `totalPrice +=` and printed `totalPrice` per line → running totals (8.500, 15.500) in the product lines: **one variable doing two jobs**
+- `new Product()` vs `new List<Product>()` (the folder vs one form)
+- Still **commented out** old code in the examples file (the `s1`/`s2` block, the 6th time)
+- ✅ Wins: fixed both accumulator bugs from the output alone with 1 hint each; wrote the sum out step by step; checked "files changed" on all 3 commits; `Omar and Sara` right
+
+**Claude's mistakes (so they don't happen again)**
+
+- Quiz Q1 was worded badly ("what is the real term for...") and they didn't understand it. Ask it plainly: "the blank form is called a ___ in C#"
+
+**Career**
+
+- ✅ **LinkedIn post 02 published** (Phase 1 done + 3 things that surprised me as a Dart developer). The "Next:" line was updated to "I started classes this week"
+- Shift: 10 AM–10 PM for the next 2 weeks (CLAUDE.md updated)
+
+---
+
+## Day 17: Sun 25 Oct 2026 · Phase 1 done: debugging + Git branches practice
+
+(Office PC, a short evening session, stopped about 7:50 PM: they felt cold. No day-end that night; written on Mon 26.)
+
+**Learned**
+
+- **Debugging** in VS Code on the Shipment Tracker: F9 breakpoint, F5 start / continue, F10 step over, F11 step into (`FindIndex`), Shift+F5 stop, hover / Variables / Watch. Put the old `<= 0` bug back for a minute and saw `index = 0` go to the "not found" line
+- **Git branches in practice:** `git switch -c feature/menu-spacing` → fixed the menu spacing leftover → commit → `git switch main` → `git merge` (fast-forward) → `git branch -d` → `git push`
+- First look at **classes**: a `Student` class with `Name`/`Age`, two objects, a `List<Student>` + `foreach`; predictions correct
+
+**Built**
+
+- Commits `Mark phase 1 done`, `Move empty line above the menu` (made on the branch, merged into `main`)
+- ✅ **Phase 1 done** (ROADMAP ticked 25 Oct)
+
+**Quiz scores**
+
+- **Debugging quiz: 3/5** (missed: the yellow line has NOT run yet; F5 while paused = continue to the next breakpoint)
+
+**Mistakes to remember (review these)**
+
+- The yellow line is the **next** line to run, not the one that just ran
+- F5 while paused = **continue**, not restart
+
+**Claude's mistakes (so they don't happen again)**
+
+- The **cookie** story for classes confused them ("is cookie a real term?", it is a web term). Switched to the KPOST shipment form
 
 ---
 

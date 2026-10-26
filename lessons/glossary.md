@@ -312,7 +312,20 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | wrong by one at the edge | **off-by-one error** | "Classic off-by-one, index 0 is valid." |
 | test the first and last | **edge cases** / **boundary values** | "Test the edge cases: the first and the last item." |
 
-## Phase 2 Git (theory): branches
+## Phase 1: Debugging
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| a red stop dot on a line | **breakpoint** (F9) | "Put a breakpoint on the IndexOf line and run it." |
+| start with the stop dots on | **start debugging** (F5) | "Hit F5 and it'll pause at the breakpoint." |
+| the yellow line | **current line / execution point** (NOT run yet) | "The yellow line hasn't run yet, step over it." |
+| one line forward | **step over** (F10) | "Step over that line and check `index`." |
+| walk into the method | **step into** (F11) | "Step into `FindIndex` to see why it throws." |
+| run on to the next stop dot | **continue** (F5 while paused) | "Continue, it'll stop at the next breakpoint." |
+| stop the run | **stop debugging** (Shift+F5) | "Stop the debugger, I found it." |
+| see a box's value | **inspect a variable** (hover, Variables, **Watch**) | "Add `numbers.Count` to the watch window." |
+
+## Phase 2 Git: branches
 
 | Easy word | Real term | Team sentence |
 |---|---|---|
@@ -320,6 +333,22 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | copy the pages back | **merge** | "Merge the branch into main and delete it." |
 | the official notebook | **`main`** (often **protected**) | "Never push straight to main, open a PR." |
 | ask someone to check it | **pull request (PR)** | "I opened a PR for the delete feature." |
+| make a photocopy and move to it | **create and switch** (`git switch -c feature/...`) | "I'm on `feature/menu-spacing` now." |
+| throw the used photocopy away | **delete a merged branch** (`git branch -d`) | "Merged, so I deleted the branch." |
+
+## Phase 2: Classes and objects
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| the blank shipment form | **class** | "`Product` is the class, it's the blueprint." |
+| a filled form | **object** / **instance** | "`p1`, `p2`, `p3` are instances of `Product`." |
+| make one new form | **instantiate** / **create an instance** (`new Product()`) | "Instantiate a `Product` and set its properties." |
+| a box on the form | **property** (`{ get; set; }`) | "Add a `Quantity` property to the class." |
+| the folder of forms | **list of objects** (`List<Product>`) | "Loop over the list and sum a property." |
+| the dot | **member access** (`p.Price`) | "Read the price with `p.Price`." |
+| a running total | **accumulator** (declared **before** the loop) | "The accumulator is overwritten, use `+=`." |
+| one variable doing two jobs | **separate the concerns** (a local `lineValue` + the total) | "Use a local for the line value, keep the total separate." |
+| class above the top-level code | **CS8803** | "Move the class under the top-level statements." |
 
 ## Errors and testing
 

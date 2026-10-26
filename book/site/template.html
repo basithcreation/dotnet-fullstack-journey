@@ -302,6 +302,7 @@ main { min-width: 0; padding-inline: 16px; padding-block: 32px 80px; }
 .codebox { font-family: var(--font-mono); font-size: 13px; background: var(--code-bg); border-radius: 8px; padding: 10px 12px; white-space: pre; overflow-x: auto; line-height: 1.6; }
 .codebox .hit { background: var(--ok-soft); color: var(--ok); border-radius: 4px; }
 .codebox .miss { opacity: .5; }
+.codebox .now { background: var(--warn-soft); color: var(--warn); border-radius: 4px; }
 .check { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-size: 13px; cursor: pointer; }
 .check input { accent-color: var(--accent); }
 .commits { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
@@ -566,6 +567,9 @@ const WIDGETS = {
   "1.23": [catchJump],
   "1.24": [calendarStamp],
   "1.25": [fourNotebooks],
+  "1.26": [debugStepper],
+  "2.1": [branchLines],
+  "2.2": [formFolder],
 };
 
 function lapCounter(stage) {
@@ -2707,6 +2711,206 @@ function fourNotebooks(stage) {
   });
   draw();
   say("", "Add a few shipments, then search. Try kp1001 with the buggy check on.");
+}
+
+function debugStepper(stage) {
+  const numbers = ["KP1001", "KP1002", "KP1003"];
+  let wanted = "KP1001", buggy = false, line = -1, vars = {}, out = [], done = false;
+  stage.innerHTML =
+    '<div class="pick"><button class="btn" data-w="KP1001">KP1001</button><button class="btn" data-w="KP1002">KP1002</button><button class="btn" data-w="KP5555">KP5555</button>' +
+    '<button class="btn" data-a="bug" aria-pressed="false">Use the buggy check: <code>index &lt;= 0</code></button></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="f5">F5 start / continue</button><button class="btn" data-a="f10">F10 step over</button><button class="btn" data-a="f11">F11 step into</button><button class="btn" data-a="stop">Shift+F5 stop</button></div>' +
+    '<div class="codebox"></div><div class="cookies"></div><div class="term"></div><div class="verdict"></div>';
+  const box = $(".codebox", stage), panel = $(".cookies", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  const BP = 1;
+  const code = () => [
+    'string searchNumber = "' + wanted + '";',
+    "int index = numbers.IndexOf(searchNumber);",
+    buggy ? "if (index <= 0)" : "if (index < 0)",
+    '    Console.WriteLine($"Shipment {searchNumber} not found");',
+    "else",
+    '    Console.WriteLine($"Found at index {index}");',
+    'Console.WriteLine("Back to the menu");',
+  ];
+  function draw() {
+    box.innerHTML = code().map((t, i) =>
+      '<span class="' + (i === line ? "now" : "") + '">' + (i === BP ? "● " : "  ") + (i === line ? "➜ " : "  ") + esc(t) + "</span>").join("\n");
+    const v = (k) => (k in vars ? esc(String(vars[k])) : '<small>(not set yet)</small>');
+    panel.innerHTML = "<div><small>searchNumber</small><span>" + v("searchNumber") + "</span></div><div><small>index</small><span>" + v("index") + "</span></div>";
+    term.textContent = out.join("\n");
+  }
+  function reset() { line = -1; vars = {}; out = []; done = false; }
+  function exec() {
+    // run the yellow line, then move the arrow to the next line that will run
+    if (line === 0) { vars.searchNumber = wanted; line = 1; }
+    else if (line === 1) { vars.index = numbers.indexOf(wanted); line = 2; }
+    else if (line === 2) { const t = buggy ? vars.index <= 0 : vars.index < 0; vars["check"] = t; line = t ? 3 : 5; }
+    else if (line === 3) { out.push("Shipment " + wanted + " not found"); line = 6; }
+    else if (line === 5) { out.push("Found at index " + vars.index); line = 6; }
+    else if (line === 6) { out.push("Back to the menu"); line = -1; done = true; }
+  }
+  function report() {
+    if (done) { say("", "The program finished. Press F5 to run it again."); return; }
+    if (line === 1) say("warn", "Paused at the breakpoint. The yellow line has NOT run yet, so index is not set. Press F10.");
+    else if (line === 2) say(buggy && vars.index === 0 ? "bad" : "good",
+      "index = " + vars.index + (vars.index === -1 ? " (the not-found sentinel)." : ".") +
+      (buggy && vars.index === 0 ? " Watch the next F10: 0 <= 0 is True, so the found shipment goes to the not-found line. That's the off-by-one!" : " Press F10 to run the if."));
+    else if (line === 3) say(vars.index === 0 ? "bad" : "good", vars.index === 0 ? "Bug caught: KP1001 IS in the list (index 0), but we're on the not-found line." : "Correct: " + wanted + " isn't in the list.");
+    else if (line === 5) say("good", "The if was False, so the arrow jumped to the else line.");
+    else if (line === 6) say("", "Last line. F10 runs it, F5 runs to the end.");
+  }
+  stage.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.w) { wanted = b.dataset.w; reset(); draw(); say("", "Now searching " + wanted + ". Press F5 to start."); return; }
+    const a = b.dataset.a;
+    if (a === "bug") { buggy = !buggy; b.setAttribute("aria-pressed", buggy); reset(); draw(); say("", buggy ? "Buggy check on. Search KP1001 and step through." : "Fixed check: index < 0."); return; }
+    if (a === "stop") { reset(); draw(); say("", "Stopped. Nothing else runs."); return; }
+    if (a === "f5") {
+      if (line === -1) { reset(); line = 0; exec(); report(); }   // the first line runs, then we pause at the breakpoint
+      else { while (line !== -1) exec(); report(); say("", "F5 while paused = continue: no more breakpoints, so it ran to the end."); }
+    } else if (line === -1) { say("warn", "Not running. Press F5 first."); }
+    else {
+      exec(); report();
+      if (a === "f11" && line === 2) say("", "F11 on IndexOf acted like F10: IndexOf is not your code, so the debugger doesn't go inside. F11 goes into YOUR methods, like FindIndex.");
+    }
+    draw();
+  });
+  draw();
+  say("", "Pick a number, then press F5. The red dot is the breakpoint.");
+}
+
+function branchLines(stage) {
+  const F = "feature/menu-spacing";
+  let branches, head, n, msgs;
+  stage.innerHTML =
+    '<div class="pick"><button class="btn" data-a="new">git switch -c ' + F + '</button><button class="btn" data-a="commit">git commit</button>' +
+    '<button class="btn" data-a="main">git switch main</button><button class="btn" data-a="merge">git merge ' + F + '</button>' +
+    '<button class="btn" data-a="del">git branch -d ' + F + '</button><button class="btn" data-a="reset">Reset</button></div>' +
+    '<div class="codebox"></div><div class="term"></div><div class="verdict"></div>';
+  const box = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  const ids = ["b678519", "e373c94", "4f1a2d0", "9c3e7b1", "a52d8f6", "d07b3c2"];
+  const notes = ["Mark phase 1 done", "Move empty line above the menu", "Tidy the menu text", "Add a blank line", "Fix a label", "One more change"];
+  function reset() { branches = { main: ["0b206bd"] }; head = "main"; n = 0; msgs = { "0b206bd": "Mark phase 1 done" }; }
+  function draw() {
+    const w = Math.max(...Object.keys(branches).map((k) => k.length));
+    box.innerHTML = Object.keys(branches).map((k) =>
+      '<span class="' + (k === head ? "hit" : "") + '">' + (k === head ? "* " : "  ") + k.padEnd(w) + "  " + branches[k].map((c) => "●").join(" ─ ") + "</span>").join("\n") +
+      "\n\n" + branches[head].slice().reverse().map((c) => c + "  " + esc(msgs[c])).join("\n");
+  }
+  stage.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const a = b.dataset.a;
+    if (a === "reset") { reset(); term.textContent = ""; say("", "Start on main. Make a branch, commit on it, then merge it back."); }
+    if (a === "new") {
+      if (branches[F]) { term.textContent = "fatal: a branch named '" + F + "' already exists"; say("warn", "The photocopy already exists. Use git switch " + F + " (without -c) to go to it."); }
+      else { branches[F] = branches[head].slice(); head = F; term.textContent = "Switched to a new branch '" + F + "'"; say("good", "A photocopy of main. The * shows where your next commit will go."); }
+    }
+    if (a === "commit") {
+      if (n >= ids.length) { say("warn", "That's enough commits for the demo. Press Reset."); }
+      else {
+        const id = ids[n], note = notes[Math.min(n + 1, notes.length - 1)]; n++;
+        msgs[id] = note; branches[head].push(id);
+        term.textContent = "[" + head + " " + id + "] " + note + "\n 1 file changed, 1 insertion(+)";
+        say(head === "main" ? "warn" : "good", head === "main" ? "You committed straight onto main! In a team, main is protected, so do it on a branch." : "The commit went onto the branch. main didn't move.");
+      }
+    }
+    if (a === "main") {
+      if (head === "main") { term.textContent = "Already on 'main'"; }
+      else { head = "main"; term.textContent = "Switched to branch 'main'"; say("", "Back on main. Your branch's commits aren't here until you merge."); }
+    }
+    if (a === "merge") {
+      const f = branches[F], m = branches.main;
+      if (!f) { term.textContent = "merge: " + F + " - not something we can merge"; say("warn", "That branch doesn't exist (yet, or anymore)."); }
+      else if (head !== "main") { say("warn", "Switch to main first: you merge INTO the branch you're on."); }
+      else if (f.length === m.length && f.every((c, i) => c === m[i])) { term.textContent = "Already up to date."; say("", "Nothing new on the branch. Commit on it first."); }
+      else if (m.every((c, i) => c === f[i])) {
+        term.textContent = "Updating " + m[m.length - 1] + ".." + f[f.length - 1] + "\nFast-forward\n Program.cs | " + (f.length - m.length) + " +";
+        branches.main = f.slice(); say("good", "Fast-forward: main had no new commits of its own, so it just slid forward to the branch's last commit.");
+      } else {
+        const id = "m" + Date.now().toString(16).slice(-6); msgs[id] = "Merge branch '" + F + "'";
+        f.forEach((c) => { if (!m.includes(c)) m.push(c); }); m.push(id);
+        term.textContent = "Merge made by the 'ort' strategy.";
+        say("", "Both lines had new commits, so Git made a merge commit to join them.");
+      }
+    }
+    if (a === "del") {
+      const f = branches[F];
+      if (!f) { term.textContent = "error: branch '" + F + "' not found"; say("warn", "There's no branch to delete."); }
+      else if (head === F) { term.textContent = ""; say("bad", "You can't delete the branch you're standing on. git switch main first."); }
+      else if (f.some((c) => !branches.main.includes(c))) {
+        term.textContent = "error: the branch '" + F + "' is not fully merged\nhint: If you are sure you want to delete it, run 'git branch -D " + F + "'";
+        say("bad", "Git protects you: the branch has commits that aren't in main. Merge first. -D (capital) would throw that work away.");
+      } else { term.textContent = "Deleted branch " + F + " (was " + f[f.length - 1] + ")."; delete branches[F]; say("good", "Merged and cleaned up. Now git push to send main to GitHub."); }
+    }
+    draw();
+  });
+  reset(); draw();
+  say("", "Start on main. Make a branch, commit on it, then merge it back.");
+}
+
+function formFolder(stage) {
+  const presets = [["Pen", 0.25, 10], ["Notebook", 1.5, 4], ["Bag", 7, 1], ["Ruler", 0.5, 3], ["Stapler", 2.75, 2]];
+  let folder = [], buggy = false, at = -1, total = 0, out = [];
+  stage.innerHTML =
+    '<div class="control"><label for="ff-n">Name</label><input id="ff-n" type="text" value="Pen" autocomplete="off"></div>' +
+    '<div class="control"><label for="ff-p">Price</label><input id="ff-p" type="text" value="0.250" autocomplete="off"><label for="ff-q">Quantity</label><input id="ff-q" type="text" value="10" autocomplete="off"></div>' +
+    '<div class="btn-row"><button class="btn primary" data-a="add">new Product() + Add</button><button class="btn" data-a="step">foreach: next round</button><button class="btn" data-a="clear">Clear</button></div>' +
+    '<div class="pick"><button class="btn" data-a="bug" aria-pressed="false">Use the buggy line: <code>total = lineValue;</code></button></div>' +
+    '<div class="codebox"></div><div class="cookies"></div><div class="term"></div><div class="verdict"></div>';
+  const box = $(".codebox", stage), panel = $(".cookies", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const nIn = $("#ff-n", stage), pIn = $("#ff-p", stage), qIn = $("#ff-q", stage);
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  const kd = (x) => (Math.round(x * 1000) / 1000).toFixed(3);
+  function fill() { const p = presets[folder.length % presets.length]; nIn.value = p[0]; pIn.value = kd(p[1]); qIn.value = p[2]; }
+  function draw() {
+    let h = "List&lt;Product&gt; products   (" + folder.length + (folder.length === 1 ? " object" : " objects") + ")\n";
+    if (!folder.length) h += "  (the folder is empty)";
+    h += folder.map((p, i) => '<span class="' + (i === at ? "hit" : i < at ? "miss" : "") + '">' + (i === at ? "➜ " : "  ") + "p" + (i + 1) +
+      "  [ Name: " + esc(p.name.padEnd(9)) + "| Price: " + kd(p.price) + " | Quantity: " + p.qty + " ]</span>").join("\n");
+    box.innerHTML = h;
+    const lv = at >= 0 && at < folder.length ? kd(folder[at].price * folder[at].qty) : "–";
+    panel.innerHTML = "<div><small>lineValue</small><span>" + lv + "</span></div><div><small>total</small><span>" + kd(total) + "</span></div>";
+    term.textContent = out.join("\n");
+  }
+  function restartLoop() { at = -1; total = 0; out = []; }
+  stage.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const a = b.dataset.a;
+    if (a === "add") {
+      const name = nIn.value.trim(), price = parseFloat(pIn.value), qty = parseInt(qIn.value, 10);
+      if (!name || !(price >= 0) || !(qty >= 0)) { say("warn", "Fill every box: a name, a price like 1.500 and a whole-number quantity."); return; }
+      if (folder.length >= 6) { say("warn", "The folder is full for this demo. Press Clear."); return; }
+      folder.push({ name, price, qty }); restartLoop();
+      say("good", "new Product() took a fresh blank form, you filled its 3 properties, and Add put it in the folder. It has its OWN values.");
+      fill();
+    }
+    if (a === "step") {
+      if (!folder.length) { say("warn", "The folder is empty, so foreach runs 0 rounds. Add a product first."); return; }
+      if (at >= folder.length - 1) {
+        out.push("Products: " + folder.length, "Total value: " + kd(total) + " KD"); at = folder.length;
+        const real = folder.reduce((s, p) => s + p.price * p.qty, 0);
+        say(buggy ? "bad" : "good", buggy ? "Total value is " + kd(total) + ", but the real total is " + kd(real) + ". '=' REPLACED the total every round, so only the last product stayed. Use +=." :
+          "The loop ran once per object (" + folder.length + " rounds). Press Next round again to start over.");
+        draw(); at = -2; return;
+      }
+      if (at === -2) restartLoop();
+      at++;
+      const p = folder[at], lv = p.price * p.qty;
+      total = buggy ? lv : total + lv;
+      out.push(p.name + " | " + kd(p.price) + " KD x " + p.qty + " = " + kd(lv) + " KD");
+      say("", "Round " + (at + 1) + ": p is " + p.name + ". lineValue = " + kd(p.price) + " x " + p.qty + " = " + kd(lv) + ". total " + (buggy ? "= lineValue → " : "+= lineValue → ") + kd(total) + ".");
+    }
+    if (a === "bug") { buggy = !buggy; b.setAttribute("aria-pressed", buggy); restartLoop(); say("", buggy ? "Buggy line on. Run the foreach and watch the total." : "Fixed: total += lineValue."); }
+    if (a === "clear") { folder = []; restartLoop(); fill(); say("", "Add 3 products, then step through the foreach."); }
+    draw();
+  });
+  draw();
+  say("", "Add 3 products (the boxes are pre-filled), then press foreach: next round.");
 }
 
 /* ---------------- start ---------------- */

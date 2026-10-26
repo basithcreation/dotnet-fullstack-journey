@@ -50,6 +50,11 @@ At the end of the course, this text becomes a real illustrated / animated book.
 - [Chapter 1.23: Exceptions (try, catch, finally, throw)](phase-01/23-exceptions.md)
 - [Chapter 1.24: DateTime and TimeSpan](phase-01/24-datetime.md)
 - [Chapter 1.25: Project 03 Shipment Tracker (parallel lists, IndexOf, and a method that throws)](phase-01/25-shipment-tracker.md)
+- [Chapter 1.26: Debugging (breakpoints, step over, step into)](phase-01/26-debugging.md)
+
+### Phase 2: Object-Oriented Programming (started Sun 25 Oct 2026)
+- [Chapter 2.1: Git branches, a photocopy of the notebook](phase-02/01-git-branches.md)
+- [Chapter 2.2: Classes, objects and properties](phase-02/02-classes-objects.md)
 
 *(More chapters are added as I finish each topic.)*
 
