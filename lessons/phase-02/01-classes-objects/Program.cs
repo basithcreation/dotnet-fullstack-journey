@@ -30,12 +30,21 @@ s4.Name = "Sara";
 s4.Age = 22;
 students.Add(s4);
 
+Student s5 = new Student();
+s5.Name = "Omar";
+s5.Age = 25;
+students.Add(s5);
+
+int totalAge = 0;
+
 foreach (Student s in students)
 {
     Console.WriteLine($"{s.Name} | {s.Age}");
+    totalAge = totalAge + s.Age;
 }
 
 Console.WriteLine($"Total: {students.Count}");
+Console.WriteLine($"Total age: {totalAge}");
 
 
 
