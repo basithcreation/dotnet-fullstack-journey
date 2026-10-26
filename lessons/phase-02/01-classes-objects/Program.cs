@@ -46,13 +46,50 @@ foreach (Student s in students)
 Console.WriteLine($"Total: {students.Count}");
 Console.WriteLine($"Total age: {totalAge}");
 
+List<Product> products = new List<Product>();
 
+Product p1 = new Product();
+p1.Name = "Pen";
+p1.Price = 0.250m;
+p1.Quantity = 10;
 
+products.Add(p1);
 
+Product p2 = new Product();
+p2.Name = "Notebook";
+p2.Price = 1.500m;
+p2.Quantity = 4;
 
+products.Add(p2);
+
+Product p3 = new Product();
+p3.Name = "Bag";
+p3.Price = 7.000m;
+p3.Quantity = 1;
+products.Add(p3);
+
+decimal totalPrice = 0;
+
+foreach (Product p in products)
+{
+    decimal lineValue = p.Price * p.Quantity;
+    totalPrice += lineValue;
+    Console.WriteLine($"{p.Name} | {p.Price} KD x {p.Quantity} = {lineValue} KD");
+}
+
+Console.WriteLine($"Products: {products.Count}");
+Console.WriteLine($"Total value: {totalPrice} KD");
 
 class Student
 {
     public string Name { get; set; } = "";
     public int Age { get; set; }
 }
+
+class Product
+{
+    public string Name { get; set; } = "";
+    public decimal Price { get; set; }
+    public int Quantity { get; set; }
+}
+
