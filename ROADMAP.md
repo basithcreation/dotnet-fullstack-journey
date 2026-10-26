@@ -121,8 +121,8 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [ ] SOLID principles: the simple idea of each one
 
 **🌿 Git skill (Phase 2): branches**
-- [ ] What a branch is; `git switch -c feature/...`, `git branch`, `git switch main`
-- [ ] Merge a branch into `main`; delete it after; branch naming (`feature/`, `fix/`)
+- [x] What a branch is; `git switch -c feature/...`, `git branch`, `git switch main`
+- [x] Merge a branch into `main`; delete it after; branch naming (`feature/`, `fix/`)
 - [ ] From now on: every project is built on its own branch, never directly on `main`
 
 **Project 04: Library Management.** `Book`, `Member`, `Loan`; `Member` base with `Student` / `Staff` children (different loan limits); interface `ILoanable`; late-fee calculation.
