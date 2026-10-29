@@ -6,8 +6,9 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **Tue 27 Oct (office PC, duty 10 AM–10 PM for 2 weeks, study in free gaps).** Start with a 3-question **warm-up** on Mon's weak spots: (1) class vs object/instance in the shipment form story, (2) what `new Product()` creates vs `new List<Product>()`, (3) a whole-output prediction with a `foreach` over 3 objects (they wrote only the newest line on Mon). Then **constructors, `init`, `required`** (the rest of the ROADMAP box "Classes, objects, constructors, properties"; tick it after this) → then **Shipment Tracker v2** on a branch (`feature/shipment-class`): the 4 parallel lists become one `List<Shipment>`. Give the expected output for the project steps
-- **Phase 2 plan (moved 1 day, 26 Oct; with 10–10 duty only gaps are free, so go by topics, not dates):** constructors/`init`/`required` + Tracker v2 → access modifiers + encapsulation → inheritance, `virtual`/`override`, polymorphism → abstraction, `abstract` class vs `interface`, `static`, `sealed` → `enum`, `record`, `struct` vs `class` → SOLID (~45 min) → **Project 04 Library Management** on a branch + the 4 pillars out loud in 2 min. Inheritance and abstraction are the hardest; 2 sessions each is OK. Phase 2 will spill into the first days of Nov, and that's fine
+- **Fri 30 Oct (home laptop, day off): ask how they feel first** (they still had a cold on Thu 29 and studied anyway, so they wouldn't lose hope). If still sick, a short session is a win. Order: (1) the home laptop setup check below (15 min), (2) **Shipment Tracker v2** on a branch (`feature/shipment-class`): the 4 parallel lists become one `List<Shipment>`, using what they learned Thu (a `Shipment` class, object initializer, `required`/`init` for the tracking number). Give the expected output for the project steps
+- **Book chapter 2.3 (constructors, `init`, object initializer, `required`) is NOT written yet.** Write it at the next "the day is over" together with that day's topics, then the journey/widget/build/republish steps
+- **Phase 2 timeline (updated Thu 29 Oct, 1 topic per study day because of the 10–10 duty + the cold):** Fri 30 setup + Tracker v2 → Sat 31 Tracker v2 finish + access modifiers/encapsulation → Sun 1 inheritance → Mon 2 `virtual`/`override` + polymorphism → Tue 3 abstraction + `abstract` class → Wed 4 `interface`, `static`, `sealed` → Thu 5 `enum`, `record`, `struct` vs `class` → Fri 6 SOLID (~45 min) → Sat 7 + Sun 8 **Project 04 Library Management** on a branch + the 4 pillars out loud in 2 min. **Phase 3 starts ~Mon 9 Nov** (about 8 days after the original 1 Nov). Sick days move it; that's OK
 - **Home laptop setup check is still not done.** Do it in the first 15 min of **Fri 30 Oct**: `git pull`, `dotnet --version` = 10.x, `dotnet run` in `projects/03-shipment-tracker`, `git config user.name` / `user.email`
 - **Small leftovers (only if there's a spare minute, don't make a session of it):** `citys` → `areas` in `31-string-helpers`; Shipment Tracker case 3 could use `FindIndex` too (README "add next" lists it; it can go into v2)
 - **Uncommitted at day-end (26 Oct):** `CLAUDE.md`, `PROGRESS.md`, `lessons/glossary.md`, `career/linkedin/02-phase-1-done.md`, the book (3 chapters, README, journey, template, index). The student commits them with one day-end commit (commands given in chat). Check `git status` first on Tue
@@ -44,6 +45,40 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - **They skip parts of a multi-part step and still commit** (Day 16: the `citys` rename, 4 polish fixes asked twice, `Program.cs` left out of a commit). When a step has more than 1 edit, give the **exact replacement lines**, and check the file + `git status` before moving on
   - **Commenting out old code is a habit** (5 times by Day 16). In examples files: keep old code running. In projects: delete it, Git keeps it
   - Day 16 pace (a full study day): 4 topics + a 93-line project in ~9.5 hrs (11:25 AM–8:15 PM, plus the day-end). A topic with exercise + quiz takes ~1–1.5 hrs, more than planned
+
+---
+
+## Day 19: Thu 29 Oct 2026 · Phase 2: constructors, `init`, object initializer, `required`
+
+(Office PC, 10–10 duty, **still sick with a cold**. Tue 27: sick, only a 3-question warm-up (2.5/3). Wed 28: no study. Thu: ~4:00–5:30 PM. They studied while sick "so I don't lose hope".)
+
+**Learned**
+
+- **Constructor**: same name as the class, no return type, runs on `new` (once per object). `Driver` example: both "New driver created" lines print first
+- **`init`** = set only during creation, then locked (like Dart `final`). Changing it later → **CS8852** (a compile error, not "thrown")
+- `double` drops trailing zeros: `3.0` prints `3`
+- **Object initializer**: `new Courier { Name = "Ali", Area = "Jahra" }` (like Dart named arguments)
+- **`required`** = must be set in the initializer, or **CS9035** (like Dart `required`). Without it, a forgotten property stays `""` silently
+- `required` and `init` are **two separate rules**: `required int Mileage { get; set; }` = must be given at creation, can still change
+
+**Built**
+
+- `lessons/phase-02/02-constructors` (`Driver`). Commit `Add Driver constructor example`
+- `lessons/phase-02/03-init-required`: `Parcel` (init), `Courier` (initializer), `Customer` (required). Commits `Add init-only property example`, `Add object initializer and required examples`
+- **Vehicle exercise** (same folder): `PlateNo`/`Model` required + init, `Mileage` += 250 → `85250 km`. Commit `Add vehicle exercise with required properties`
+- ✅ ROADMAP box "Classes, objects, constructors, properties" ticked
+
+**Quiz scores**
+
+- **Constructors / `init` / `required` quiz: 4/5** (Q2 ½: "calling the class" → say "when you write `new`"; Q4 ½: said "the box is required", it's the **property `Label`**). Q5 whole line ✅
+
+**Mistakes to remember (review these)**
+
+- **Skipped the guess twice** (ran the `Driver` code and the CS9035 test before guessing). Ask for the guess before giving the run command
+- Typed the example without ` kg` (3rd time the unit was dropped, but the exercise had the whole lines ✅)
+- Guessed `init` means "it will assign". `init` = **only at creation**
+- Said the editor "threw" an error. It's a **compile error** (red underline)
+- ✅ Wins: checked "files changed" on all 4 commits; deleted the broken line instead of commenting it out; whole lines in the exercise and Q5
 
 ---
 

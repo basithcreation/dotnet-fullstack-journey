@@ -112,7 +112,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 ## Phase 2: Object-Oriented Programming (Week 4 · 25–31 Oct 2026)
 🧸 **LKG story:** A class is a cookie cutter; an object is the cookie. Inheritance: a baby elephant gets its trunk from mama. An interface is a promise card: "anyone who signs this card MUST know how to `Borrow()`".
 
-- [ ] Classes, objects, constructors, properties (`get; set;`, `init`, `required`)
+- [x] Classes, objects, constructors, properties (`get; set;`, `init`, `required`)
 - [ ] Access modifiers: `public`, `private`, `protected`, `internal`
 - [ ] The 4 pillars: encapsulation, inheritance, polymorphism, abstraction
 - [ ] `abstract` class vs `interface` (a very common interview question)
