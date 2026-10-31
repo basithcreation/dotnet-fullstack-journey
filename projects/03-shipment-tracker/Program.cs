@@ -50,22 +50,13 @@ while (true)
                     }
                 }
                 break;
-
-
             case "3":
                 Console.Write("Tracking number: ");
                 string searchNumber = (Console.ReadLine() ?? "").Trim().ToUpper();
-                int index = numbers.IndexOf(searchNumber);
-                if (index < 0)
-                {
-                    Console.WriteLine($"Shipment {searchNumber} not found");
-                }
-                else
-                {
-                    Console.WriteLine($"{numbers[index]} | {receivers[index]} | {statuses[index]} | {createdTimes[index].ToString("dd MMM yyyy HH:mm")}");
-
-                }
+                Shipment found = FindShipment(shipments, searchNumber);
+                Console.WriteLine($"{found.Number} | {found.Receiver} | {found.Status} | {found.CreatedAt.ToString("dd MMM yyyy HH:mm")}");
                 break;
+
             case "4":
                 Console.Write("Tracking number: ");
                 string deliverNumber = (Console.ReadLine() ?? "").Trim().ToUpper();
@@ -84,6 +75,18 @@ while (true)
     }
 }
 
+static Shipment FindShipment(List<Shipment> list, string number)
+{
+
+    foreach (Shipment shipment in list)
+    {
+        if (shipment.Number == number)
+        {
+            return shipment;
+        }
+    }
+    throw new ArgumentException($"Shipment {number} not found");
+}
 
 static int FindIndex(List<string> list, string number)
 {
@@ -94,6 +97,7 @@ static int FindIndex(List<string> list, string number)
     }
     return found;
 }
+
 
 class Shipment
 {
