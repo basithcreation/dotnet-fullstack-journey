@@ -1,16 +1,5 @@
 ﻿
-
-
-
-List<string> numbers = new List<string>();
-List<string> receivers = new List<string>();
-List<string> statuses = new List<string>();
-List<DateTime> createdTimes = new List<DateTime>();
-
 List<Shipment> shipments = new List<Shipment>();
-
-
-
 Console.WriteLine("=== KPOST Shipment Tracker ===");
 
 while (true)
@@ -60,8 +49,8 @@ while (true)
             case "4":
                 Console.Write("Tracking number: ");
                 string deliverNumber = (Console.ReadLine() ?? "").Trim().ToUpper();
-                int deliverIndex = FindIndex(numbers, deliverNumber);
-                statuses[deliverIndex] = "Delivered";
+                Shipment toDeliver = FindShipment(shipments, deliverNumber);
+                toDeliver.Status = "Delivered";
                 Console.WriteLine($"{deliverNumber} marked as delivered");
                 break;
             default:
@@ -87,18 +76,6 @@ static Shipment FindShipment(List<Shipment> list, string number)
     }
     throw new ArgumentException($"Shipment {number} not found");
 }
-
-static int FindIndex(List<string> list, string number)
-{
-    int found = list.IndexOf(number);
-    if (found == -1)
-    {
-        throw new ArgumentException($"Shipment {number} not found");
-    }
-    return found;
-}
-
-
 class Shipment
 {
     public required string Number { get; init; }
