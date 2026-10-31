@@ -55,6 +55,7 @@ At the end of the course, this text becomes a real illustrated / animated book.
 ### Phase 2: Object-Oriented Programming (started Sun 25 Oct 2026)
 - [Chapter 2.1: Git branches, a photocopy of the notebook](phase-02/01-git-branches.md)
 - [Chapter 2.2: Classes, objects and properties](phase-02/02-classes-objects.md)
+- [Chapter 2.3: Constructors, `init`, object initializers and `required`](phase-02/03-constructors-init-required.md)
 
 *(More chapters are added as I finish each topic.)*
 

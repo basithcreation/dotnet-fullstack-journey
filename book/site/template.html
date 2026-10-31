@@ -570,6 +570,7 @@ const WIDGETS = {
   "1.26": [debugStepper],
   "2.1": [branchLines],
   "2.2": [formFolder],
+  "2.3": [formRules],
 };
 
 function lapCounter(stage) {
@@ -2911,6 +2912,67 @@ function formFolder(stage) {
   });
   draw();
   say("", "Add 3 products (the boxes are pre-filled), then press foreach: next round.");
+}
+
+function formRules(stage) {
+  const MODES = ["set", "init", "required + init", "required + set"];
+  const props = [
+    { name: "TrackingNo", type: "string", val: '"KP1001"', later: '"KP9999"', mode: 1, fill: true, change: false },
+    { name: "Weight", type: "double", val: "2.5", later: "3.0", mode: 0, fill: true, change: true },
+    { name: "Phone", type: "string", val: '"55512345"', later: '"55500000"', mode: 2, fill: false, change: false },
+  ];
+  stage.innerHTML =
+    props.map((p, i) =>
+      '<div class="control"><b style="min-width:6.5em">' + p.name + '</b>' +
+      '<button class="btn" data-a="mode" data-i="' + i + '"></button>' +
+      '<label class="check"><input type="checkbox" data-t="fill" data-i="' + i + '"> fill in <code>new { }</code></label>' +
+      '<label class="check"><input type="checkbox" data-t="change" data-i="' + i + '"> change later</label></div>').join("") +
+    '<div class="btn-row"><button class="btn primary" data-a="run">Build &amp; run</button></div>' +
+    '<div class="codebox"></div><div class="term"></div><div class="verdict"></div>';
+  const box = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  const isReq = (p) => p.mode >= 2, isInit = (p) => p.mode === 1 || p.mode === 2;
+  const show = (v, type) => type === "double" ? String(parseFloat(v)) : v.replace(/"/g, "");
+  function sync() {
+    stage.querySelectorAll('[data-a="mode"]').forEach((b) => { b.textContent = "rule: " + MODES[props[b.dataset.i].mode]; });
+    stage.querySelectorAll("input[data-t]").forEach((c) => { c.checked = props[c.dataset.i][c.dataset.t]; });
+  }
+  function code() {
+    const decl = props.map((p) => "    public " + (isReq(p) ? "required " : "") + p.type + " " + p.name + " { get; " + (isInit(p) ? "init" : "set") + "; }" +
+      (!isReq(p) && p.type === "string" ? ' = "";' : ""));
+    const filled = props.filter((p) => p.fill).map((p) => p.name + " = " + p.val);
+    const later = props.filter((p) => p.change).map((p) => "p." + p.name + " = " + p.later + ";");
+    return ["Parcel p = new Parcel { " + filled.join(", ") + " };"].concat(later,
+      ['Console.WriteLine($"{p.TrackingNo} | {p.Weight} kg | {p.Phone}");', "", "class Parcel", "{"], decl, ["}"]).join("\n");
+  }
+  function run() {
+    box.textContent = code();
+    const errors = [];
+    props.forEach((p) => { if (isReq(p) && !p.fill) errors.push("error CS9035: Required member 'Parcel." + p.name + "' must be set in the object initializer."); });
+    props.forEach((p) => { if (isInit(p) && p.change) errors.push("error CS8852: Init-only property 'Parcel." + p.name + "' can only be assigned in an object initializer or a constructor."); });
+    if (errors.length) {
+      term.textContent = "Build FAILED.\n" + errors.join("\n");
+      say("bad", "It doesn't compile, so nothing runs. " + (errors[0].includes("CS9035") ? "A required (★) box was left out of new { }. Tick 'fill' for it." : "An init box is locked after creation. Untick 'change later', or switch its rule to set."));
+      return;
+    }
+    const value = (p) => p.change ? show(p.later, p.type) : p.fill ? show(p.val, p.type) : p.type === "double" ? "0" : "";
+    term.textContent = value(props[0]) + " | " + value(props[1]) + " kg | " + value(props[2]);
+    const empty = props.filter((p) => !p.fill && !p.change);
+    if (empty.length) say("warn", "It compiled and ran, but " + empty.map((p) => p.name).join(" and ") + " silently stayed " + (empty.every((p) => p.type === "string") ? '""' : "empty / 0") + ". Make it required so C# catches this.");
+    else say("good", "It compiled and ran. Every box was filled" + (props.some((p) => p.change) ? ", and only the 'set' boxes were changed later." : "."));
+  }
+  stage.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.a === "mode") { const p = props[b.dataset.i]; p.mode = (p.mode + 1) % MODES.length; sync(); run(); }
+    if (b.dataset.a === "run") run();
+  });
+  stage.addEventListener("change", (e) => {
+    const c = e.target.closest("input[data-t]");
+    if (!c) return;
+    props[c.dataset.i][c.dataset.t] = c.checked; run();
+  });
+  sync(); run();
 }
 
 /* ---------------- start ---------------- */

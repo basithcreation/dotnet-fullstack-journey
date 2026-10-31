@@ -1,7 +1,6 @@
 ﻿Parcel p = new Parcel("KP1001", 2.5);
 Console.WriteLine($"{p.TrackingNo} weighs {p.Weight} kg");
 
-
 p.Weight = 3.0;
 Console.WriteLine($"{p.TrackingNo} weighs {p.Weight} kg");
 
@@ -10,6 +9,7 @@ Console.WriteLine($"{c.Name} delivers in {c.Area}");
 
 
 Customer cu = new Customer { Name = "Fatima", Phone = "55512345" };
+
 Console.WriteLine($"{cu.Name} | {cu.Phone}");
 
 Vehicle v1 = new Vehicle { PlateNo = "12-34567", Model = "Toyota Hiace", Mileage = 85000 };
@@ -18,6 +18,11 @@ Vehicle v2 = new Vehicle { PlateNo = "45-11223", Model = "Nissan Urvan", Mileage
 v1.Mileage = v1.Mileage + 250;
 Console.WriteLine($"{v1.PlateNo} | {v1.Model} | {v1.Mileage} km");
 Console.WriteLine($"{v2.PlateNo} | {v2.Model} | {v2.Mileage} km");
+
+Vehicle v = new Vehicle { PlateNo = "1", Model = "Hiace", Mileage = 100 };
+v.Mileage += 50;
+v.Mileage += 50;
+Console.WriteLine($"{v.Model}: {v.Mileage} km");
 
 class Courier
 {

@@ -233,6 +233,18 @@
       "quizzes": [
         { "name": "Classes and objects quiz", "score": 2.5, "max": 5 }
       ]
+    },
+    {
+      "day": 19,
+      "date": "2026-10-29",
+      "weekday": "Thu",
+      "phase": "Phase 2",
+      "title": "Constructors, init, object initializers and required (with a cold)",
+      "learned": ["Constructor: same name as the class, no return type, runs on new (once per object)", "init = set only during creation, then locked; changing it later is CS8852", "double drops trailing zeros: 3.0 prints 3", "Object initializer: new Courier { Name = \"Ali\", Area = \"Jahra\" }", "required = must be set in the initializer, or CS9035; without it a forgotten box stays \"\" silently", "required and init are separate rules: required int Mileage { get; set; } must be given but can change"],
+      "built": ["Driver constructor example", "Parcel (init), Courier (initializer) and Customer (required) examples", "KPOST van list exercise: required plate and model, mileage + 250 km"],
+      "quizzes": [
+        { "name": "Constructors, init and required quiz", "score": 4, "max": 5 }
+      ]
     }
   ]
 }

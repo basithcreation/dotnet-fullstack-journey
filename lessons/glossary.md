@@ -350,6 +350,18 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | one variable doing two jobs | **separate the concerns** (a local `lineValue` + the total) | "Use a local for the line value, keep the total separate." |
 | class above the top-level code | **CS8803** | "Move the class under the top-level statements." |
 
+## Phase 2: Constructors, `init`, `required`
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| the stamping machine (runs on `new`) | **constructor** (same name as the class, no return type) | "Pass the name and area through the constructor so a `Driver` can't be created empty." |
+| printed on the form, can't change | **init-only property** (`{ get; init; }`) | "Make `TrackingNo` init-only so nobody can change it after creation." |
+| fill the boxes by name in `{ }` | **object initializer** | "Use an object initializer instead of setting each property on its own line." |
+| the red star ★ box | **required member** (`required`) | "Mark `Phone` as required so nobody can create a customer without one." |
+| changed a printed box later | **CS8852** | "It doesn't compile, CS8852: you're assigning an init-only property outside the constructor." |
+| forgot a star box | **CS9035** | "CS9035: `Phone` is a required member and the initializer doesn't set it." |
+| `3.0` shows as `3` | **default `double` formatting** drops trailing zeros | "The default double formatting drops trailing zeros." |
+
 ## Errors and testing
 
 | Easy word | Real term | Team sentence |
