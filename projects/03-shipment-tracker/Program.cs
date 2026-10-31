@@ -7,6 +7,10 @@ List<string> receivers = new List<string>();
 List<string> statuses = new List<string>();
 List<DateTime> createdTimes = new List<DateTime>();
 
+List<Shipment> shipments = new List<Shipment>();
+
+
+
 Console.WriteLine("=== KPOST Shipment Tracker ===");
 
 while (true)
@@ -26,29 +30,28 @@ while (true)
         switch (choice)
         {
             case "1":
-                string number = $"KP{1001 + numbers.Count}";
-
+                string number = $"KP{1001 + shipments.Count}";
                 Console.Write("Receiver name: ");
                 string receiver = (Console.ReadLine() ?? "").Trim();
-                numbers.Add(number);
+                Shipment s = new Shipment { Number = number, Receiver = receiver };
+                shipments.Add(s);
                 Console.WriteLine($"Added {number}");
-                receivers.Add(receiver);
-                statuses.Add("In transit");
-                createdTimes.Add(DateTime.Now);
                 break;
             case "2":
-                if (numbers.Count == 0)
+                if (shipments.Count == 0)
                 {
                     Console.WriteLine("No shipments yet");
                 }
                 else
                 {
-                    for (int i = 0; i < numbers.Count; i++)
+                    foreach (Shipment shipment in shipments)
                     {
-                        Console.WriteLine($"{numbers[i]} | {receivers[i]} | {statuses[i]} | {createdTimes[i].ToString("dd MMM yyyy HH:mm")}");
+                        Console.WriteLine($"{shipment.Number} | {shipment.Receiver} | {shipment.Status} | {shipment.CreatedAt.ToString("dd MMM yyyy HH:mm")}");
                     }
                 }
                 break;
+
+
             case "3":
                 Console.Write("Tracking number: ");
                 string searchNumber = (Console.ReadLine() ?? "").Trim().ToUpper();
