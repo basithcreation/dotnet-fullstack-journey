@@ -91,3 +91,11 @@ static int FindIndex(List<string> list, string number)
     }
     return found;
 }
+
+class Shipment
+{
+    public required string Number { get; init; }
+    public required string Receiver { get; init; }
+    public string Status { get; set; } = "In transit";
+    public DateTime CreatedAt { get; init; } = DateTime.Now;
+}
