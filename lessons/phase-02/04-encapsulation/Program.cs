@@ -52,6 +52,15 @@ else
     Console.WriteLine("Already delivered");
 }
 
+if (parcel.MarkDelivered())
+{
+    Console.WriteLine("Delivered!");
+}
+else
+{
+    Console.WriteLine("Already delivered");
+}
+
 Console.WriteLine($"{parcel.Number} | {parcel.Weight} kg | {parcel.Status}");
 
 class CashBox
