@@ -245,6 +245,28 @@
       "quizzes": [
         { "name": "Constructors, init and required quiz", "score": 4, "max": 5 }
       ]
+    },
+    {
+      "day": 20,
+      "date": "2026-10-31",
+      "weekday": "Sat",
+      "phase": "Phase 2",
+      "title": "Shipment Tracker v2 on a branch + encapsulation",
+      "learned": ["One List<Shipment> replaces 4 parallel lists; foreach instead of for with i", "All case blocks in a switch share one scope (s vs shipment)", "A method can return a whole object; return inside a loop leaves the method, throw goes after the loop", "CS0161: not all code paths return a value; CS0165: unassigned local variable", "Classes are reference types: changing the found object changes the one in the list", "Encapsulation: { get; private set; } + Deposit / Withdraw doors with rules; CS0272 when writing a private setter from outside"],
+      "built": ["Shipment Tracker v2: Shipment class + FindShipment, 6 commits on feature/shipment-class, fast-forward merge, pushed", "Cash box encapsulation example (Deposit, Withdraw)", "Protected Parcel exercise (SetWeight, MarkDelivered); the 2nd MarkDelivered block is still to add"],
+      "quizzes": []
+    },
+    {
+      "day": 21,
+      "date": "2026-11-01",
+      "weekday": "Sun",
+      "phase": "Phase 2",
+      "title": "Encapsulation finished + inheritance started",
+      "learned": ["Calling MarkDelivered twice tests the guard clause: true then false", "A bool method prints nothing by itself; only Console.WriteLine prints", "Inheritance: class Driver : Employee (Dart extends), base and derived classes, the is-a test", "Inheritance goes one way: the parent can't use the child's members (CS1061)", "protected = same class + derived classes; outside code gets CS0122"],
+      "built": ["Parcel exercise finished (Delivered! then Already delivered)", "Employee / Driver inheritance example", "protected Salary + ShowBonus example"],
+      "quizzes": [
+        { "name": "Encapsulation quiz", "score": 3.5, "max": 5 }
+      ]
     }
   ]
 }

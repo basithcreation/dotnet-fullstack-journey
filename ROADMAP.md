@@ -102,7 +102,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 - [x] `git log --oneline`, `git diff`, `git status`: read what changed before you commit
 - [x] Undo mistakes: `git restore` (throw away edits), `git restore --staged` (un-add), `git revert` (undo a commit safely)
 
-**Projects:** 01 Number Guessing Game (Part 1) (✅ built Mon 12 Oct, ✅ v1.1 Thu 15 Oct: range check, guard clauses, `q` to quit) → 02 Console Calculator (Part 2) (✅ v1 Sat 17 Oct: double, zero guard, && operator guard; ✅ v2 Wed 21 Oct: `IsValidOperator` + `TryCalculate` methods) → 03 Shipment Tracker: add, list, mark delivered, search by tracking number (Part 3) (✅ built Sat 24 Oct: 93 lines, parallel lists, `IndexOf`, `FindIndex` throws + `try`/`catch`)
+**Projects:** 01 Number Guessing Game (Part 1) (✅ built Mon 12 Oct, ✅ v1.1 Thu 15 Oct: range check, guard clauses, `q` to quit) → 02 Console Calculator (Part 2) (✅ v1 Sat 17 Oct: double, zero guard, && operator guard; ✅ v2 Wed 21 Oct: `IsValidOperator` + `TryCalculate` methods) → 03 Shipment Tracker: add, list, mark delivered, search by tracking number (Part 3) (✅ built Sat 24 Oct: 93 lines, parallel lists, `IndexOf`, `FindIndex` throws + `try`/`catch`) (✅ v2 Sat 31 Oct: `Shipment` class, one `List<Shipment>`, `FindShipment`, built on a branch and merged)
 ✅ **Done when:** you can write a 100-line console app with loops, methods and error handling from scratch.
 📣 **LinkedIn:** "3 things in C# that surprised me as a Dart developer"
 📄 **Resume:** project bullet for the Shipment Tracker.
@@ -113,8 +113,8 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 🧸 **LKG story:** A class is a cookie cutter; an object is the cookie. Inheritance: a baby elephant gets its trunk from mama. An interface is a promise card: "anyone who signs this card MUST know how to `Borrow()`".
 
 - [x] Classes, objects, constructors, properties (`get; set;`, `init`, `required`)
-- [ ] Access modifiers: `public`, `private`, `protected`, `internal`
-- [ ] The 4 pillars: encapsulation, inheritance, polymorphism, abstraction
+- [ ] Access modifiers: `public`, `private`, `protected`, `internal` (▶️ `public` / `private set` + encapsulation done, quiz 3.5/5 on 1 Nov; `protected` taught 1 Nov with inheritance; only `internal` left)
+- [ ] The 4 pillars: encapsulation, inheritance, polymorphism, abstraction (▶️ encapsulation ✅, inheritance started 1 Nov)
 - [ ] `abstract` class vs `interface` (a very common interview question)
 - [ ] `static`, `sealed`, `virtual` / `override`
 - [ ] `struct` vs `class`, `record` types, `enum`
@@ -123,7 +123,7 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 **🌿 Git skill (Phase 2): branches**
 - [x] What a branch is; `git switch -c feature/...`, `git branch`, `git switch main`
 - [x] Merge a branch into `main`; delete it after; branch naming (`feature/`, `fix/`)
-- [ ] From now on: every project is built on its own branch, never directly on `main`
+- [x] From now on: every project is built on its own branch, never directly on `main` (Tracker v2, 31 Oct)
 
 **Project 04: Library Management.** `Book`, `Member`, `Loan`; `Member` base with `Student` / `Staff` children (different loan limits); interface `ILoanable`; late-fee calculation.
 ✅ **Done when:** you can explain the 4 pillars with your own example, out loud, in 2 minutes.

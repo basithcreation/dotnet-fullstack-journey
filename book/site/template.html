@@ -571,6 +571,8 @@ const WIDGETS = {
   "2.1": [branchLines],
   "2.2": [formFolder],
   "2.3": [formRules],
+  "2.4": [folderSearch],
+  "2.5": [cashBoxLock],
 };
 
 function lapCounter(stage) {
@@ -2973,6 +2975,104 @@ function formRules(stage) {
     props[c.dataset.i][c.dataset.t] = c.checked; run();
   });
   sync(); run();
+}
+
+function folderSearch(stage) {
+  const forms = [
+    { n: "KP1001", r: "Ali", s: "In transit" },
+    { n: "KP1002", r: "Sara", s: "In transit" },
+    { n: "KP1003", r: "Omar", s: "In transit" },
+  ];
+  let target = "KP1002", found = null, busy = false;
+  stage.innerHTML =
+    '<div class="control"><label>Search for</label>' +
+    ["KP1001", "KP1002", "KP1003", "KP9999"].map((n) => '<button class="btn" data-t="' + n + '">' + n + "</button>").join("") + "</div>" +
+    '<div class="btn-row"><button class="btn primary" data-a="find">FindShipment</button><button class="btn" data-a="deliver">toDeliver.Status = "Delivered"</button><button class="btn" data-a="reset">Reset</button></div>' +
+    '<div class="codebox"></div><div class="term"></div><div class="verdict"></div>';
+  const box = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  const folder = (mark) => forms.map((f, i) => (i === mark ? "👉 " : "   ") + f.n + " | " + f.r + " | " + f.s).join("\n");
+  function sync() { stage.querySelectorAll("[data-t]").forEach((b) => b.classList.toggle("primary", b.dataset.t === target)); }
+  function show() { box.textContent = "List<Shipment> shipments  (the folder)\n" + folder(-1); }
+  async function find() {
+    if (busy) return;
+    busy = true; found = null; const log = [];
+    for (let i = 0; i < forms.length; i++) {
+      const hit = forms[i].n === target;
+      log.push("round " + (i + 1) + ": " + forms[i].n + ' == "' + target + '" → ' + hit);
+      box.textContent = "List<Shipment> shipments  (the folder)\n" + folder(i);
+      term.textContent = log.join("\n");
+      await new Promise((r) => setTimeout(r, 650));
+      if (hit) {
+        found = forms[i];
+        term.textContent = log.concat(["return shipment → leave the method (no more rounds)"]).join("\n");
+        say("good", "Found in " + (i + 1) + " round" + (i ? "s" : "") + ". The throw after the loop never runs. Now try Mark delivered.");
+        busy = false; return;
+      }
+    }
+    term.textContent = log.concat(["loop finished, no match", "throw new ArgumentException(\"Shipment " + target + " not found\")", "Error: Shipment " + target + " not found"]).join("\n");
+    say("bad", "No form matched, so the loop ran all 3 rounds and reached the throw. The catch prints the error.");
+    busy = false;
+  }
+  stage.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b || busy) return;
+    if (b.dataset.t) { target = b.dataset.t; found = null; sync(); show(); term.textContent = ""; say("", "Press FindShipment."); }
+    if (b.dataset.a === "find") find();
+    if (b.dataset.a === "deliver") {
+      if (!found) { say("warn", "Find a shipment first: toDeliver only exists after FindShipment returns one."); return; }
+      found.s = "Delivered"; show();
+      term.textContent = 'Shipment toDeliver = FindShipment(shipments, "' + found.n + '");\ntoDeliver.Status = "Delivered";';
+      say("good", "The form inside the folder changed too. toDeliver points to the same object: a class is a reference type, not a photocopy.");
+    }
+    if (b.dataset.a === "reset") { forms.forEach((f) => (f.s = "In transit")); found = null; show(); term.textContent = ""; say("", "Reset. Pick a number and press FindShipment."); }
+  });
+  sync(); show(); say("", "Pick a number and press FindShipment.");
+}
+
+function cashBoxLock(stage) {
+  let priv = true, balance = 0;
+  const lines = [];
+  stage.innerHTML =
+    '<div class="control"><b>Setter</b><button class="btn" data-a="mode"></button></div>' +
+    '<div class="btn-row">' +
+    '<button class="btn" data-a="dep" data-v="20.5">Deposit(20.5m)</button>' +
+    '<button class="btn" data-a="dep" data-v="-500">Deposit(-500)</button>' +
+    '<button class="btn" data-a="wd" data-v="5">Withdraw(5)</button>' +
+    '<button class="btn" data-a="wd" data-v="100">Withdraw(100)</button>' +
+    '<button class="btn" data-a="hack">box.Balance = -500 (outside)</button>' +
+    '<button class="btn" data-a="reset">Reset</button></div>' +
+    '<div class="codebox"></div><div class="term"></div><div class="verdict"></div>';
+  const box = $(".codebox", stage), term = $(".term", stage), verdict = $(".verdict", stage);
+  const say = (kind, text) => { verdict.className = "verdict " + kind; verdict.textContent = text; };
+  const fmt = (v) => String(Math.round(v * 100) / 100);
+  function render() {
+    $('[data-a="mode"]', stage).textContent = priv ? "{ get; private set; }" : "{ get; set; }";
+    box.textContent = "class CashBox\n{\n    public decimal Balance " + (priv ? "{ get; private set; }" : "{ get; set; }") + "\n    public void Deposit(decimal amount) { if (amount <= 0) return; ... }\n    public bool Withdraw(decimal amount) { if (amount <= 0 || amount > Balance) return false; ... }\n}\n\n💰 Balance: " + fmt(balance) + " KD";
+    term.textContent = lines.slice(-6).join("\n");
+  }
+  stage.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const v = parseFloat(b.dataset.v);
+    if (b.dataset.a === "mode") { priv = !priv; say("", priv ? "Locked: only the class's own methods can change Balance." : "Unlocked: any code can write any number into Balance."); }
+    if (b.dataset.a === "dep") {
+      if (v <= 0) { lines.push("Deposit(" + v + ") → Deposit must be more than 0"); say("warn", "The guard clause refused it. Balance didn't change."); }
+      else { balance += v; lines.push("Deposit(" + v + ") → Balance: " + fmt(balance) + " KD"); say("good", "The slot accepted it."); }
+    }
+    if (b.dataset.a === "wd") {
+      const ok = !(v <= 0 || v > balance);
+      lines.push("Withdraw(" + v + "): " + v + " <= 0 is " + (v <= 0) + ", " + v + " > " + fmt(balance) + " is " + (v > balance) + " → " + (ok ? "true" : "false"));
+      if (ok) { balance -= v; say("good", "Paid. Balance: " + fmt(balance) + " KD"); } else say("warn", "Withdraw failed: one true side of || is enough to refuse.");
+    }
+    if (b.dataset.a === "hack") {
+      if (priv) { lines.push("error CS0272: The property or indexer 'CashBox.Balance' cannot be used in this context because the set accessor is inaccessible"); say("bad", "Compile error. The private setter blocks outside code. That's encapsulation."); }
+      else { balance = -500; lines.push("box.Balance = -500 → Balance: -500 KD"); say("bad", "It worked, and that's the problem: the data is broken. Switch the setter to private set."); }
+    }
+    if (b.dataset.a === "reset") { balance = 0; lines.length = 0; say("", "Reset."); }
+    render();
+  });
+  render(); say("", "Try the buttons, then flip the setter and try the outside line again.");
 }
 
 /* ---------------- start ---------------- */

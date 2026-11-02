@@ -362,6 +362,46 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | forgot a star box | **CS9035** | "CS9035: `Phone` is a required member and the initializer doesn't set it." |
 | `3.0` shows as `3` | **default `double` formatting** drops trailing zeros | "The default double formatting drops trailing zeros." |
 
+## Phase 2: Shipment Tracker v2
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| 4 notebooks → 1 folder of forms | **replace parallel lists with a list of objects** | "We replaced the parallel lists with a single `List<Shipment>`." |
+| one method for both cases | **extract a helper method** | "I extracted the lookup into a helper so both cases reuse it." |
+| flip through form by form | **linear search** | "It's a linear search, fine for a small list." |
+| you get the real form, not a copy | **reference type** | "Classes are reference types, so updating the returned object updates the one in the list." |
+| all cases in one room | **the switch shares one scope** | "Rename it, `s` is already declared in case 1." |
+| a path with no return | **CS0161** (not all code paths return a value) | "CS0161: move the throw after the loop." |
+| a variable with no value yet | **CS0165** (use of unassigned local variable) | "`found` is unassigned on the default path." |
+| `main` just moves forward | **fast-forward merge** | "It was a fast-forward, no merge commit." |
+
+## Phase 2: Access modifiers and encapsulation
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| the locked inside | **`private`** (only inside the class) | "Make that private, nothing outside needs it." |
+| open to everyone | **`public`** | "Only the methods are public, the data isn't." |
+| read the screen, can't write on it | **private setter** (`{ get; private set; }`) | "`Balance` has a private setter, so it only changes through `Deposit`." |
+| the doors of the class | **public API** | "Keep the public API small." |
+| the slot that checks | **validation** | "`SetWeight` validates the range before saving." |
+| the whole idea | **encapsulation** | "Encapsulation means the class protects its own data." |
+| wrote into the locked box | **CS0272** (set accessor is inaccessible) | "CS0272: the setter is private, use `Deposit`." |
+| F2 | **rename symbol** | "Use F2 so every reference is renamed." |
+| replace vs add | **assign** vs **accumulate** | "`SetWeight` assigns the value, it doesn't accumulate." |
+
+## Phase 2: Inheritance and `protected`
+
+| Easy word | Real term | Team sentence |
+|---|---|---|
+| staff form + an extra box | **inheritance** | "Driver uses inheritance to reuse Employee's properties." |
+| the main form | **base class** (parent) | "Employee is the base class." |
+| the form with the extra box | **derived class** (child), `class Driver : Employee` | "Driver derives from Employee." |
+| a driver is a staff member | **"is-a" relationship** | "Use inheritance only when there's a real is-a relationship." |
+| the family door | **`protected`** (same class + derived classes) | "Make Salary protected so derived classes can use it." |
+| that box doesn't exist | **CS1061** (no definition for that member) | "CS1061: the base class doesn't know about VanNumber." |
+| the box exists but is locked | **CS0122** (inaccessible due to its protection level) | "CS0122: Salary is protected, you can't read it from outside." |
+| doing it twice = doing it once | **idempotent** | "MarkDelivered is safe to call twice, the guard clause stops the 2nd one." |
+
 ## Errors and testing
 
 | Easy word | Real term | Team sentence |

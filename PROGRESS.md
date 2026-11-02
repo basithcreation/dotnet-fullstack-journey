@@ -6,13 +6,13 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **Fri 30 Oct (home laptop, day off): ask how they feel first** (they still had a cold on Thu 29 and studied anyway, so they wouldn't lose hope). If still sick, a short session is a win. Order: (1) the home laptop setup check below (15 min), (2) **Shipment Tracker v2** on a branch (`feature/shipment-class`): the 4 parallel lists become one `List<Shipment>`, using what they learned Thu (a `Shipment` class, object initializer, `required`/`init` for the tracking number). Give the expected output for the project steps
-- **Naming update:** next lesson folder is `lessons/phase-02/04-...`; book chapter 2.3 = `03-constructors-init-required.md` (with the `formRules` widget), so the next chapter is `book/phase-02/04-...` (2.4)
-- **Phase 2 timeline (updated Thu 29 Oct, 1 topic per study day because of the 10–10 duty + the cold):** Fri 30 setup + Tracker v2 → Sat 31 Tracker v2 finish + access modifiers/encapsulation → Sun 1 inheritance → Mon 2 `virtual`/`override` + polymorphism → Tue 3 abstraction + `abstract` class → Wed 4 `interface`, `static`, `sealed` → Thu 5 `enum`, `record`, `struct` vs `class` → Fri 6 SOLID (~45 min) → Sat 7 + Sun 8 **Project 04 Library Management** on a branch + the 4 pillars out loud in 2 min. **Phase 3 starts ~Mon 9 Nov** (about 8 days after the original 1 Nov). Sick days move it; that's OK
-- **Home laptop setup check is still not done.** Do it in the first 15 min of **Fri 30 Oct**: `git pull`, `dotnet --version` = 10.x, `dotnet run` in `projects/03-shipment-tracker`, `git config user.name` / `user.email`
-- **Small leftovers (only if there's a spare minute, don't make a session of it):** `citys` → `areas` in `31-string-helpers`; Shipment Tracker case 3 could use `FindIndex` too (README "add next" lists it; it can go into v2)
-- **Uncommitted at day-end (26 Oct):** `CLAUDE.md`, `PROGRESS.md`, `lessons/glossary.md`, `career/linkedin/02-phase-1-done.md`, the book (3 chapters, README, journey, template, index). The student commits them with one day-end commit (commands given in chat). Check `git status` first on Tue
-- **Naming:** lessons are `lessons/phase-XX/NN-kebab-name`. Phase 2 so far: `lessons/phase-02/01-classes-objects` (the Product exercise is inside it too). Next lesson folder: `02-...` (list the folder first). Book: Phase 1 ends at **1.26** (debugging); Phase 2 has **2.1** Git branches and **2.2** classes/objects; the next chapter is `book/phase-02/03-...` (2.3). Projects: Tracker v2 stays in `projects/03-shipment-tracker` (on a branch); the next new project is `projects/04-library-management`. List the folder before naming anything
+- **Mon 2 Nov (office PC, 10–10 duty): ask about the surprise they mentioned at the end of Sun 1 Nov, and how the cold is.** Order: (1) **finish the `private` vs `protected` test** in `lessons/phase-02/05-inheritance/Program.cs`: first **delete line 4** `Console.WriteLine(d.Salary);` (still there, so the file doesn't compile: CS0122), then change `protected decimal Salary` → `private decimal Salary`, predict, run (expect **CS0122** inside `ShowBonus`), change it back to `protected`, run (`Ali gets a bonus of 40 KD`), commit with the full path. (2) Teach **base constructors** (`: base(...)`), a child calling the parent's constructor. (3) Inheritance exercise (KPOST idea: `Parcel` → `ExpressParcel` with an extra fee, different from the Employee/Driver example) + **inheritance quiz** → tick ROADMAP "Access modifiers" (only `internal` is left: one line, "visible inside the same project") → book chapter `book/phase-02/06-inheritance.md`. (4) If time: `virtual` / `override` (Mon's planned topic)
+- **Phase 2 timeline (updated Sat 31 Oct):** Sun 1 quiz + inheritance (+ `protected`) → Mon 2 `virtual`/`override` + polymorphism → Tue 3 abstraction + `abstract` class → Wed 4 `interface`, `static`, `sealed` → Thu 5 `enum`, `record`, `struct` vs `class` → Fri 6 SOLID (~45 min) + the home laptop setup check → Sat 7 + Sun 8 **Project 04 Library Management** on a branch + the 4 pillars out loud in 2 min. **Phase 3 starts ~Mon 9 Nov**
+- **Home laptop setup check is still not done** (Fri 30 was skipped). Do it on Fri 6 Nov, the first 15 min: `git pull`, `dotnet --version` = 10.x, `dotnet run` in `projects/03-shipment-tracker`, `git config user.name` / `user.email`
+- **Git rule (31 Oct):** ALWAYS give commit commands **from the root folder with the full path** (`git add projects/03-shipment-tracker/Program.cs`). Mixing "you're in the project folder" and "from the root" made 3 commits fail today
+- **Untracked:** `career/linkedin/03.png`. Ask what it is before committing anything with it (public repo)
+- **Uncommitted at day-end (1 Nov):** `CLAUDE.md`, `PROGRESS.md`, `ROADMAP.md`, `lessons/glossary.md`, the book (chapters 2.4 + 2.5 from 31 Oct, README, journey, template, index). One day-end commit, then push. Do NOT commit `05-inheritance/Program.cs` until line 4 is deleted (it doesn't compile)
+- **Naming:** lessons `lessons/phase-02/01-classes-objects`, `02-constructors`, `03-init-required`, `04-encapsulation`, `05-inheritance` → next `06-...`. Book Phase 2: 2.1 Git branches, 2.2 classes, 2.3 constructors/init/required, 2.4 Tracker v2, 2.5 encapsulation → next `book/phase-02/06-inheritance.md` (write it when inheritance is finished). Projects: next new one is `projects/04-library-management`. List the folder before naming anything
 - **Claude writes** READMEs, LinkedIn drafts and book chapters; the student reviews them in 2 min. The student types all code
 - **Work dates:** the student's own resumes and LinkedIn are the source of truth for job dates (confirmed 15 and 17 Oct). The Day 9 "Career" notes below were a rough chat story. Don't use them to question the dates
 - **Career context (told on Day 9):** KPOST's backend is ASP.NET, so from Phase 6 suggest they ask their senior to let them write real endpoints. Phase 14 main project = **KACT** charity app rebuild (see ROADMAP Phase 14). Private career plans are in Claude's local memory only, never in this public repo
@@ -45,6 +45,89 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - **They skip parts of a multi-part step and still commit** (Day 16: the `citys` rename, 4 polish fixes asked twice, `Program.cs` left out of a commit). When a step has more than 1 edit, give the **exact replacement lines**, and check the file + `git status` before moving on
   - **Commenting out old code is a habit** (5 times by Day 16). In examples files: keep old code running. In projects: delete it, Git keeps it
   - Day 16 pace (a full study day): 4 topics + a 93-line project in ~9.5 hrs (11:25 AM–8:15 PM, plus the day-end). A topic with exercise + quiz takes ~1–1.5 hrs, more than planned
+
+---
+
+## Day 21: Sun 1 Nov 2026 · Phase 2: encapsulation finished + inheritance started
+
+(Office PC, 10–10 duty. ~6:50 PM–10:10 PM in free gaps.)
+
+**Learned**
+
+- Calling `MarkDelivered()` twice tests the **guard clause**: 1st call → `true` (`Delivered!`), 2nd call → `false` (`Already delivered`)
+- **A `bool` method prints nothing by itself.** Only `Console.WriteLine` prints (quiz Q5 mistake)
+- **Inheritance:** `class Driver : Employee` (Dart `extends`). **Base class** / **derived class**; the "is-a" test
+- Inheritance goes **one way**: the child gets the parent's members, the parent gets nothing from the child → **CS1061** (`Employee` has no `VanNumber`)
+- **`protected`** = the same class + derived classes. A child can use `Salary`; outside code can't → **CS0122** (inaccessible due to its protection level)
+- CS1061 = "doesn't exist" vs CS0122 = "exists but locked"
+
+**Built**
+
+- `lessons/phase-02/04-encapsulation`: added the 2nd `MarkDelivered` block. Commit `Test MarkDelivered twice in parcel exercise`
+- `lessons/phase-02/05-inheritance`: Employee/Driver example. Commit `Add Employee and Driver inheritance example` (2 files ✅). Then the `protected Salary` + `ShowBonus` example (not committed yet; line 4 still has the CS0122 test)
+
+**Quiz scores**
+
+- **Encapsulation quiz: 3.5/5.** Q1–3 ✅, Q4 ½ (the `||` was right but didn't say `SetWeight` returns `false`), Q5 ❌ (wrote lines from their own Program.cs `if` blocks, and `10 - 4 = 16`)
+- Follow-up check (`Deposit(-5)` then `Deposit(8)`): missed the `Deposit must be more than 0` line on the 1st try, fixed after one hint ✅
+- Inheritance predictions: 3/3 ✅ (inherited `SayHello`, CS1061, CS0122), all with the right reasons
+
+**Mistakes to remember (review these)**
+
+- **Mixed up the quiz code with their own file:** wrote `Paid 4 KD` / `Withdraw failed`, which only their `if` blocks print. Rule: only `Console.WriteLine` prints; read ONLY the code in the question
+- **Minus became plus:** `10 - 4 = 16`. Keep asking them to write each sum out and check it a second way
+- **Forgot the last step of a question:** worked out `true` but didn't turn it into "returns `false`". Ask: "so what does the method return?"
+- **Missed a printing line in a guard clause** (`Deposit(-5)` prints). Ask: "which calls print something?"
+- "I don't know what to put here" on a fill-in template that was an exact copy of existing lines. When the answer is a copy, say "copy lines X–Y"
+- ✅ Wins: every inheritance prediction right, with the reason; ran every step; both commits right the first time (full paths from the root worked)
+
+**Career**
+
+- Nothing today
+
+---
+
+## Day 20: Sat 31 Oct 2026 · Phase 2: Shipment Tracker v2 + encapsulation
+
+(Office PC, 10–10 duty, still getting over the cold. Fri 30: no study. Sat: ~2:00 PM–10:20 PM in free gaps.)
+
+**Learned**
+
+- **One `List<Shipment>`** replaces the 4 parallel lists; `foreach` instead of `for` with `i`
+- All `case` blocks in one `switch` share **one scope** (case 1 has `s`, so the loop variable is `shipment`)
+- A method can **return a whole object** (`static Shipment FindShipment(...)`); `return` inside a loop leaves the method; the `throw` goes **after** the loop
+- **CS0161** "not all code paths return a value" (throw was inside the loop); **CS0165** "use of unassigned local variable" (`found` pasted into `default:`)
+- **Reference types:** changing `toDeliver.Status` changed the shipment inside the list
+- **Encapsulation:** `{ get; private set; }` + `Deposit` (guard clause) + `bool Withdraw`; **CS0272** when outside code writes a private setter
+- Assign vs accumulate: `Weight = kg;` replaces, `Weight = Weight + kg;` adds (2.5 then 3 → 5.5 ❌)
+
+**Built**
+
+- **Shipment Tracker v2** on `feature/shipment-class`: commits `Add Shipment class`, `Store shipments as objects for add and list`, `Search shipments with FindShipment method`, `Mark delivered with FindShipment and remove old lists`, `Update README for Shipment Tracker v2` → fast-forward merge into `main`, pushed, branch deleted. 84 lines (from 93)
+- Also committed Thu's day-end files: `Add Day 19 book chapter and glossary`
+- `lessons/phase-02/04-encapsulation`: cash box (`Add cash box encapsulation example`, `Fix spelling in cash box example`, `Add Withdraw method to cash box`) + **protected Parcel exercise** (`Add protected parcel exercise`). ⚠️ The 2nd `MarkDelivered` block is missing (not saved), so `Already delivered` doesn't print yet
+
+**Quiz scores**
+
+- Check question (search KP1002 in 3 forms): rounds + `return` + `throw` ✅ (after a half-filled trace table)
+- Cash box guesses: both whole-line guesses ✅. `Withdraw(100)`: side 1 ✅, side 2 ❌ (couldn't do `20.5 - 5`)
+- **Encapsulation quiz: not taken yet** (time ran out) → Sun warm-up
+
+**Mistakes to remember (review these)**
+
+- **`git add` from the root with a short path (3 times)** → "no changes added to commit". Fix: Claude always gives full paths from the root
+- **Skipped steps in a list (5 times):** the `4 → kp1001` input, `3` before `KP9999`, `switch` + `merge` before `push`, the CS0272 test, copying the 2nd `MarkDelivered` block. One step per message, and check the output against the expected one
+- `throw` **inside** the loop (the "which lines repeat?" mistake again)
+- `Weight = Weight + kg` (an accumulator where an assignment was needed)
+- Printed the **words** `"Number | Weight kg | Status"` instead of the values
+- Dropped ` kg` (4th time a unit went missing)
+- Typos in names and text: `Shipmwnt`, `Deposite`, `more then`. F2 renames a symbol everywhere
+- Skipped the check question 4 times before answering. A half-filled table worked
+- ✅ Wins: all blanks right first time in Tracker v2; perfect `return`-in-loop trace; `private set` + `MarkDelivered` written alone; no dead code left; the full branch → merge → push workflow
+
+**Career**
+
+- Tracker v2 is pushed with a new README (good for the resume bullet later: "refactored parallel lists into a class")
 
 ---
 
