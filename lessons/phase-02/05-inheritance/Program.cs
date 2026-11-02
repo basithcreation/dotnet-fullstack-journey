@@ -1,28 +1,17 @@
 ﻿Driver d = new Driver();
 d.Name = "Ali";
-d.StaffId = 101;
-d.VanNumber = "K-55";
-
-d.SayHello();
-d.Drive();
-
+d.ShowBonus();
 class Employee
 {
     public string Name { get; set; } = "";
-    public int StaffId { get; set; }
-
-    public void SayHello()
-    {
-        Console.WriteLine($"Hi, I am {Name} (ID {StaffId})");
-    }
+    protected decimal Salary { get; set; } = 400m;
 }
 
 class Driver : Employee
 {
-    public string VanNumber { get; set; } = "";
-
-    public void Drive()
+    public void ShowBonus()
     {
-        Console.WriteLine($"{Name} is driving van {VanNumber}");
+        decimal bonus = Salary / 10;
+        Console.WriteLine($"{Name} gets a bonus of {bonus} KD");
     }
 }
