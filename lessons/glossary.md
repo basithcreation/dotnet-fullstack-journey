@@ -401,6 +401,16 @@ Format: easy word I learned with → **real term** → what a teammate would say
 | that box doesn't exist | **CS1061** (no definition for that member) | "CS1061: the base class doesn't know about VanNumber." |
 | the box exists but is locked | **CS0122** (inaccessible due to its protection level) | "CS0122: Salary is protected, you can't read it from outside." |
 | doing it twice = doing it once | **idempotent** | "MarkDelivered is safe to call twice, the guard clause stops the 2nd one." |
+| the private room (not even the children) | **`private`** blocks derived classes too | "Salary is private, so even Driver gets CS0122. Make it protected." |
+| traffic registers the van first | **base constructor** (`: base(plate)`) | "The Van constructor chains to the base constructor with the plate." |
+| passing the plate up to the parent | **constructor chaining** | "Pass the plate up to the base class, or you get CS7036." |
+| the parent needs a plate, nobody gave one | **CS7036** (no argument for a required parameter) | "CS7036: Van must call base(plate)." |
+| `new(...)` without writing the type again | **target-typed `new`** | "Use target-typed new, the type is already on the left." |
+| same name hides the property | **shadowing** (a parameter hides a property) | "The parameter shadows the property, rename it to camelCase." |
+| small first letter / big first letter | **camelCase** (parameters, locals) / **PascalCase** (properties, methods, classes) | "Parameters are camelCase in C#." |
+| the property forgot its value | **CS8618** (non-nullable property not set when the constructor ends) | "CS8618: the constructor never assigns Number." |
+| visible in this project only | **`internal`** | "Make it internal, only this project needs it." |
+| a fixed value for the parent | **pass a constant to the base constructor** (`: base(100)`) | "BigBox passes 100 to the base constructor." |
 
 ## Errors and testing
 

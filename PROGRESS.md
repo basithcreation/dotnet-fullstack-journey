@@ -6,12 +6,12 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
 
 ## ▶️ Next session starts here
 
-- **Mon 2 Nov (office PC, 10–10 duty): ask about the surprise they mentioned at the end of Sun 1 Nov, and how the cold is.** Order: (1) **finish the `private` vs `protected` test** in `lessons/phase-02/05-inheritance/Program.cs`: first **delete line 4** `Console.WriteLine(d.Salary);` (still there, so the file doesn't compile: CS0122), then change `protected decimal Salary` → `private decimal Salary`, predict, run (expect **CS0122** inside `ShowBonus`), change it back to `protected`, run (`Ali gets a bonus of 40 KD`), commit with the full path. (2) Teach **base constructors** (`: base(...)`), a child calling the parent's constructor. (3) Inheritance exercise (KPOST idea: `Parcel` → `ExpressParcel` with an extra fee, different from the Employee/Driver example) + **inheritance quiz** → tick ROADMAP "Access modifiers" (only `internal` is left: one line, "visible inside the same project") → book chapter `book/phase-02/06-inheritance.md`. (4) If time: `virtual` / `override` (Mon's planned topic)
-- **Phase 2 timeline (updated Sat 31 Oct):** Sun 1 quiz + inheritance (+ `protected`) → Mon 2 `virtual`/`override` + polymorphism → Tue 3 abstraction + `abstract` class → Wed 4 `interface`, `static`, `sealed` → Thu 5 `enum`, `record`, `struct` vs `class` → Fri 6 SOLID (~45 min) + the home laptop setup check → Sat 7 + Sun 8 **Project 04 Library Management** on a branch + the 4 pillars out loud in 2 min. **Phase 3 starts ~Mon 9 Nov**
+- **Wed 4 Nov (office PC, 10–10 duty).** ✅ Inheritance is finished (Tue 3 Nov: base constructors, ExpressParcel exercise, quiz 3/5, `internal`, ROADMAP "Access modifiers" ticked, book chapter 2.6 written). Start with a **2-minute warm-up on the quiz misses**: (a) CS7036 (missing **argument**) vs CS1061 (missing **member**): show `new Van()` and `e.VanNumber`, ask which is which; (b) "what does `protected` allow that `private` doesn't?". Then teach **`virtual` / `override`** + polymorphism (new folder: list `lessons/phase-02` first → `06-...`). KPOST idea: `Parcel.GetFee()` is `virtual`, `ExpressParcel` overrides it (reuse the ExpressParcel they know, but the examples must be different from the exercise). Run every example in the scratchpad first
+- **Phase 2 timeline (updated Tue 3 Nov, ~2 days behind):** Wed 4 `virtual`/`override` + polymorphism → Thu 5 abstraction + `abstract` class + `interface` → Fri 6 home laptop check (15 min) + `static`, `sealed` → Sat 7 `enum`, `record`, `struct` vs `class` + SOLID (short) → Sun 8 + Mon 9 **Project 04 Library Management** on a branch + the 4 pillars out loud in 2 min. **Phase 3 starts ~Tue 10 Nov**
 - **Home laptop setup check is still not done** (Fri 30 was skipped). Do it on Fri 6 Nov, the first 15 min: `git pull`, `dotnet --version` = 10.x, `dotnet run` in `projects/03-shipment-tracker`, `git config user.name` / `user.email`
 - **Git rule (31 Oct):** ALWAYS give commit commands **from the root folder with the full path** (`git add projects/03-shipment-tracker/Program.cs`). Mixing "you're in the project folder" and "from the root" made 3 commits fail today
 - **Untracked:** `career/linkedin/03.png`. Ask what it is before committing anything with it (public repo)
-- **Uncommitted at day-end (1 Nov):** `CLAUDE.md`, `PROGRESS.md`, `ROADMAP.md`, `lessons/glossary.md`, the book (chapters 2.4 + 2.5 from 31 Oct, README, journey, template, index). One day-end commit, then push. Do NOT commit `05-inheritance/Program.cs` until line 4 is deleted (it doesn't compile)
+- **Uncommitted at day-end (3 Nov):** `CLAUDE.md`, `PROGRESS.md`, `ROADMAP.md`, `lessons/glossary.md`, the book (chapter 2.6, README, journey, template, index). One day-end commit, then push. `lessons/phase-02/04-encapsulation/Program.cs` only has one extra blank line: discard it (`git restore lessons/phase-02/04-encapsulation/Program.cs`), don't commit it
 - **Naming:** lessons `lessons/phase-02/01-classes-objects`, `02-constructors`, `03-init-required`, `04-encapsulation`, `05-inheritance` → next `06-...`. Book Phase 2: 2.1 Git branches, 2.2 classes, 2.3 constructors/init/required, 2.4 Tracker v2, 2.5 encapsulation → next `book/phase-02/06-inheritance.md` (write it when inheritance is finished). Projects: next new one is `projects/04-library-management`. List the folder before naming anything
 - **Claude writes** READMEs, LinkedIn drafts and book chapters; the student reviews them in 2 min. The student types all code
 - **Work dates:** the student's own resumes and LinkedIn are the source of truth for job dates (confirmed 15 and 17 Oct). The Day 9 "Career" notes below were a rough chat story. Don't use them to question the dates
@@ -45,6 +45,73 @@ Newest day at the top. Claude reads this at the start of each new chat to contin
   - **They skip parts of a multi-part step and still commit** (Day 16: the `citys` rename, 4 polish fixes asked twice, `Program.cs` left out of a commit). When a step has more than 1 edit, give the **exact replacement lines**, and check the file + `git status` before moving on
   - **Commenting out old code is a habit** (5 times by Day 16). In examples files: keep old code running. In projects: delete it, Git keeps it
   - Day 16 pace (a full study day): 4 topics + a 93-line project in ~9.5 hrs (11:25 AM–8:15 PM, plus the day-end). A topic with exercise + quiz takes ~1–1.5 hrs, more than planned
+
+---
+
+## Day 23: Tue 3 Nov 2026 · Phase 2: base constructors + ExpressParcel, inheritance finished
+
+(Office PC, 10–10 duty. ~5:50 PM–8:00 PM in free gaps.)
+
+**Learned**
+
+- **Base constructors:** the parent constructor runs **first**; `: base(plate)` passes the value up. Without it → **CS7036**
+- If the parent has a **parameterless** constructor, C# calls it by itself (`Machine ready` / `Truck ready`)
+- A fixed value for the parent: `public BigBox() : base(100) { }`
+- **Target-typed `new`:** `Van v = new("KW-1234", 50);` (they used it by themselves)
+- **`internal`** = visible inside the same project. All 4 access modifiers done
+- Naming: parameters are **camelCase**, properties **PascalCase**; the same name **shadows** the property (CS8618)
+
+**Built**
+
+- `lessons/phase-02/05-inheritance`: typed the `Vehicle` → `Van` example, removed `: base(plate)` and got CS7036 (predicted ✅), put it back. Commit `b1013d8` `Add Vehicle and Van base constructor example` (1 file ✅), pushed
+- ExpressParcel exercise (`Parcel` with `protected Fee` = 2, `ExpressParcel : Parcel` with `ExtraFee`, `ShowTotal()` → `Express KP3001 | total 3.5 KD`). Commit `c80a111` `Add ExpressParcel inheritance exercise` (1 file ✅), pushed
+
+**Quiz scores**
+
+- **Inheritance quiz: 3/5.** Q1 ✅ (`:` / `base`), Q2 ✅ (`Machine ready` / `Truck ready`), Q3 ❌ (said CS7036, right is CS1061), Q4 ½ (CS0122 ✅ but "protected = inside the class only"), Q5 ½ (CS7036 ✅, but the fix took a `size` parameter instead of `: base(100)`)
+- Prediction: removing `: base(plate)` → CS7036 ✅
+
+**Mistakes to remember (review these)**
+
+- **3 bugs in the exercise, all fixed with one small hint each:** (1) `ShowTotal(decimal total)`: a value the method calculates itself was made a **parameter** → CS7036 at the call; (2) `Parcel(string Number)`: the parameter had the property's name, and `Number = number;` was missing (it had been commented out, backwards) → CS8618 + empty number; (3) `extraFee = ExtraFee;`: **assignment backwards** → total 2 instead of 3.5. Pattern: **the direction of `=`** (right goes into left), the 2nd time in a week. Ask "which side receives the value?"
+- **Mixes up error codes:** CS7036 (missing **argument**) vs CS1061 (missing **member**)
+- **`protected` vs `private`:** said "protected = inside the class only". Repeat: protected = class **+ children**
+- **Read the whole question:** Q5 said "every BigBox has size 100", but the answer asked the caller for a size
+- An editor-added `using System.Security.Cryptography...` line: they deleted it when asked ✅
+- ✅ Wins: predicted CS7036 right; used target-typed `new` alone; `: base(number)` right the first time; both commits right the first time (full paths from the root)
+
+**Career**
+
+- Nothing in this repo
+
+---
+
+## Day 22: Mon 2 Nov 2026 · Phase 2: `private` vs `protected` test + base constructors lesson
+
+(Office PC, 10–10 duty. A short, busy day: ~5:55 PM–9:35 PM, mostly away. The cold is better.)
+
+**Learned**
+
+- **`private` vs `protected`:** with `private decimal Salary`, even the child class `Driver` gets **CS0122** inside `ShowBonus()`. Only `protected` lets derived classes in
+- `dotnet run` prints the same error **twice** (once during the build, once in the summary). It is one error, not two
+- Base constructors (`: base(...)`) lesson sent (the parent constructor runs first; Dart `super` = C# `base`; CS7036 if it's missing), **not typed yet**
+
+**Built**
+
+- `lessons/phase-02/05-inheritance`: deleted the CS0122 test line, ran the `private` test, put `protected` back. Commit `2a9d6e1` `Test private vs protected access in inheritance` (1 file ✅), pushed
+
+**Quiz scores**
+
+- No quiz. Prediction: `private Salary` → "inaccessible due to its protection level" ✅ (right, with the reason)
+
+**Mistakes to remember (review these)**
+
+- None in the code today ✅
+- Claude's mistake: asked them to delete a line they had already deleted (Claude read the file before they changed it). Re-read the file right before asking for a change
+
+**Career**
+
+- Nothing in this repo
 
 ---
 

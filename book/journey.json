@@ -267,6 +267,28 @@
       "quizzes": [
         { "name": "Encapsulation quiz", "score": 3.5, "max": 5 }
       ]
+    },
+    {
+      "day": 22,
+      "date": "2026-11-02",
+      "weekday": "Mon",
+      "phase": "Phase 2",
+      "title": "private vs protected test + base constructors lesson",
+      "learned": ["private blocks even derived classes: CS0122 inside the child", "protected lets derived classes in; outside code is still blocked", "dotnet run shows the same error twice (build + summary)"],
+      "built": ["private vs protected test in the Employee / Driver example"],
+      "quizzes": []
+    },
+    {
+      "day": 23,
+      "date": "2026-11-03",
+      "weekday": "Tue",
+      "phase": "Phase 2",
+      "title": "Base constructors + ExpressParcel: inheritance finished",
+      "learned": ["The base constructor runs first; : base(plate) passes the value up", "No : base(...) when the parent needs a value gives CS7036", "A parameterless base constructor is called automatically", "Target-typed new: Van v = new(\"KW-1234\", 50)", "internal = visible inside the same project", "CS7036 = missing argument vs CS1061 = missing member"],
+      "built": ["Vehicle / Van base constructor example (commit b1013d8)", "ExpressParcel inheritance exercise with a protected Fee (commit c80a111)"],
+      "quizzes": [
+        { "name": "Inheritance quiz", "score": 3, "max": 5 }
+      ]
     }
   ]
 }

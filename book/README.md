@@ -58,6 +58,7 @@ At the end of the course, this text becomes a real illustrated / animated book.
 - [Chapter 2.3: Constructors, `init`, object initializers and `required`](phase-02/03-constructors-init-required.md)
 - [Chapter 2.4: Shipment Tracker v2 (one list of objects, a find method, reference types)](phase-02/04-shipment-tracker-v2.md)
 - [Chapter 2.5: Access modifiers and encapsulation (`public`, `private set`, safe doors)](phase-02/05-encapsulation.md)
+- [Chapter 2.6: Inheritance (`:`, `protected`, `: base(...)`)](phase-02/06-inheritance.md)
 
 *(More chapters are added as I finish each topic.)*
 

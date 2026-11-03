@@ -113,8 +113,8 @@ Folder rule: exercises go in `lessons/phase-XX/`, projects go in `projects/NN-pr
 🧸 **LKG story:** A class is a cookie cutter; an object is the cookie. Inheritance: a baby elephant gets its trunk from mama. An interface is a promise card: "anyone who signs this card MUST know how to `Borrow()`".
 
 - [x] Classes, objects, constructors, properties (`get; set;`, `init`, `required`)
-- [ ] Access modifiers: `public`, `private`, `protected`, `internal` (▶️ `public` / `private set` + encapsulation done, quiz 3.5/5 on 1 Nov; `protected` taught 1 Nov with inheritance; only `internal` left)
-- [ ] The 4 pillars: encapsulation, inheritance, polymorphism, abstraction (▶️ encapsulation ✅, inheritance started 1 Nov)
+- [x] Access modifiers: `public`, `private`, `protected`, `internal` (✅ 3 Nov: `public` / `private set` + encapsulation quiz 3.5/5 on 1 Nov; `protected` + `private` test with inheritance; `internal` = visible inside the same project)
+- [ ] The 4 pillars: encapsulation, inheritance, polymorphism, abstraction (▶️ encapsulation ✅, inheritance ✅ 3 Nov: `: base(...)`, ExpressParcel exercise, quiz 3/5)
 - [ ] `abstract` class vs `interface` (a very common interview question)
 - [ ] `static`, `sealed`, `virtual` / `override`
 - [ ] `struct` vs `class`, `record` types, `enum`
